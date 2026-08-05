@@ -1,0 +1,402 @@
+/* =========================================
+   GENERAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #222;
+}
+
+.booking-container {
+    width: 100%;
+    max-width: 200%;
+    margin: 50px auto;
+}
+
+
+/* =========================================
+   STEPPER
+========================================= */
+
+.stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.step-item {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #d9d9d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.step-number {
+    font-size: 13px;
+    color: #333;
+    font-weight: 600;
+}
+
+.step-item.active,
+.step-item.completed {
+    background: #16b77f;
+}
+
+.step-item.active .step-number,
+.step-item.completed .step-number {
+    color: #ffffff;
+}
+
+.step-line {
+    width: 100px;
+    height: 6px;
+    background: #d9d9d9;
+}
+
+.step-item.completed + .step-line {
+    background: #16b77f;
+}
+
+
+
+/* =========================================
+   FORM STEPS
+========================================= */
+
+.form-step {
+    display: none;
+}
+
+.form-step.active {
+    display: block;
+}
+
+
+/* =========================================
+   STEP CARD
+========================================= */
+
+.step-card {
+    max-width: 800px;
+    margin: auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+}
+
+.step-card h3 {
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+
+/* =========================================
+   DATE & TIME
+========================================= */
+
+.step-card {
+    display: flex;
+    gap: 60px;
+}
+
+.date-section,
+.time-section {
+    flex: 1;
+}
+
+input[type="date"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.time-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.time-slot {
+    border: none;
+    background: #eeeeee;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.time-slot:hover {
+    background: #d9f5eb;
+}
+
+.time-slot.selected {
+    background: #16b77f;
+    color: #ffffff;
+}
+
+
+/* =========================================
+   CONSULTATION
+========================================= */
+
+.consultation-card {
+    display: block;
+    max-width: 700px;
+}
+
+.consultation-card label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    resize: none;
+    font-family: inherit;
+}
+
+
+/* =========================================
+   SUMMARY & PAYMENT
+========================================= */
+
+.summary-payment {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.booking-summary,
+.payment-details {
+    padding: 25px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+}
+
+.booking-summary h3,
+.payment-details h3 {
+    margin-bottom: 20px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.price {
+    color: #16b77f;
+}
+
+.payment-method-title {
+    margin-bottom: 20px;
+}
+
+.mobile-money {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.mobile-money input {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    border: none;
+    border-radius: 20px;
+    padding: 10px 35px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: #2166e8;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #1454c7;
+}
+
+.btn-secondary {
+    background: #eeeeee;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background: #ddd;
+}
+
+
+/* =========================================
+   PROCESSING
+========================================= */
+
+.processing-card {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.phone-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.processing-card h2 {
+    margin-bottom: 15px;
+}
+
+.processing-card p {
+    color: #777;
+}
+
+.loader {
+    width: 35px;
+    height: 35px;
+    border: 4px solid #eee;
+    border-top: 4px solid #16b77f;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 30px auto;
+}
+
+@keyframes spin {
+
+    100% {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.success-card {
+    text-align: center;
+    max-width: 700px;
+    margin: auto;
+}
+
+.success-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #16b77f;
+    color: #ffffff;
+    font-size: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto auto 20px;
+}
+
+.success-card h2 {
+    margin-bottom: 30px;
+}
+
+.confirmation-box {
+    text-align: left;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.confirmation-box div {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.confirmation-box div:last-child {
+    border-bottom: none;
+}
+
+.email-message {
+    margin-bottom: 25px;
+    color: #555;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .booking-container {
+        width: 95%;
+    }
+
+    .stepper {
+        justify-content: flex-start;
+        overflow-x: auto;
+    }
+
+    .step-line {
+        width: 40px;
+    }
+
+    .step-labels {
+        gap: 15px;
+        overflow-x: auto;
+    }
+
+    .label {
+        min-width: 100px;
+    }
+
+    .step-card {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .summary-payment {
+        grid-template-columns: 1fr;
+    }
+
+}

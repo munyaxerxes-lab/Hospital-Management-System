@@ -1,0 +1,249 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --primaryColor: #2563EB;
+    --secondaryColor: #10B981;
+}
+
+/* ----BODY----*/
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    align-items: stretch;
+}
+
+/* ---LEFT SECTION--- */
+
+body > section:first-of-type {
+    width: 55%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 24px;
+}
+
+.logo {
+    width: 85%;
+    max-width: 440px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/*----RIGHT SECTION---*/
+
+.form-section {
+    width: 45%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 150px;
+}
+
+/*----LOGIN BOX---*/
+
+.login-box {
+    width: 100%;
+    max-width: 330px;
+}
+
+/*----LOGIN HEADING---*/
+
+.login-box h1 {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #111111;
+    margin: 0 0 6px 0;
+}
+
+
+/*----HEADING LINE---*/
+
+.heading-line {
+    width: 68px;
+    height: 4px;
+    background-color: var(--primaryColor);
+    border-radius: 10px;
+    margin: 0 auto 40px auto;
+}
+
+/*----LOGIN FORM---*/
+
+.login-box form {
+    width: 100%;
+}
+
+
+/*----INPUT GROUP---*/
+
+.input-group {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/*----INPUT LABEL---*/
+
+.input-group label {
+    display: block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #222222;
+    margin-bottom: 7px;
+}
+
+/*----INPUT FIELD---*/
+
+.input-group input {
+    width: 100%;
+    height: 38px;
+    display: block;
+    padding: 0 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #222222;
+    background-color: #f5f8fa;
+    border: 1px solid #777777;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+/*---input focus---*/
+
+.input-group input:focus {
+    border-color:var(--primaryColor);
+    background-color: #ffffff;
+    box-shadow: 0 0 4px rgba(0, 102, 230, 0.25);
+}
+
+/*---forget password---*/
+
+.forgot-password {
+    width: 100%;
+    text-align: right;
+    margin-top: -5px;
+    margin-bottom: 12px;
+}
+
+
+.forgot-password a {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: #ff4b23;
+    text-decoration: none;
+}
+
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+/*---login button---*/
+
+.login-button {
+    display: block;
+    width: 106px;
+    height: 31px;
+    margin: 0 auto;
+    padding: 0;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--primaryColor);
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+
+.login-button:hover {
+    background-color: var(--secondaryColor);
+}
+
+/*---signup---*/
+
+.signup-text {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: #222222;
+    margin-top: 16px;
+}
+
+/*---signup link---*/
+
+.signup-text a {
+    color:var(--primaryColor);
+    text-decoration: none;
+    margin-left: 3px;
+}
+
+
+.signup-text a:hover {
+    text-decoration: underline;
+}
+
+/*---mobile view---*/
+
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 24px 16px;
+        gap: 16px;
+    }
+
+    body > section:first-of-type {
+        width: 100%;
+        padding-left: 0;
+        margin-bottom: 4px;
+    }
+
+    .logo {
+        width: min(320px, 85vw);
+    }
+
+    .form-section {
+        width: 100%;
+        min-height: auto;
+        padding-right: 0;
+    }
+
+    .login-box {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .login-box h1 {
+        font-size: 24px;
+    }
+
+    .heading-line {
+        margin-bottom: 28px;
+    }
+
+    .input-group {
+        margin-bottom: 16px;
+    }
+
+    .login-button {
+        width: 100%;
+        max-width: 180px;
+        height: 38px;
+    }
+}
+

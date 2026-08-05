@@ -1,0 +1,423 @@
+/* =========================================
+   RESET
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   BODY
+========================================= */
+
+body {
+    font-family: 'Poppins', sans-serif;
+
+    background: #ffffff;
+
+    color: #111111;
+
+    min-height: 100vh;
+}
+
+
+/* =========================================
+   MAIN PAGE
+========================================= */
+
+.doctor-profile-page {
+    width: 100%;
+    min-height: 100vh;
+
+    padding: 20px 6% 50px;
+}
+
+
+/* =========================================
+   MEDILINK LOGO
+========================================= */
+
+.medilink-logo {
+    position: absolute;
+
+    top: 20px;
+    left: 32px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    width: 110px;
+}
+
+
+/* =========================================
+   DOCTOR HEADER
+========================================= */
+
+.doctor-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 38px;
+
+    margin-top: 96px;
+
+    margin-left: 11%;
+}
+
+
+/* =========================================
+   DOCTOR IMAGE
+========================================= */
+
+.doctor-image {
+    width: 172px;
+    height: 190px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background: #dfe4eb;
+}
+
+.doctor-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =========================================
+   DOCTOR NAME
+========================================= */
+
+.doctor-info h1 {
+    font-size: 26px;
+
+    font-weight: 600;
+
+    color: #111111;
+}
+
+.doctor-info p {
+    margin-top: 7px;
+
+    font-size: 21px;
+
+    font-weight: 500;
+
+    color: #1765ff;
+}
+
+
+/* =========================================
+   PROFILE CONTAINER
+========================================= */
+
+.profile-container {
+    display: grid;
+
+    grid-template-columns: 1fr 465px;
+
+    gap: 80px;
+
+    max-width: 1170px;
+
+    margin: 50px auto 0;
+}
+
+
+/* =========================================
+   LEFT PROFILE DETAILS
+========================================= */
+
+.profile-details {
+    padding-left: 25px;
+}
+
+
+/* =========================================
+   ABOUT TITLE
+========================================= */
+
+.about-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 30px;
+}
+
+.about-title i {
+    font-size: 27px;
+}
+
+.about-title h2 {
+    font-size: 25px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================
+   PROFILE SECTIONS
+========================================= */
+
+.profile-section {
+    margin-bottom: 30px;
+}
+
+.profile-section h2 {
+    font-size: 29px;
+
+    font-weight: 500;
+
+    line-height: 1.3;
+
+    margin-bottom: 10px;
+}
+
+.profile-section p {
+    font-size: 20px;
+
+    line-height: 1.5;
+
+    color: #253047;
+}
+
+
+/* =========================================
+   SPOKEN LANGUAGE
+========================================= */
+
+.language-section h2 {
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    font-size: 25px;
+
+    font-weight: 500;
+}
+
+.language-section h2 i {
+    font-size: 23px;
+}
+
+.language {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 8px;
+
+    font-size: 21px;
+}
+
+
+/* =========================================
+   EXPERIENCE
+========================================= */
+
+.profile-section:nth-child(3) {
+    margin-top: 40px;
+}
+
+
+/* =========================================
+   ABOUT DOCTOR
+========================================= */
+
+.profile-section:nth-child(4) {
+    margin-top: 12px;
+}
+
+
+/* =========================================
+   ADDRESS
+========================================= */
+
+.address-section {
+    margin-top: 18px;
+}
+
+.address-section h2 {
+    margin-bottom: 25px;
+}
+
+.address-section p {
+    font-size: 20px;
+}
+
+.address-section strong {
+    font-weight: 700;
+}
+
+
+/* =========================================
+   BOOKING AREA
+========================================= */
+
+.booking-area {
+    width: 100%;
+
+    padding-top: 5px;
+}
+
+
+/* =========================================
+   PRICING CARD
+========================================= */
+
+.pricing-card {
+    width: 100%;
+
+    min-height: 318px;
+
+    padding: 40px 28px;
+
+    border-radius: 20px;
+
+    background: #f6f6f6;
+
+    text-align: center;
+}
+
+
+/* Pricing Title */
+
+.pricing-card h2 {
+    margin-bottom: 27px;
+
+    font-size: 25px;
+
+    font-weight: 600;
+}
+
+
+/* Price */
+
+.price {
+    font-size: 23px;
+
+    color: #111111;
+}
+
+.price strong {
+    font-weight: 700;
+}
+
+
+/* Price Note */
+
+.price-note {
+    margin-top: 10px;
+
+    padding-left: 10px;
+
+    text-align: left;
+
+    font-size: 20px;
+
+    line-height: 1.5;
+
+    color: #222222;
+}
+
+
+/* =========================================
+   BOOK APPOINTMENT BUTTON
+========================================= */
+
+.book-appointment-btn {
+    width: 288px;
+
+    height: 51px;
+
+    margin-top: 65px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #2864e8;
+
+    color: #ffffff;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 21px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.book-appointment-btn:hover {
+    background: #1453d2;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   BACK BUTTON
+========================================= */
+
+.back-btn {
+    display: block;
+
+    width: 246px;
+
+    height: 52px;
+
+    margin: 18px auto 0;
+
+    border: 1.5px solid #1765ff;
+
+    border-radius: 10px;
+
+    background: #f8fbff;
+
+    color: #1765ff;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 30px;
+
+    font-weight: 400;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+
+    text-decoration: none;
+}
+
+.btnline{
+    text-decoration: none;
+}
+
+.back-btn:hover {
+    background: #1765ff;
+
+    color: #ffffff;
+}
+
