@@ -22,16 +22,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('layout.sidebar', function ($view) {
-            $userId = auth()->check()
-                ? auth()->id()
-                : User::firstOrCreate(
-                    ['email' => 'default@example.com'],
-                    ['name' => 'Default User', 'password' => bcrypt('secret')]
-                )->id;
+        // View::composer('layout.sidebar', function ($view) {
+        //     $userId = auth()->check()
+        //         ? auth()->id()
+        //         : User::firstOrCreate(
+        //             ['email' => 'default@example.com'],
+        //             ['name' => 'Default User', 'password' => bcrypt('secret')]
+        //         )->id;
 
-            $cartCount = cart::where('user_id', $userId)->sum('quantity');
-            $view->with('cartCount', $cartCount);
-        });
+        //     $cartCount = cart::where('user_id', $userId)->sum('quantity');
+        //     $view->with('cartCount', $cartCount);
+        // });
     }
 }

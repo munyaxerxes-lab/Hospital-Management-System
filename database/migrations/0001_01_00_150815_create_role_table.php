@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('medicines', function (Blueprint $table) {
-            $table->string('image')->nullable()->after('stock');
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamps();
+            
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('medicines', function (Blueprint $table) {
-            $table->dropColumn('image');
-        });
+        Schema::dropIfExists('role');
     }
 };

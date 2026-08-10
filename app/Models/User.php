@@ -13,6 +13,31 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class);
+    }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+    public function patient()
+    {
+        return $this->hasOne(Patient::class);
+    }
+    public function pharmacist()
+    {
+        return $this->hasOne(pharmacist::class);
+    }
+    public function lab_technician()
+    {
+        return $this->hasMany(lab_technician::class);
+    }
+    public function delivery_agent()
+    {
+        return $this->hasMany(delivery_agent::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
