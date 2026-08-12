@@ -1,9 +1,8 @@
 @extends('doctors-layout.index')
 @section('content')
+
     <div class="main">
-
         <div class="card">
-
             <div class="top">
                 <h2>Appointment Requests</h2>
                 <div class="pending">5 Pending</div>
@@ -22,12 +21,12 @@
                     <div class="option">Aug 8</div>
                 </div>
             </div>
+            </div>
+        </div>
 
 
-            <div class="main">
-
+    <div class="setting-section">
                 <div class="card">
-
                     <div class="header">
                         <h2>Availability</h2>
                         <p>5 Pending</p>
@@ -67,22 +66,17 @@
                     </div>
 
                     <div class="section">
-
-                        <h3>Available Time Slots</h3>
-
+                          <h3>Available Time Slots</h3>
                         <div class="slots">
                             <div class="slot">09:30</div>
                             <div class="slot">10:00</div>
                             <div class="slot active">11:00</div>
                             <div class="add">+ Add</div>
                         </div>
-
                     </div>
 
                     <div class="section">
-
                         <h3>Blocked Dates & Leave</h3>
-
                         <div class="leave">
 
                             <div class="leave-item">
@@ -94,16 +88,10 @@
                                 <span>Sep 1, 2026</span>
                                 <span>Personal Leave</span>
                             </div>
-
                         </div>
-
                         <button>Save Changes</button>
-
                     </div>
-
                 </div>
 
-            </div>
-
-        </div>
+    </div>
     @endsection

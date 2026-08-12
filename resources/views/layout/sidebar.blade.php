@@ -45,10 +45,7 @@
         </a>
 
         <!-- Active Navigation -->
-        <a href="/notifications" class="nav-item ">
-            <i class="ri-notification-3-line"></i>
-            <span>Notifications</span>
-        </a>
+       
 
     </nav>
 

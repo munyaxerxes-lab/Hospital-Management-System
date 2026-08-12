@@ -8,13 +8,13 @@
         <div class="user-section">
             <a href="/check notification">
                 <button class="notification-button">
-                    <i class="ri-notification-3-line"></i>
+                    
                 </button>
             </a>
             
              <span class="user-name">Hello, sarah</span>
              <div class="profile-img">
-                <img src="/image/doc.png" alt="User Profile">
+               
             </div>
 
         </div>
