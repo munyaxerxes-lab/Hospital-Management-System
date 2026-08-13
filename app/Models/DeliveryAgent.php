@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Delivery_Agent extends Model
+class DeliveryAgent extends Model
 {
     public function user()
     {

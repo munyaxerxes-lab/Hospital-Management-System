@@ -19,77 +19,80 @@ class UserSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
+        User::firstOrCreate([
             'email' => 'test@example.com',
+        ], [
+            'name' => 'Test User',
             'role_id' => 1,
+            'password' => Hash::make('password'),
         ]);
-        DB::table('users')->insert([
-    [
-        'role_id' => 1,
-        'first_name' => 'Admin',
-        'last_name' => 'ICLAN',
-        'email' => 'admin@iclan.cm',
-        'phone' => '670000001',
-        'password' => Hash::make('password'),
-        'created_at' => now(),
-        'updated_at' => now(),
-    ],
+        $users = [
+            [
+                'role_id' => 1,
+                'name' => 'Admin ICLAN',
+                'email' => 'admin@iclan.cm',
+                'phone' => '670000001',
+                'password' => Hash::make('password'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
-    [
-        'role_id' => 2,
-        'first_name' => 'John',
-        'last_name' => 'Mbi',
-        'email' => 'john@example.com',
-        'phone' => '670000002',
-        'password' => Hash::make('password'),
-        'created_at' => now(),
-        'updated_at' => now(),
-    ],
+            [
+                'role_id' => 2,
+                'name' => 'John Mbi',
+                'email' => 'john@example.com',
+                'phone' => '670000002',
+                'password' => Hash::make('password'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
-    [
-        'role_id' => 3,
-        'first_name' => 'Sarah',
-        'last_name' => 'Ngono',
-        'email' => 'sarah@iclan.cm',
-        'phone' => '670000003',
-        'password' => Hash::make('password'),
-        'created_at' => now(),
-        'updated_at' => now(),
-    ],
+            [
+                'role_id' => 3,
+                'name' => 'Sarah Ngono',
+                'email' => 'sarah@iclan.cm',
+                'phone' => '670000003',
+                'password' => Hash::make('password'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
-    [
-        'role_id' => 4,
-        'first_name' => 'Peter',
-        'last_name' => 'Fongang',
-        'email' => 'peter@iclan.cm',
-        'phone' => '670000004',
-        'password' => Hash::make('password'),
-        'created_at' => now(),
-        'updated_at' => now(),
-    ],
+            [
+                'role_id' => 4,
+                'name' => 'Peter Fongang',
+                'email' => 'peter@iclan.cm',
+                'phone' => '670000004',
+                'password' => Hash::make('password'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
-    [
-        'role_id' => 5,
-        'first_name' => 'Mary',
-        'last_name' => 'Tambe',
-        'email' => 'mary@iclan.cm',
-        'phone' => '670000005',
-        'password' => Hash::make('password'),
-        'created_at' => now(),
-        'updated_at' => now(),
-    ],
+            [
+                'role_id' => 5,
+                'name' => 'Mary Tambe',
+                'email' => 'mary@iclan.cm',
+                'phone' => '670000005',
+                'password' => Hash::make('password'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
-    [
-        'role_id' => 6,
-        'first_name' => 'David',
-        'last_name' => 'Etoa',
-        'email' => 'david@iclan.cm',
-        'phone' => '670000006',
-        'password' => Hash::make('password'),
-        'created_at' => now(),
-        'updated_at' => now(),
-    ],
-]);
+            [
+                'role_id' => 6,
+                'name' => 'David Etoa',
+                'email' => 'david@iclan.cm',
+                'phone' => '670000006',
+                'password' => Hash::make('password'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
+
+        foreach ($users as $u) {
+            DB::table('users')->updateOrInsert([
+                'email' => $u['email'],
+            ], $u);
+        }
+        
     }
 }

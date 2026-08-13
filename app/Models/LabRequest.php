@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Lab_Request extends Model
+class LabRequest extends Model
 {
     public function patient()
     {

@@ -14,6 +14,52 @@ body {
     color: #111111;
 }
 
+
+/*====================
+   login page
+   ======================*/
+main .login-container{
+    display: flex;
+    flex-direction: row;
+    border: #00379d 1px solid;
+}
+.login-container img{
+    margin-top: -6rem;
+}
+
+section .login-form-container{
+  
+    margin-top: 4rem;
+    height: 100%;
+    
+    
+}
+section form{
+    
+    
+     margin-left: 0px;
+     
+     justify-self: center;
+}
+.login-form-container{
+    
+    width: 30%;
+    justify-items: center;
+}
+.login-form-container h1{
+    color: #007bff;
+    padding-top: 10rem;
+    
+}
+.login-form-container form{
+    width: 100%;
+   
+    margin-left: 0%;
+    margin-top: 12rem;
+}
+
+
+
 a {
     text-decoration: none;
     color: inherit;

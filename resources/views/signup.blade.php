@@ -64,30 +64,20 @@
       <div style="width:64px; height:3px; background:#1554B3; border-radius:2px; margin:0 auto;"></div>
     </div>
 
-    <form method="POST" action="/register">
-      <?php echo csrf_field(); ?>
-
-      <?php if(session('status')): ?>
-        <div style="background:#ECFDF5;color:#065F46;padding:10px;border-radius:8px;margin-bottom:14px;font-weight:600;"><?php echo e(session('status')); ?></div>
-      <?php endif; ?>
-
-      <?php if($errors->any()): ?>
-        <div style="background:#FEF2F2;color:#991B1B;padding:10px;border-radius:8px;margin-bottom:14px;font-weight:600;"><?php echo e($errors->first()); ?></div>
-      <?php endif; ?>
-
+    <form>
       <div style="margin-bottom:18px;">
         <label class="field-label" for="name">Name</label>
-        <input class="field-input" type="text" id="name" name="name" value="<?php echo e(old('name')); ?>" placeholder="Full name" required>
+        <input class="field-input" type="text" id="name" name="name" placeholder="Full name" required>
       </div>
 
       <div class="row-2" style="margin-bottom:18px;">
         <div>
           <label class="field-label" for="email">Email</label>
-          <input class="field-input" type="email" id="email" name="email" value="<?php echo e(old('email')); ?>" placeholder="you@example.com" required>
+          <input class="field-input" type="email" id="email" name="email" placeholder="you@example.com" required>
         </div>
         <div>
           <label class="field-label" for="phone">Phone Number</label>
-          <input class="field-input" type="tel" id="phone" name="phone" value="<?php echo e(old('phone')); ?>" placeholder="080X XXX XXXX" required>
+          <input class="field-input" type="tel" id="phone" name="phone" placeholder="080X XXX XXXX" required>
         </div>
       </div>
 
@@ -108,7 +98,7 @@
 
       <p style="text-align:center; font-size:13.5px; color:#6B7280; margin-top:22px;">
         Already have an account?
-        <a href="login" style="color:#1554B3; font-weight:700; text-decoration:none;">Login</a>
+        <a href="login.html" style="color:#1554B3; font-weight:700; text-decoration:none;">Login</a>
       </p>
     </form>
   </div>
