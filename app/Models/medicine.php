@@ -7,18 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class medicine extends Model
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'name',
-        'description',
-        'price',
-        'stock',
-        'image',
-    ];
-
-    public function carts()
+    public function medicine()
     {
-        return $this->hasMany(cart::class);
+        return $this->belongsTo(medicines::class);
+    }
+    public function order_items()
+    {
+        return $this->hasMany(Order_item::class, 'medicine_id');
     }
 }

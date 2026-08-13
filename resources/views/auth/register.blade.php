@@ -1,52 +1,117 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MediLink — Sign Up</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
 
-        <!-- Name -->
+    * { box-sizing: border-box; }
+    body {
+      margin:0; padding:0; min-height:100vh;
+      font-family:'Segoe UI', Roboto, Arial, sans-serif;
+      background:#FFFFFF;
+      display:flex; align-items:center; justify-content:center;
+      padding:40px 20px;
+    }
+    input { font-family:inherit; }
+    input:focus { outline:none; border-color:#1554B3 !important; box-shadow:0 0 0 3px rgba(21,84,179,0.12); }
+    .btn-primary {
+      background:#1554B3; color:#fff; border:none; border-radius:999px;
+      font-weight:700; font-size:15px; padding:13px 20px; cursor:pointer;
+      transition:background .15s ease;
+      box-shadow: 0 6px 16px rgba(21,84,179,0.25);
+    }
+    .btn-primary:hover { background:#0F3E85; }
+    .field-label { font-size:13.5px; font-weight:600; color:#374151; margin-bottom:6px; display:block; }
+    .field-input {
+      width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid #E1E5EB;
+      background:#F5F7FA; font-size:14px; color:#16213E;
+    }
+
+    .signup-card {
+      width:100%; max-width:640px; border-radius:18px; padding:40px 48px 48px;
+      box-shadow: 0 10px 40px rgba(21,84,179,0.08);
+      border:1.5px solid #E1E5EB;
+    }
+    .row-2 { display:flex; gap:18px; flex-wrap:wrap; }
+    .row-2 > div { flex:1; min-width:200px; }
+</style>
+</head>
+<body>
+
+  <div class="signup-card">
+    <div style="margin-bottom:26px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="crossGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#1554B3"/>
+                <stop offset="1" stop-color="#1E9C5A"/>
+              </linearGradient>
+            </defs>
+            <path d="M18 4H30C31.6569 4 33 5.34315 33 7V17H43C44.6569 17 46 18.3431 46 20V28C46 29.6569 44.6569 31 43 31H33V41C33 42.6569 31.6569 44 30 44H18C16.3431 44 15 42.6569 15 41V31H5C3.34315 31 2 29.6569 2 28V20C2 18.3431 3.34315 17 5 17H15V7C15 5.34315 16.3431 4 18 4Z" fill="url(#crossGrad)"/>
+            <path d="M13 24L19.5 30L35 15" stroke="white" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span style="font-size:22px; font-weight:800; font-family:'Poppins','Segoe UI',sans-serif; letter-spacing:-0.02em;">
+            <span style="color:#1554B3;">Medi</span><span style="color:#1E9C5A;">Link</span>
+          </span>
+        </div>
+</div>
+
+    <div style="text-align:center; margin-bottom:30px;">
+      <h1 style="font-size:24px; font-weight:800; color:#16213E; margin:0 0 6px; letter-spacing:-0.01em;">SignUp</h1>
+      <div style="width:64px; height:3px; background:#1554B3; border-radius:2px; margin:0 auto;"></div>
+    </div>
+
+    <form method="POST" action="/register">
+      <?php echo csrf_field(); ?>
+
+      <?php if(session('status')): ?>
+        <div style="background:#ECFDF5;color:#065F46;padding:10px;border-radius:8px;margin-bottom:14px;font-weight:600;"><?php echo e(session('status')); ?></div>
+      <?php endif; ?>
+
+      <?php if($errors->any()): ?>
+        <div style="background:#FEF2F2;color:#991B1B;padding:10px;border-radius:8px;margin-bottom:14px;font-weight:600;"><?php echo e($errors->first()); ?></div>
+      <?php endif; ?>
+
+      <div style="margin-bottom:18px;">
+        <label class="field-label" for="name">Name</label>
+        <input class="field-input" type="text" id="name" name="name" value="<?php echo e(old('name')); ?>" placeholder="Full name" required>
+      </div>
+
+      <div class="row-2" style="margin-bottom:18px;">
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+          <label class="field-label" for="email">Email</label>
+          <input class="field-input" type="email" id="email" name="email" value="<?php echo e(old('email')); ?>" placeholder="you@example.com" required>
         </div>
-
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div>
+          <label class="field-label" for="phone">Phone Number</label>
+          <input class="field-input" type="tel" id="phone" name="phone" value="<?php echo e(old('phone')); ?>" placeholder="080X XXX XXXX" required>
         </div>
+      </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+      <div class="row-2" style="margin-bottom:30px;">
+        <div>
+          <label class="field-label" for="password">Password</label>
+          <input class="field-input" type="password" id="password" name="password" placeholder="••••••••" required>
         </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        <div>
+          <label class="field-label" for="password_confirmation">Confirm Password</label>
+          <input class="field-input" type="password" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required>
         </div>
+      </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
+      <div style="text-align:center;">
+        <button type="submit" class="btn-primary" style="width:220px;">SignUP</button>
+      </div>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
+      <p style="text-align:center; font-size:13.5px; color:#6B7280; margin-top:22px;">
+        Already have an account?
+        <a href="login" style="color:#1554B3; font-weight:700; text-decoration:none;">Login</a>
+      </p>
     </form>
-</x-guest-layout>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,415 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #e88787;
+    color: #111111;
+}
+
+.auth-page {
+    min-height: 100vh;
+    border: 3px solid #f7b7b7;
+    position: relative;
+    overflow: hidden;
+}
+
+/* =========================
+   LOGO
+========================= */
+
+.auth-logo {
+    position: absolute;
+    top: 22px;
+    left: 35px;
+    width: 75px;
+    height: auto;
+}
+
+.auth-logo-large {
+    width: 320px;
+    height: auto;
+}
+
+/* =========================
+   TWO COLUMN LAYOUT
+========================= */
+
+.auth-container {
+    min-height: calc(100vh - 6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    padding: 60px 8%;
+}
+
+.auth-illustration {
+    width: 45%;
+    max-width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-illustration img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    object-fit: contain;
+}
+
+.auth-form-section {
+    width: 40%;
+    max-width: 450px;
+}
+
+/* =========================
+   HEADINGS
+========================= */
+
+.auth-title {
+    text-align: center;
+    font-size: 27px;
+    font-weight: 700;
+    margin-bottom: 55px;
+}
+
+.auth-title::after {
+    content: "";
+    display: block;
+    width: 72px;
+    height: 4px;
+    background: #2864e8;
+    border-radius: 10px;
+    margin: 4px auto 0;
+}
+
+/* Login/Forgot/Reset titles don't all need underline */
+.auth-title.no-line::after {
+    display: none;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.auth-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 7px;
+    margin-left: 5px;
+}
+
+.form-control {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #777;
+    border-radius: 11px;
+    background: #f8fafc;
+    padding: 0 14px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: #2864e8;
+    box-shadow: 0 0 0 2px rgba(40, 100, 232, 0.1);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.auth-button {
+    display: block;
+    border: none;
+    background: #2864e8;
+    color: white;
+    font-size: 17px;
+    font-weight: 700;
+    border-radius: 25px;
+    padding: 6px 25px;
+    min-width: 110px;
+    margin: 35px auto 0;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.auth-button:hover {
+    background: #1852d0;
+    transform: translateY(-1px);
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.auth-link {
+    color: #2864e8;
+    text-decoration: none;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+.forgot-link {
+    display: block;
+    text-align: right;
+    color: #ff3b21;
+    font-size: 13px;
+    margin-top: -10px;
+    text-decoration: none;
+}
+
+.signup-text {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.signup-text a {
+    color: #2864e8;
+}
+
+/* =========================
+   LOGIN BRAND PANEL
+========================= */
+
+.login-brand {
+    width: 45%;
+    max-width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-brand img {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* =========================
+   SIGNUP
+========================= */
+
+.signup-container {
+    min-height: calc(100vh - 6px);
+    padding: 50px 15%;
+}
+
+.signup-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.signup-header h1 {
+    display: inline-block;
+    font-size: 26px;
+    margin-top: 15px;
+}
+
+.signup-header h1::after {
+    content: "";
+    display: block;
+    width: 105px;
+    height: 4px;
+    background: #2864e8;
+    border-radius: 10px;
+    margin: 3px auto 0;
+}
+
+.signup-form {
+    max-width: 760px;
+    margin: auto;
+}
+
+.signup-full {
+    width: 100%;
+}
+
+.signup-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* =========================
+   OTP
+========================= */
+
+.otp-container {
+    min-height: calc(100vh - 6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+    padding: 60px 10%;
+}
+
+.otp-illustration {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+}
+
+.otp-illustration img {
+    width: 100%;
+    max-width: 280px;
+}
+
+.otp-section {
+    width: 45%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.otp-title {
+    font-size: 25px;
+    font-weight: 700;
+    margin-bottom: 50px;
+}
+
+.otp-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.otp-input {
+    width: 45px;
+    height: 53px;
+    border: none;
+    border-radius: 5px;
+    background: #f7f7f9;
+    text-align: center;
+    font-size: 17px;
+    outline: none;
+}
+
+.otp-input:focus {
+    box-shadow: 0 0 0 2px #2864e8;
+}
+
+.otp-timer {
+    width: 75px;
+    padding: 6px 10px;
+    background: #f7f7f9;
+    border-radius: 20px;
+    margin: 28px auto 10px;
+    font-size: 13px;
+}
+
+.resend {
+    display: inline-block;
+    color: #2864e8;
+    margin-top: 20px;
+    text-decoration: underline;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .auth-container,
+    .otp-container {
+        gap: 40px;
+        padding: 80px 6%;
+    }
+
+    .auth-title {
+        font-size: 24px;
+    }
+
+    .login-brand img {
+        max-width: 330px;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .auth-page {
+        min-height: 100vh;
+    }
+
+    .auth-logo {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: 70px;
+        margin: 20px;
+    }
+
+    .auth-container,
+    .otp-container {
+        min-height: auto;
+        flex-direction: column;
+        padding: 30px 25px 60px;
+        gap: 30px;
+    }
+
+    .auth-illustration,
+    .auth-form-section,
+    .login-brand,
+    .otp-illustration,
+    .otp-section {
+        width: 100%;
+        max-width: 430px;
+    }
+
+    .auth-illustration {
+        order: 1;
+    }
+
+    .auth-form-section {
+        order: 2;
+    }
+
+    .auth-illustration img {
+        max-width: 300px;
+    }
+
+    .auth-title {
+        margin-bottom: 30px;
+    }
+
+    .signup-container {
+        padding: 20px 25px 50px;
+    }
+
+    .signup-row {
+        grid-template-columns: 1fr;
+    }
+
+    .login-brand img {
+        max-width: 320px;
+    }
+
+    .otp-container {
+        text-align: center;
+    }
+
+    .otp-inputs {
+        gap: 5px;
+    }
+
+    .otp-input {
+        width: 40px;
+        height: 48px;
+    }
+}

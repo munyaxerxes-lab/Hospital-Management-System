@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('medicines', function (Blueprint $table) {
-            $table->string('image')->nullable()->after('stock');
+        Schema::create('prescription', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('medicines', function (Blueprint $table) {
-            $table->dropColumn('image');
-        });
+        Schema::dropIfExists('prescription');
     }
 };

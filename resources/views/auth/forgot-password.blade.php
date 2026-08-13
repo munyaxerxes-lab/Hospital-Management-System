@@ -1,25 +1,79 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Forgot Password | MediLink</title>
+
+    @vite(['resources/css/auth.css'])
+</head>
+
+<body>
+
+<div class="auth-page">
+
+    <img
+        src="{{ asset('images/auth/medilink-logo.png') }}"
+        class="auth-logo"
+        alt="MediLink">
+
+    <div class="auth-container">
+
+        <!-- Illustration -->
+        <div class="auth-illustration">
+
+            <img
+                src="{{ asset('images/auth/forgot-password.png') }}"
+                alt="Forgot Password">
+
+        </div>
+
+        <!-- Form -->
+        <div class="auth-form-section">
+
+            <h1 class="auth-title no-line">
+                Forgot Password
+            </h1>
+
+            <form
+                method="POST"
+                action="{{ route('password.email') }}"
+                class="auth-form">
+
+                @csrf
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-control"
+                        required
+                        autofocus>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="auth-button">
+
+                    Continue
+
+                </button>
+
+            </form>
+
+        </div>
+
     </div>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+</div>
 
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+</body>
+</html>

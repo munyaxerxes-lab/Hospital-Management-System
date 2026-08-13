@@ -1,23 +1,73 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\medicine as Medicine;
 
 
 
+/*==================landing page===========*/
+Route::get("/", function () 
+{
+    return view('auth.register');
+});
 
+Route::middleware('auth')->group(function () {
+
+    Route::get('/patient/dashboard', function () {
+        return view('account.patient.dashboard');
+    })->name('patient.dashboard');
+
+    Route::get('/doctor/dashboard', function () {
+        return view('account.doctor.dashboard');
+    })->name('doctor.dashboard');
+
+    Route::get('/admin/dashboard', function () {
+        return view('account.admin.dashboard');
+    })->name('admin.dashboard');
+
+    Route::get('/pharmacist/dashboard', function () {
+        return view('account.pharmacist.dashboard');
+    })->name('pharmacist.dashboard');
+
+    Route::get('/lab/dashboard', function () {
+        return view('account.lab.dashboard');
+    })->name('account.lab.dashboard');
+
+    Route::get('/delivery/dashboard', function () {
+        return view('account.delivery.dashboard');
+    })->name('delivery.dashboard');
+
+});
+
+
+
+/*============Routes for registration page======================*/
+
+Route::get('/register', [AuthController::class, 'showRegister'])->name('show.register');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+
+/*============Routes for login page======================*/
+
+
+
+Route::get('/login', [AuthController::class, 'showLogin'])->name('show.login');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*user's routes======*/
+Route::middleware('auth')->group(function () {
 
-Route::get('/', function () {
+Route::get('/user', function () {
     return view('account.patient.dashboard');
 });
 Route::get('/appointments', function () {
     return view('account.patient.appointments');
 });
-use App\Models\medicine as Medicine;
-
 Route::get('/pharmacy', function () {
     $medicines = Medicine::whereNotNull('image')->where('image', '!=', '')->get();
     return view('account.patient.pharmacy', compact('medicines'));
@@ -32,6 +82,8 @@ Route::get('/history', function () {
     return view('account.patient.history');
 });
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+});
 
 /*========= Doctors Routes==========*/
 Route::get('/appointment', function () {
