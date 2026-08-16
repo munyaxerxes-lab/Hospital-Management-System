@@ -31,11 +31,11 @@ class User extends Authenticatable
     }
     public function lab_technician()
     {
-        return $this->hasMany(lab_technician::class);
+        return $this->hasOne(lab_technician::class);
     }
     public function delivery_agent()
     {
-        return $this->hasMany(delivery_agent::class);
+        return $this->hasOne(DeliveryAgent::class);
 }
 
     /**

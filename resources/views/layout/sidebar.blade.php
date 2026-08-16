@@ -21,7 +21,7 @@
             <span>Appointments</span>
         </a>
 
-        <a href="/labtests" class="nav-item">
+        <a href="/lab_tests" class="nav-item">
             <i class="ri-flask-line"></i>
             <span>Lab Tests</span>
         </a>

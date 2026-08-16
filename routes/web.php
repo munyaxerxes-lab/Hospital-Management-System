@@ -15,38 +15,8 @@ Route::get("/", function ()
     return view('auth.register');
 });
 
-Route::middleware('auth')->group(function () {
-
-    Route::get('/patient/dashboard', function () {
-        return view('account.patient.dashboard');
-    })->name('patient.dashboard');
-
-    Route::get('/doctor/dashboard', function () {
-        return view('account.doctor.dashboard');
-    })->name('doctor.dashboard');
-
-    Route::get('/admin/dashboard', function () {
-        return view('account.admin.dashboard');
-    })->name('admin.dashboard');
-
-    Route::get('/pharmacist/dashboard', function () {
-        return view('account.pharmacist.dashboard');
-    })->name('pharmacist.dashboard');
-
-    Route::get('/lab/dashboard', function () {
-        return view('account.lab.dashboard');
-    })->name('account.lab.dashboard');
-
-    Route::get('/delivery/dashboard', function () {
-        return view('account.delivery.dashboard');
-    })->name('delivery.dashboard');
-
-});
-
-
 
 /*============Routes for registration page======================*/
-
 Route::get('/register', [AuthController::class, 'showRegister'])->name('show.register');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
@@ -59,31 +29,63 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-/*user's routes======*/
-Route::middleware('auth')->group(function () {
+/*role's routes======*/
+Route::middleware(['auth', 'role:patient'])->group(function () {
+    Route::get('/patient/dashboard', function () {
+        return view('account.patient.dashboard');
+    })->name('patient.dashboard');
+});
 
-Route::get('/user', function () {
+Route::middleware(['auth', 'role:doctor'])->group(function () {
+    Route::get('/doctor/dashboard', function () {
+        return view('account.doctor.home');
+    })->name('doctor.dashboard');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('account.admin.dashboard');
+    })->name('admin.dashboard');
+});
+
+Route::middleware(['auth', 'role:pharmacist'])->group(function () {
+    Route::get('/pharmacist/dashboard', function () {
+        return view('account.pharmacist.dashboard');
+    })->name('pharmacist.dashboard');
+});
+
+Route::middleware(['auth', 'role:lab_technician'])->group(function () {
+    Route::get('/lab/dashboard', function () {
+        return view('account.lab.dashboard');
+    })->name('lab.dashboard');
+});
+
+Route::middleware(['auth', 'role:delivery_agent'])->group(function () {
+    Route::get('/delivery/dashboard', function () {
+        return view('account.delivery.dashboard');
+    })->name('delivery.dashboard');
+});
+
+/*========= patients route========*/
+Route::get('/', function () {
     return view('account.patient.dashboard');
 });
 Route::get('/appointments', function () {
     return view('account.patient.appointments');
 });
 Route::get('/pharmacy', function () {
-    $medicines = Medicine::whereNotNull('image')->where('image', '!=', '')->get();
-    return view('account.patient.pharmacy', compact('medicines'));
+    return view('account.patient.pharmacy');
 });
-Route::get('/notifications', function () {
-    return view('account.patient.notifications');
+Route::get('/cart', function () {
+    return view('account.patient.cart');
 });
-Route::get('/labtests', function () {
-    return view('account.patient.labtests');
+Route::get('lab_tests', function () {
+    return view('account.patient.lab_tests');
 });
 Route::get('/history', function () {
     return view('account.patient.history');
 });
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
-});
 
 /*========= Doctors Routes==========*/
 Route::get('/appointment', function () {

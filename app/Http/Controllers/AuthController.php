@@ -23,6 +23,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
+        // Every normal registration creates a patient
         $patientRole = Role::where('name', 'patient')->firstOrFail();
 
         $user = User::create([
@@ -33,7 +34,9 @@ class AuthController extends Controller
             'role_id' => $patientRole->id,
         ]);
 
-        return redirect()->route('show.login')->with('status', 'Account created. Please log in.');
+        return redirect()
+            ->route('show.login')
+            ->with('status', 'Account created. Please log in.');
     }
 
     public function showLogin()
@@ -43,35 +46,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-
-        $user = Auth::user();
-
-        switch ($user->role_id) {
-
-            case 1:
-                return redirect()->route('patient.dashboard');
-
-            case 2:
-                return redirect()->route('doctor.dashboard');
-
-            case 3:
-                return redirect()->route('admin.dashboard');
-
-            case 4:
-                return redirect()->route('pharmacist.dashboard');
-
-            case 5:
-                return redirect()->route('lab.dashboard');
-
-            case 6:
-                return redirect()->route('delivery.dashboard');
-
-            default:
-                Auth::logout();
-                return redirect()->route('login')
-                    ->withErrors(['email' => 'Invalid user role.']);
-        }
-
+        // Validate login form
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -79,15 +54,64 @@ class AuthController extends Controller
 
         $remember = $request->filled('remember');
 
+        // Attempt authentication FIRST
         if (Auth::attempt($credentials, $remember)) {
+
+            // Prevent session fixation
             $request->session()->regenerate();
 
-            return redirect()->intended('/user');
+            // Now the authenticated user exists
+            $user = Auth::user();
+
+            // Make sure the user has a role
+            if (!$user->role) {
+                Auth::logout();
+
+                return redirect()
+                    ->route('show.login')
+                    ->withErrors([
+                        'email' => 'No role assigned to this account.',
+                    ]);
+            }
+
+            // Redirect according to role
+            switch ($user->role->name) {
+
+                case 'patient':
+                    return redirect()->route('patient.dashboard');
+
+                case 'doctor':
+                    return redirect()->route('doctor.dashboard');
+
+                case 'admin':
+                    return redirect()->route('admin.dashboard');
+
+                case 'pharmacist':
+                    return redirect()->route('pharmacist.dashboard');
+
+                case 'lab_technician':
+                    return redirect()->route('lab.dashboard');
+
+                case 'DeliveryAgent':
+                    return redirect()->route('delivery.dashboard');
+
+                default:
+                    Auth::logout();
+
+                    return redirect()
+                        ->route('show.login')
+                        ->withErrors([
+                            'email' => 'Invalid user role.',
+                        ]);
+            }
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        // Login failed
+        return back()
+            ->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])
+            ->onlyInput('email');
     }
 
     public function logout(Request $request)
@@ -97,6 +121,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect()->route('show.login');
     }
 }
