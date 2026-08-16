@@ -43,19 +43,8 @@
   <div class="signup-card">
     <div style="margin-bottom:26px;">
         <div style="display:flex; align-items:center; gap:10px;">
-          <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="crossGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#1554B3"/>
-                <stop offset="1" stop-color="#1E9C5A"/>
-              </linearGradient>
-            </defs>
-            <path d="M18 4H30C31.6569 4 33 5.34315 33 7V17H43C44.6569 17 46 18.3431 46 20V28C46 29.6569 44.6569 31 43 31H33V41C33 42.6569 31.6569 44 30 44H18C16.3431 44 15 42.6569 15 41V31H5C3.34315 31 2 29.6569 2 28V20C2 18.3431 3.34315 17 5 17H15V7C15 5.34315 16.3431 4 18 4Z" fill="url(#crossGrad)"/>
-            <path d="M13 24L19.5 30L35 15" stroke="white" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span style="font-size:22px; font-weight:800; font-family:'Poppins','Segoe UI',sans-serif; letter-spacing:-0.02em;">
-            <span style="color:#1554B3;">Medi</span><span style="color:#1E9C5A;">Link</span>
-          </span>
+          <img src="image/logo3.png" alt="logo">
+        
         </div>
 </div>
 
@@ -87,7 +76,7 @@
         </div>
         <div>
           <label class="field-label" for="phone">Phone Number</label>
-          <input class="field-input" type="tel" id="phone" name="phone" value="<?php echo e(old('phone')); ?>" placeholder="080X XXX XXXX" required>
+          <input class="field-input" type="tel" id="phone" name="phone" value="<?php echo e(old('phone')); ?>" placeholder="+237 6XX XXX XXX" required>
         </div>
       </div>
 
