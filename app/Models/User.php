@@ -36,7 +36,7 @@ class User extends Authenticatable
     public function delivery_agent()
     {
         return $this->hasMany(delivery_agent::class);
-    }
+}
 
     /**
      * The attributes that are mass assignable.
