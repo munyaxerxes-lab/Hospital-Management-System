@@ -114,6 +114,28 @@ class AuthController extends Controller
             ->onlyInput('email');
     }
 
+    public function deleteAccount(Request $request)
+{
+    // 1. Get the currently logged-in user
+    $user = Auth::user();
+
+    // 2. Clear out the active login session first
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    // 3. Permanently delete the user from the database
+    if ($user) {
+        $user->delete();
+    }
+
+    // 4. Redirect them to the login page with a success flash message
+    return redirect()
+        ->route('show.login')
+        ->with('status', 'Your account has been permanently deleted.');
+}
+
+
     public function logout(Request $request)
     {
         Auth::logout();

@@ -517,26 +517,13 @@ a {
    Logout
 ========================= */
 
-.logout-container {
-    margin-top: auto;
-    margin-bottom: 45px;
+form{
+   
+    width: 60%;
+    margin-left: 16px;
+    
 }
 
-.logout {
-    display: flex;
-    align-items: center;
-    gap: 28px;
-
-    margin-left: 13px;
-
-    color: #ff0000;
-    font-size: 21px;
-    font-weight: 500;
-}
-
-.logout i {
-    font-size: 24px;
-}
 
 
 /* =========================
@@ -562,7 +549,138 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
+   
     
+}
+    /* Profile Circle Avatar */
+    .profile-trigger {
+        width: 45px;
+        height: 45px;
+        background: #e8f2ff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: #000000 1px solid;
+        cursor: pointer;
+        border: #16213e1e 1px solid;
+        user-select: none;
+        box-shadow: 0 4px 10px rgba(21, 84, 179, 0.2);
+        transition: transform 1.0s ease;
+    }
+    .profile-trigger:hover {
+        transform: scale(1.05);
+        background: #444b5300;
+    }
+    .user-initials {
+        color: #161618;
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 0.5px;
+    }
+
+    /* Menu Layout Mechanics */
+    .user-dropdown-container {
+        position: relative;
+        display: inline-block;
+    }
+    .dropdown-menu-panel {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 55px;
+        background: #FFFFFF;
+        min-width: 240px;
+        border: 1.5px solid #E1E5EB;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        padding: 12px;
+        z-index: 1000;
+    }
+    
+    /* Native CSS Click Trigger */
+    .profile-trigger:focus + .dropdown-menu-panel,
+    .user-dropdown-container:hover .dropdown-menu-panel {
+        display: block;
+    }
+
+    /* Typography & Buttons Inside Panel */
+    .dropdown-user-info {
+        padding: 6px 12px;
+    }
+    .dropdown-user-info strong {
+        color: #16213E;
+        font-size: 14px;
+        display: block;
+    }
+    .dropdown-user-info p {
+        color: #d0e3ff;
+        font-size: 12px;
+        margin: 2px 0 0 0;
+    }
+    .dropdown-divider {
+        border: 0;
+        border-top: 1.5px solid #E1E5EB;
+        margin: 10px 0;
+    }
+    .dropdown-action-form {
+        margin: 4px 0;
+    }
+    .btn-dropdown-delete, .btn-dropdown-logout {
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        padding: 8px 12px;
+        font-size: 13.5px;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.15s ease;
+    }
+    .btn-dropdown-delete {
+        color: #E53E3E;
+    }
+    .btn-dropdown-delete:hover {
+        background: #FFF5F5;
+    }
+    .btn-dropdown-logout {
+        color: #374151;
+    }
+    .btn-dropdown-logout:hover {
+        background: #F5F7FA;
+    }
+    /* 1. Add an invisible invisible barrier to keep the menu open while sliding down */
+.dropdown-menu-panel {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 45px; /* 💡 Slightly decrease this number so the panel sits closer to the circle */
+    background: #FFFFFF;
+    min-width: 240px;
+    border: 1.5px solid #E1E5EB;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 12px;
+    z-index: 1000;
+}
+
+/* 2. Create an invisible top border extension so the mouse never technically leaves the component area */
+.dropdown-menu-panel::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: transparent; /* 💡 Transparent bridge connects circle and menu */
+}
+
+/* 3. Keep the dropdown open even when hovering over the menu itself */
+.profile-trigger:focus + .dropdown-menu-panel,
+.user-dropdown-container:hover .dropdown-menu-panel,
+.dropdown-menu-panel:hover {
+    display: block !important;
 }
 
 
@@ -570,15 +688,7 @@ a {
     font-size: 27px;
     font-weight: 600;
 }
-.profile-img img{
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    border: #3175ff 1px solid;
-    
-    box-shadow:
-        0 8px 20px rgba(30, 100, 220, 0.12);
-}
+
 
 /* =========================
    User Section
@@ -587,8 +697,8 @@ a {
 .user-section {
     display: flex;
     align-items: center;
-    gap: 80px;
-    padding-left: 70%;
+    gap: 40px;
+    padding-left: 87%;
 }
 
 .notification-button {

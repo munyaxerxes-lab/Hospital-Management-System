@@ -12,12 +12,18 @@
 
     <section class="welcome">
             <div>
-                <h1>Welcome back, Sarah! 👋</h1>
+               @if(Auth::check())
+                <h2>Welcome back, {{ Auth::user()->name }}! 👋</h2>
+                @else
+                    <h2>Welcome back, Username! 👋</h2>
+                @endif
+
                 <p>
                     Here's what's happening with your health today.
                 </p>
             </div>
-            <img src="image/doc.png">
+              <img src="{{ asset("image/doc.png") }}" placeholder="image" >
+          
 
         </section>
          <section class="cards">

@@ -54,7 +54,8 @@
       <h1 style="font-size:26px; font-weight:800; color:#16213E; margin:0 0 4px; letter-spacing:-0.01em;">LOGIN</h1>
       <div style="width:64px; height:3px; background:#1554B3; border-radius:2px; margin-bottom:28px;"></div>
 
-      <form>
+      <form action="{{ route('login') }}" method="POST">
+        @csrf
         <div style="margin-bottom:20px;">
           <label class="field-label" for="email">Email</label>
           <input class="field-input" type="email" id="email" name="email" placeholder="you@example.com" required>

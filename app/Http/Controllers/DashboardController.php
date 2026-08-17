@@ -21,11 +21,13 @@ class DashboardController extends Controller
                 // We pass the name directly into the compact function
                 $name = $user->name;
 
+
                 return view('account.patient.dashboard', compact(
                     'appointmentsCount',
                     'medicinesCount',
                     'labTestsCount',
                     'name' // 👈 This makes $name available in your view
+                    
                 ));
             }
 

@@ -50,12 +50,20 @@
     </nav>
 
     <!-- Logout -->
-    <div class="logout-container">
-        <a href="/Logout" class="logout">
-            <i class="ri-logout-box-r-line"></i>
-            <span>Logout</span>
-        </a>
+   
+    <!-- Secure Logout Form -->
+<form action="{{ route('logout') }}" method="POST" style="display: inline;">
+    @csrf
+    <button type="submit" style="background: none; border: none; text-decoration: underline; cursor: pointer; padding: 0; font: inherit;">
+       <div class="logout-container">
+       
+            <i class="ri-logout-box-r-line" style="color: red; font-size: 22px;" ></i>
+            <span style="color: red;" >Logout</span>
+     
     </div>
+    </button>
+</form>
+
   
 </aside>
 <script>

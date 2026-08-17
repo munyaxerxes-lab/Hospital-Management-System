@@ -29,6 +29,11 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+/*===========Delete Route===============================*/
+Route::post('/account/delete', [AuthController::class, 'deleteAccount'])->name('account.delete');
+
+
+
 /*role's routes======*/
 Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::get('/patient/dashboard', function () {
