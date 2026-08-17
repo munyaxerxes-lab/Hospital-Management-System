@@ -1,0 +1,92 @@
+[90m= [39m[
+    {#8642
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mappointments[39m[32m"[39m,
+    },
+    {#7874
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mcache[39m[32m"[39m,
+    },
+    {#8222
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mcache_locks[39m[32m"[39m,
+    },
+    {#7923
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mcarts[39m[32m"[39m,
+    },
+    {#7944
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mdelivery[39m[32m"[39m,
+    },
+    {#7924
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mdelivery_agents[39m[32m"[39m,
+    },
+    {#8636
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mdoctor[39m[32m"[39m,
+    },
+    {#7448
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mdoctor_specialties[39m[32m"[39m,
+    },
+    {#8220
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mdoctors_schedule[39m[32m"[39m,
+    },
+    {#8276
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mfailed_jobs[39m[32m"[39m,
+    },
+    {#8275
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mhospitals[39m[32m"[39m,
+    },
+    {#8274
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mjob_batches[39m[32m"[39m,
+    },
+    {#7438
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mjobs[39m[32m"[39m,
+    },
+    {#8273
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mlab_reqests[39m[32m"[39m,
+    },
+    {#8259
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mlab_results[39m[32m"[39m,
+    },
+    {#8258
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mlab_technician[39m[32m"[39m,
+    },
+    {#8257
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mlab_tests[39m[32m"[39m,
+    },
+    {#8256
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mmedicine[39m[32m"[39m,
+    },
+    {#8255
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mmedicine_categories[39m[32m"[39m,
+    },
+    {#8254
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mmedicines[39m[32m"[39m,
+    },
+    {#8253
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mmigrations[39m[32m"[39m,
+    },
+    {#8252
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32morder_items[39m[32m"[39m,
+    },
+    {#8251
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32morders[39m[32m"[39m,
+    },
+    {#8250
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mpatient[39m[32m"[39m,
+    },
+    {#8249
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mpayments[39m[32m"[39m,
+    },
+    {#8248
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mpharmacist[39m[32m"[39m,
+    },
+    {#8247
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mprescription[39m[32m"[39m,
+    },
+    {#8246
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mroles[39m[32m"[39m,
+    },
+    {#8245
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32mspecialties[39m[32m"[39m,
+    },
+    {#8244
+      +"[1mTables_in_laravel_app[22m": [32m"[39m[32musers[39m[32m"[39m,
+    },
+  ]
