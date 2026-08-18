@@ -62,9 +62,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 /*user's routes======*/
 Route::middleware('auth')->group(function () {
 
-Route::get('/user', function () {
-    return view('account.patient.dashboard');
-});
+ Route::get('/user', function () {
+        return view('account.patient.dashboard');
+    })->name('user.dashboard');
+    
 Route::get('/appointments', function () {
     return view('account.patient.appointments');
 });
@@ -109,4 +110,10 @@ Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
 
+
 require __DIR__.'/auth.php';
+
+
+Route::get('/reset-password', function () {
+    return view('auth.reset-password');
+})->name('reset.password');

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -14,8 +15,20 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('guest')->group(function () {
 //     Route::get('register', [RegisteredUserController::class, 'create'])
 //         ->name('register');
+    Route::get('register', [RegisteredUserController::class, 'create'])
+      ->name('register');
 
-//     Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('register', [RegisteredUserController::class, 'store']);
+
+    Route::get('/register/verify-otp', [RegisteredUserController::class, 'showVerifyOtp'])
+      ->name('register.verify-otp');
+
+    Route::post('/register/verify-otp', [RegisteredUserController::class, 'verifyOtp'])
+      ->name('register.verify-otp.submit');
+
+      Route::post('/register/resend-otp', [RegisteredUserController::class, 'resendOtp'])
+    ->name('register.resend-otp');
+
 
 //     Route::get('login', [AuthenticatedSessionController::class, 'create'])
 //         ->name('login');
@@ -24,12 +37,28 @@ use Illuminate\Support\Facades\Route;
 
 //     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
 //         ->name('password.request');
+     Route::get('forgot-password', [ForgotPasswordController::class, 'create'])
+       ->name('password.request');
 
-//     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-//         ->name('password.email');
+     Route::post('forgot-password', [ForgotPasswordController::class, 'sendOtp'])
+        ->name('password.email');
+        
+//     Route::get('verify-otp/{verifyotp}', [NewPasswordController::class, 'create'])
+//         ->name('verify-otp');
+      Route::get('/verify-otp', [ForgotPasswordController::class, 'showVerifyOtp'])
+    ->name('verify-otp');
+
+      Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])
+    ->name('verify-otp.submit');
 
 //     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
 //         ->name('password.reset');
+
+     Route::get('reset-password', [ForgotPasswordController::class, 'showResetPassword'])
+    ->name('password.reset');
+
+     Route::post('reset-password', [ForgotPasswordController::class, 'resetPassword'])
+    ->name('password.update');
 
 //     Route::post('reset-password', [NewPasswordController::class, 'store'])
 //         ->name('password.store');

@@ -49,6 +49,8 @@ class User extends Authenticatable
     'phone',
     'password',
     'role_id',
+    'otp',
+    'otp_expires_at',
 ];
 
     /**
@@ -73,4 +75,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    protected $casts = [
+    // ...existing casts
+    'otp_expires_at' => 'datetime',
+    ];
 }
