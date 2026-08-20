@@ -121,6 +121,31 @@ Route::get('/reset-password', function () {
 
 
 
+/*========= Account Admin Routes ==========*/
+
+Route::get('/dashboard', function () {
+    return view('account.admin.dashboard');
+});
+
+Route::get('/appointment-request', function () {
+    return view('account.admin.appointment-request');
+});
+
+Route::get('/lab-requests', function () {
+    return view('account.admin.lab-requests');
+});
+
+Route::get('/manage-doctors', function () {
+    return view('account.admin.manage-doctors');
+});
+
+Route::get('/medicine-order', function () {
+    return view('account.admin.medicine-order');
+});
+
+Route::get('/logout', function () {
+    return view('account.admin.logout');
+});
 
 
 
