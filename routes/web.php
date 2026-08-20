@@ -130,7 +130,7 @@ Route::get('/admin_dashboard', function () {
 Route::get('/appointment_request', function () {
     return view('account.admin.appointment_request');
 });
-Route::get('/lab_requestSS', function () {
+Route::get('/lab_request', function () {
     return view('account.admin.lab_request');
 });
 
@@ -138,7 +138,7 @@ Route::get('/manage_doctors', function () {
     return view('account.admin.manage_doctors');
 });
 
-Route::get('/medicine_order', function () {
+Route::get('/medicine_orders', function () {
     return view('account.admin.medicine_orders');
 });
 

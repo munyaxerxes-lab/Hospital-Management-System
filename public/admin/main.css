@@ -913,14 +913,14 @@ h2 span{
     align-self:start
 }
 .panel-title{
-    font-size:11px;
+    font-size:14px;
     font-weight:700;
     margin-bottom:14px;
     display:flex;
     justify-content:space-between
 }
 .panel-section-title{
-    font-size:8px;
+    font-size:14px;
     font-weight:700;
     margin:12px 0 8px
 }
@@ -933,14 +933,14 @@ h2 span{
     margin-bottom:3px
 }
 .detail-value{
-    font-size:8px;
+    font-size:14px;
     color:#39465d;
     line-height:1.35
 }
 .mini-table{
     width:100%;
     border-collapse:collapse;
-    font-size:7px
+    font-size:14px
 }
 .mini-table th,.mini-table td{
     text-align:left;
@@ -962,7 +962,7 @@ h2 span{
 .panel-actions .btn{
     flex:1;
     justify-content:center;
-    font-size:7px
+    font-size:14px
 }
 .cancel-box{
     margin-top:14px;
@@ -971,12 +971,12 @@ h2 span{
     padding:9px
 }
 .cancel-title{
-    font-size:10px;
+    font-size:14px;
     font-weight:700;
     margin-bottom:5px
 }
 .cancel-copy{
-    font-size:7px;
+    font-size:14px;
     color:#788297;
     margin-bottom:8px
 }
@@ -987,7 +987,7 @@ h2 span{
     border-radius:4px;
     color:#8b94a6;
     padding:0 8px;
-    font-size:8px
+    font-size:14px
 }
 .cancel-actions{
     display:flex;
@@ -995,7 +995,7 @@ h2 span{
     gap:5px;margin-top:7px
 }
 .cancel-actions .btn{
-    font-size:7px
+    font-size:14px
 }
 
 .summary-row{
@@ -1019,23 +1019,40 @@ h2 span{
     display:grid;
     place-items:center;
     color:#fff;
-    font-size:13px
+    font-size:14px
 }
 .summary-label{
-    font-size:9px;
+    font-size:18px;
     color:#66728a
 }
 .summary-number{
-    font-size:20px;
+    font-size:16px;
     font-weight:800;
     margin-top:4px}
 
-.lab-table td,.lab-table th{padding-top:8px;padding-bottom:8px}
-.patient-cell{display:flex;align-items:center;gap:8px}
-.avatar{
-    width:21px;height:21px;border-radius:50%;object-fit:cover;background:#ddd;display:block;flex:none
+.lab-table td,.lab-table th{
+    padding-top:8px;
+    padding-bottom:8px
 }
-.upload-btn{color:#2865df;border-color:#bcd0fb;background:#f8fbff}
+.patient-cell{
+    display:flex;
+    align-items:center;
+    gap:8px
+}
+.avatar{
+    width:21px;
+    height:21px;
+    border-radius:50%;
+    object-fit:cover;
+    background:#ddd;
+    display:block;
+    flex:none
+}
+.upload-btn{
+    color:#2865df;
+    border-color:#bcd0fb;
+    background:#f8fbff
+}
 
 
 .doctor-form{
@@ -1252,3 +1269,100 @@ h2 span{
 .open-btn { background-color: #007bff; color: white; }
 .close-btn { background-color: #dc3545; color: white; margin-top: 15px; }
 
+/* Footer Base Styling */
+.site-footer {
+  --footer-bg: #111827;
+  --footer-text: #9ca3af;
+  --footer-heading: #ffffff;
+  --footer-accent: #007bff;
+  --footer-border: #1f2937;
+
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
+  font-family: sans-serif;
+  padding: 60px 0 20px 0;
+  margin-top: auto; /* Pushes footer to bottom if page content is short */
+}
+
+/* Flexbox Layout Container */
+.footer-container {
+  
+
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+/* Individual Columns */
+.footer-col {
+  flex: 1 1 200px; /* Expands evenly, wraps when width hits 200px */
+}
+
+/* Wider Brand Column */
+.footer-col.brand-col {
+  flex: 2 1 300px;
+}
+
+/* Typography & Links */
+.footer-col h3, 
+.footer-col h4 {
+  color: var(--footer-heading);
+  margin-bottom: 20px;
+  font-size: 1.15rem;
+}
+
+.footer-col h3 {
+  font-size: 1.5rem;
+  letter-spacing: -0.5px;
+}
+
+.footer-col p {
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col ul li {
+  margin-bottom: 12px;
+}
+
+.footer-col ul li a {
+  color: var(--footer-text);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+/* Interactive Hover States */
+.footer-col ul li a:hover {
+  color: var(--footer-accent);
+}
+
+/* Bottom Copy Bar */
+.footer-bottom {
+  max-width: 1100px;
+  width: 90%;
+  margin: 40px auto 0 auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--footer-border);
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+/* Responsive Breakpoint for Mobile Screens */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column; /* Stack vertically on small screens */
+    gap: 30px;
+  }
+  
+  .footer-col {
+    flex: 1 1 100%;
+  }
+}
