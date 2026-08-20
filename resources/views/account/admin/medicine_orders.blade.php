@@ -1,5 +1,5 @@
 @extends('admin_layout.index')
 @section('content')
-   <h1>medi</h1>
-   <p>this is the medi re page</p>
+   <h>Appointment</h>
+   <p>this is the Appointment</p>
 @endsection

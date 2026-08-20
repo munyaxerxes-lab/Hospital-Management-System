@@ -17,6 +17,7 @@ a {
 .blue{
     color: #095eff;
 }
+/* ====== structuring =======*/
 
 
 /* ==========Sidebar===*/
@@ -60,14 +61,20 @@ a {
     font-weight: 700;
     
 }
+.ad{
+    padding-top: 1rem;
+}
 .ad h3{
     color: #fdfeff;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 600;
 }
-
-h3 span{
+.logo-text{
+    color: #095eff;
+    font-size: 20px;
+}
+h2 span{
     color: #3175ff;
 }
 
@@ -119,7 +126,7 @@ h3 span{
 }
 
 .nav-item.active:hover {
-    background-color: #1d4ed8;
+    background-color: #1d3987;
 }
 
 
@@ -171,6 +178,8 @@ h3 span{
     display: flex;
     align-items: center;
     justify-content: space-between;
+     box-shadow:
+        0 8px 20px rgba(30, 100, 220, 0.12);
     
 }
 
@@ -233,11 +242,34 @@ h3 span{
    User Section
 ========================= */
 
+
+
+.container-text h1{
+    font-size: 30px;
+    color: rgb(60, 54, 54);
+    font-weight: 500;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
 .user-section {
     display: flex;
     align-items: center;
     gap: 80px;
     padding-left: 70%;
+}
+
+.profile-img i{
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: #3175ff 1px solid;
+    
+    box-shadow:
+        0 8px 20px rgba(30, 100, 220, 0.12);
+}
+.user-section{
+    size: 30px;
 }
 
 .notification-button {
@@ -259,24 +291,242 @@ h3 span{
    Main Page Content
 ========================= */
 .container{
-    border: #095eff 1px solid;
     height: 100vh;
+    padding: 1rem;
+    display: flex;
+    
 }
 .statistic-cards{
-    border: #ff4b09 1px solid;
-    width: 35%;
-    float: left;
+    width: 18%;
+    
     height: 98%;
     margin: auto;
 }
 .cards{
-    border: #095eff 1px solid;
-    width: 90%;
-    height: 25%;
+    border: #E2E8F0 1px solid;
+    width: 12rem;
+    height: 20%;
     justify-self: center;
+    border-radius: 6px;
+    box-shadow: #111111 1rem;
+    margin-top: 1rem;
+    box-shadow:
+        0 8px 20px rgba(30, 100, 220, 0.12);
 }
 .first_card_elements{
     display: flex;
     justify-content: space-between;
-    border: #ff4b09 1px solid;
+    padding: 1rem 0.5rem 0.5rem 1rem;
+   
 }
+.first_card_elements i{
+    border-radius: 3px;
+    font-size: 35px;
+    color: #e6e8ed;
+    font-weight: 400;
+    
+}
+
+.second_card_elements{
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 0rem 0.5rem 1rem;
+   
+   
+}
+.second_card_elements i{
+    font-size: 50px;
+    color: #d0d0d0;
+}
+.second_card_elements h2{
+    font-size: 30px;
+    margin-left: 0.5rem
+
+}
+
+
+/* Dashboard Cards Layout Framework */
+.overview-chart-card {
+    background-color: #FFFFFF;
+    padding: 24px;
+    border-radius: 16px;
+    border: 1.5px solid #E2E8F0;
+    width: 100%;
+    
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.chart-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 0 0 4px 0;
+}
+
+.chart-subtitle {
+    font-size: 13px;
+    color: #64748B;
+    margin: 0 0 24px 0;
+}
+
+.bars-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+/* Metric Row Wrapper */
+.metric-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Row Label Header (Name & Total Numbers Side-by-Side) */
+.metric-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Gray Background Track Line */
+.metric-track {
+    background-color: #F1F5F9;
+    height: 12px;
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+/* Colored Progress Fill Base */
+.metric-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.4s ease-in-out;
+}
+
+/* Theme Color Modifier Classes */
+.fill-appointments {
+    color: #1D4ED8; /* Blue Text */
+    background-color: #1D4ED8; /* Blue Bar */
+}
+
+.fill-medicines {
+    color: #10B981; /* Green Text */
+    background-color: #10B981; /* Green Bar */
+}
+
+.fill-labs {
+    color: #7C3AED; /* Purple Text */
+    background-color: #7C3AED; /* Purple Bar */
+}
+
+.total-number {
+    color: #0F172A;
+    font-weight: 700;
+}
+
+
+/* Distribution Card Wrapper */
+.distribution-chart-card {
+    background-color: #FFFFFF;
+    padding: 24px;
+    border-radius: 16px;
+    border: 1.5px solid #E2E8F0;
+    width: 100%;
+    
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* The CSS-Powered Donut Circle */
+.donut-ring {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    /*  This conic-gradient creates the colored slices (Blue, Green, Purple) */
+    background: conic-gradient(
+        #1D4ED8 0% 44%, 
+        #10B981 44% 78%, 
+        #7C3AED 78% 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Inner mask that forms the hollow donut cutout */
+.donut-hole {
+    width: 106px;
+    height: 106px;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.donut-total-num {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0F172A;
+    line-height: 1;
+}
+
+.donut-total-text {
+    font-size: 11px;
+    color: #64748B;
+    font-weight: 600;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Legend Keys Wrapper */
+.legend-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    font-size: 13px;
+    color: #334155;
+    font-weight: 500;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Colored Dots for Legend Indicator badges */
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+}
+.dot-appointments { background-color: #1D4ED8; }
+.dot-medicines { background-color: #10B981; }
+.dot-labs { background-color: #7C3AED; }
+
+.graphs{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.container-first{
+    width: 20%;   
+}
+
+.container-text{
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+    

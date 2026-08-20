@@ -130,8 +130,7 @@ Route::get('/admin_dashboard', function () {
 Route::get('/appointment_request', function () {
     return view('account.admin.appointment_request');
 });
-
-Route::get('/lab_requests', function () {
+Route::get('/lab_requestSS', function () {
     return view('account.admin.lab_request');
 });
 

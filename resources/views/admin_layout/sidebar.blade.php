@@ -4,7 +4,7 @@
     <!-- Logo -->
     <div class="logo">
         <img src="{{ asset('image/logo1.png') }}" alt="MediLink Logo" class="logo-image">
-        <div><h2>Admin</h2>
+        <div class="ad"><h3>Admin</h3>
         <p class="logo-text">SYSTEM</p></div>
     </div>
 
