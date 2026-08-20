@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     })->name('doctor.dashboard');
 
     Route::get('/admin/dashboard', function () {
-        return view('account.admin.dashboard');
+        return view('account.admin.admin_dashboard');
     })->name('admin.dashboard');
 
     Route::get('/pharmacist/dashboard', function () {
@@ -123,28 +123,28 @@ Route::get('/reset-password', function () {
 
 /*========= Account Admin Routes ==========*/
 
-Route::get('/dashboard', function () {
-    return view('account.admin.dashboard');
+Route::get('/admin_dashboard', function () {
+    return view('account.admin.admin_dashboard');
 });
 
-Route::get('/appointment-request', function () {
-    return view('account.admin.appointment-request');
+Route::get('/appointment_request', function () {
+    return view('account.admin.appointment_request');
 });
 
-Route::get('/lab-requests', function () {
-    return view('account.admin.lab-requests');
+Route::get('/lab_requests', function () {
+    return view('account.admin.lab_request');
 });
 
-Route::get('/manage-doctors', function () {
-    return view('account.admin.manage-doctors');
+Route::get('/manage_doctors', function () {
+    return view('account.admin.manage_doctors');
 });
 
-Route::get('/medicine-order', function () {
-    return view('account.admin.medicine-order');
+Route::get('/medicine_order', function () {
+    return view('account.admin.medicine_orders');
 });
 
 Route::get('/logout', function () {
-    return view('account.admin.logout');
+    return view('auth.logout');
 });
 
 

@@ -1,4 +1,4 @@
-@extends('layout.index')
+@extends('admin_layout.index')
 @section('content')
    <h>Appointment</h>
    <p>this is the Appointment</p>
