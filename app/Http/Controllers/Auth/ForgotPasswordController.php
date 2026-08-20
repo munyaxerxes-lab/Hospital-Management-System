@@ -95,9 +95,16 @@ class ForgotPasswordController extends Controller
         ]);
 
         // 10. Send the OTP to the user's email.
-        Mail::to($user->email)->send(
-            new PasswordResetOtpMail($otp)
-        );
+            Mail::raw(
+                "Your MediLink password reset verification code is: {$otp}\n\n"
+             . "This code will expire in 5 minutes.\n\n"
+            . "If you did not request a password reset, please ignore this email.",
+             function ($message) use ($user) {
+             $message
+            ->to($user->email)
+            ->subject('MediLink Password Reset OTP');
+    }
+);
 
         // 11. Redirect immediately to the OTP verification page.
         return redirect()->route('verify-otp');
@@ -232,7 +239,7 @@ class ForgotPasswordController extends Controller
 
         // 9. Redirect the user to the login page.
         return redirect()
-            ->route('show.login')
+            ->route('login')
             ->with(
                 'status',
                 'Your password has been reset successfully. You can now log in.'

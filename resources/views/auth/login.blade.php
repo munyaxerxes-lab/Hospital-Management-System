@@ -48,7 +48,7 @@
       <h1 style="font-size:26px; font-weight:800; color:#16213E; margin:0 0 4px; letter-spacing:-0.01em;">LOGIN</h1>
       <div style="width:64px; height:3px; background:#1554B3; border-radius:2px; margin-bottom:28px; justify-self: center;"></div>
       
-      <form method="POST" action="{{ route('login') }}">
+      <form method="POST" action="{{ route('login.submit') }}">
         <?php echo csrf_field(); ?>
 
         <?php if(session('status')): ?>
@@ -79,7 +79,10 @@
         </div>
 
         <div style="text-align:right; margin-bottom:22px;">
-          <a href="reset-password" style="color:#E4572E; font-size:13px; font-weight:600; text-decoration:none;">Forget password?</a>
+          <a href="{{ route('password.request') }}"
+            style="color:#E4572E; font-size:13px; font-weight:600; text-decoration:none;">
+            Forget password?
+          </a>
         </div>
 
         <button type="submit" class="btn-primary" style="width:100%;">LOGIN</button>

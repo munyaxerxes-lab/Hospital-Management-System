@@ -113,7 +113,14 @@ Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.dest
 
 require __DIR__.'/auth.php';
 
+/*========= reset-password Routes==========*/
 
 Route::get('/reset-password', function () {
     return view('auth.reset-password');
 })->name('reset.password');
+
+
+
+
+
+
