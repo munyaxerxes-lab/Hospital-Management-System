@@ -2,8 +2,9 @@
 @section('content')
 
  <div class="container-text">
-            <h1>Hello Administrator</h1>
-            <p>Here's What's happening with the system today </p>
+         <h1 class="page-title dashboard-title">Hello Administrator,</h1>
+         <p class="page-subtitle dashboard-subtitle">Here's what's happening with your System today.</p>
+
          </div>
 
       <div class="container">
@@ -49,6 +50,7 @@
             <div class="cards">
                <div class="first_card_elements">
                <i class="ri-account-circle-line" style="background: #1D4ED8;"></i>
+               
                  <p>Total<br> Doctors</p>
                </div>
                <div class="second_card_elements">

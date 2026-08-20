@@ -10,6 +10,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('admin/main.css') }}">
 
+        
     <!-- Remix Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -18,8 +19,13 @@
 <body>
 
     <div class="dashboard">
-        @include('admin_layout.sidebar')
-        @include('admin_layout.main')
+        <div class="aside">
+             @include('admin_layout.sidebar')
+        </div>
+       <div class="main">
+             @include('admin_layout.main')
+       </div>
+       
     </div>
 </body>
 
