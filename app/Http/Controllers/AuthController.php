@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -33,7 +34,9 @@ class AuthController extends Controller
             'role_id' => $patientRole->id,
         ]);
 
-        return redirect()->route('show.login')->with('status', 'Account created. Please log in.');
+        return redirect()
+            ->route('show.login')
+            ->with('status', 'Account created. Please log in.');
     }
 
     public function showLogin()
@@ -43,51 +46,78 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-
-        $user = Auth::user();
-
-        switch ($user->role_id) {
-
-            case 1:
-                return redirect()->route('patient.dashboard');
-
-            case 2:
-                return redirect()->route('doctor.dashboard');
-
-            case 3:
-                return redirect()->route('admin.dashboard');
-
-            case 4:
-                return redirect()->route('pharmacist.dashboard');
-
-            case 5:
-                return redirect()->route('lab.dashboard');
-
-            case 6:
-                return redirect()->route('delivery.dashboard');
-
-            default:
-                Auth::logout();
-                return redirect()->route('login')
-                    ->withErrors(['email' => 'Invalid user role.']);
-        }
+        /*
+        |--------------------------------------------------------------------------
+        | 1. Validate login information
+        |--------------------------------------------------------------------------
+        */
 
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        $remember = $request->filled('remember');
+        /*
+        |--------------------------------------------------------------------------
+        | 2. Find the user by email
+        |--------------------------------------------------------------------------
+        */
 
-        if (Auth::attempt($credentials, $remember)) {
-            $request->session()->regenerate();
+        $user = User::where('email', $credentials['email'])->first();
 
-            return redirect()->intended('/user');
+        /*
+        |--------------------------------------------------------------------------
+        | 3. Check if the user exists
+        |--------------------------------------------------------------------------
+        */
+
+        if (!$user) {
+            return back()
+                ->withErrors([
+                    'email' => 'User not found.',
+                ])
+                ->onlyInput('email');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        /*
+        |--------------------------------------------------------------------------
+        | 4. Check the password
+        |--------------------------------------------------------------------------
+        */
+
+        if (!Hash::check($credentials['password'], $user->password)) {
+            return back()
+                ->withErrors([
+                    'password' => 'Incorrect password.',
+                ])
+                ->onlyInput('email');
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | 5. Log the user in
+        |--------------------------------------------------------------------------
+        */
+
+        $remember = $request->filled('remember');
+
+        Auth::login($user, $remember);
+
+        /*
+        |--------------------------------------------------------------------------
+        | 6. Regenerate the session
+        |--------------------------------------------------------------------------
+        */
+
+        $request->session()->regenerate();
+
+        /*
+        |--------------------------------------------------------------------------
+        | 7. Redirect to the user dashboard
+        |--------------------------------------------------------------------------
+        */
+
+        return redirect()->route('user.dashboard');
     }
 
     public function logout(Request $request)

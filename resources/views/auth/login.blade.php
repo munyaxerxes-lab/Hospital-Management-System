@@ -48,16 +48,26 @@
       <h1 style="font-size:26px; font-weight:800; color:#16213E; margin:0 0 4px; letter-spacing:-0.01em;">LOGIN</h1>
       <div style="width:64px; height:3px; background:#1554B3; border-radius:2px; margin-bottom:28px; justify-self: center;"></div>
       
-      <form method="POST" action="/login">
+      <form method="POST" action="{{ route('login.submit') }}">
         <?php echo csrf_field(); ?>
 
         <?php if(session('status')): ?>
           <div style="background:#ECFDF5;color:#065F46;padding:10px;border-radius:8px;margin-bottom:14px;font-weight:600;"><?php echo e(session('status')); ?></div>
         <?php endif; ?>
 
-        <?php if($errors->any()): ?>
-          <div style="background:#FEF2F2;color:#991B1B;padding:10px;border-radius:8px;margin-bottom:14px;font-weight:600;"><?php echo e($errors->first()); ?></div>
-        <?php endif; ?>
+        @if ($errors->any())
+    <div style="
+        background:#FEF2F2;
+        color:#991B1B;
+        padding:10px;
+        border-radius:8px;
+        margin-bottom:14px;
+        font-weight:600;
+    ">
+        {{ $errors->first() }}
+    </div>
+  @endif
+
         <div style="margin-bottom:20px;">
           <label class="field-label" for="email">Email</label>
           <input class="field-input" type="email" id="email" name="email" value="<?php echo e(old('email')); ?>" placeholder="you@example.com" required>
@@ -69,7 +79,10 @@
         </div>
 
         <div style="text-align:right; margin-bottom:22px;">
-          <a href="reset-password" style="color:#E4572E; font-size:13px; font-weight:600; text-decoration:none;">Forget password?</a>
+          <a href="{{ route('password.request') }}"
+            style="color:#E4572E; font-size:13px; font-weight:600; text-decoration:none;">
+            Forget password?
+          </a>
         </div>
 
         <button type="submit" class="btn-primary" style="width:100%;">LOGIN</button>

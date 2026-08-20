@@ -6,7 +6,6 @@
 
     <title>Forgot Password | MediLink</title>
 
-    @vite(['resources/css/auth.css'])
 </head>
 
 <body>
