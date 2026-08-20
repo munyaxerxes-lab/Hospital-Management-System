@@ -1,0 +1,282 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ffffff;
+    color: #111111;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+.blue{
+    color: #095eff;
+}
+
+
+/* ==========Sidebar===*/
+
+.sidebar {
+    width: 347px;
+    height: 100vh;
+    background-color: #132a53;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 40px 19px 30px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    scrollbar-width: none;
+}
+
+.sidebar::-webkit-scrollbar{
+    display: none;
+}
+
+
+
+/* =========================
+   Logo
+========================= */
+
+
+.logo {
+    margin-bottom: 50px;
+    display: flex;
+
+}
+.logo h3{
+    font-size: 35px;
+    font-weight: 700;
+    
+}
+.ad h3{
+    color: #fdfeff;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+h3 span{
+    color: #3175ff;
+}
+
+/* =========================
+   Navigation
+========================= */
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 25%;
+}
+
+.nav-item {
+    width: 266px;
+    height: 53px;
+    margin-left: 0;
+    padding: 0 14px;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    color: #e2efff;
+    font-size: 22px;
+    font-weight: 500;
+
+    transition: 0.2s ease;
+}
+
+.nav-item i {
+    width: 48px;
+    color: #cde2fc;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-item:hover {
+    background-color: #132a53;
+}
+
+
+/* Active Navigation */
+
+.nav-item.active {
+     background-color: #1d4ed8;
+    color: #e6e8ed;
+}
+
+.nav-item.active:hover {
+    background-color: #1d4ed8;
+}
+
+
+/* =========================
+   Logout
+========================= */
+
+.logout-container {
+    margin-top: auto;
+    margin-bottom: 45px;
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+
+    margin-left: 13px;
+
+    color: #ff0000;
+    font-size: 21px;
+    font-weight: 500;
+}
+
+.logout i {
+    font-size: 24px;
+}
+
+/* =========================
+   Main Content
+========================= */
+
+.main-content {
+    margin-left: 347px;
+    width: calc(100% - 347px);
+    min-height: 100vh;
+    background-color: #ffffff;
+}
+
+
+/* =========================
+   Top Header
+========================= */
+
+.top-header {
+    height: 58px;
+    padding: 0 55px 0 25px;
+    background-color: #f2f9ff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+
+.top-header h2 {
+    font-size: 27px;
+    font-weight: 600;
+}
+.profile-img img{
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: #3175ff 1px solid;
+    
+    box-shadow:
+        0 8px 20px rgba(30, 100, 220, 0.12);
+}
+/* =========================
+   Main Content
+========================= */
+
+.main-content {
+    margin-left: 347px;
+    width: calc(100% - 347px);
+    min-height: 100vh;
+    background-color: #ffffff;
+}
+
+
+/* =========================
+   Top Header
+========================= */
+
+.top-header {
+    height: 58px;
+    padding: 0 55px 0 25px;
+    background-color: #f2f9ff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+
+.top-header h2 {
+    font-size: 27px;
+    font-weight: 600;
+}
+.profile-img img{
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: #3175ff 1px solid;
+    
+    box-shadow:
+        0 8px 20px rgba(30, 100, 220, 0.12);
+}
+
+/* =========================
+   User Section
+========================= */
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    padding-left: 70%;
+}
+
+.notification-button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    font-size: 25px;
+    color: #111111;
+}
+
+.user-name {
+    font-size: 21px;
+    font-weight: 400;
+}
+
+
+/* =========================
+   Main Page Content
+========================= */
+.container{
+    border: #095eff 1px solid;
+    height: 100vh;
+}
+.statistic-cards{
+    border: #ff4b09 1px solid;
+    width: 35%;
+    float: left;
+    height: 98%;
+    margin: auto;
+}
+.cards{
+    border: #095eff 1px solid;
+    width: 90%;
+    height: 25%;
+    justify-self: center;
+}
+.first_card_elements{
+    display: flex;
+    justify-content: space-between;
+    border: #ff4b09 1px solid;
+}
