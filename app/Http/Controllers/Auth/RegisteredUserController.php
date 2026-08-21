@@ -53,11 +53,12 @@ class RegisteredUserController extends Controller
         // OTP expires after 1 minute
         $otpExpiresAt = now()->addMinute();
 
-        // Create the user
+        // Create the user with a default role assignment
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role_id' => 3, //missing default error
         ]);
 
         // Save OTP information
