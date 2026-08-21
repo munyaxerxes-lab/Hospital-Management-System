@@ -3,35 +3,36 @@
 
     <!-- Logo -->
     <div class="logo">
-        <img src="{{ asset('image/logo1.png') }}" alt="MediLink Logo" class="logo-image">
-        <div><h2>Admin</h2>
-        <p class="logo-text">SYSTEM</p></div>
+       <div class="brand">
+            <img class="brand-logo" src="{{ asset('image/logo1.png') }}" alt="Admin System Logo">
+            <div class="brand-name">Admin<span>SYSTEM</span></div>
+        </div>
     </div>
 
     <!-- Navigation -->
     <nav class="navigation">
 
         <a href="/admin_dashboard" class="nav-item active">
-            <i class="ri-home-4-line"></i>
+            <i class="fa-solid fa-house"></i>
             <span>Dashboard</span>
         </a>
 
         <a href="/appointment_request" class="nav-item">
-            <i class="ri-calendar-line"></i>
+            <i class="fa-regular fa-calendar"></i>
             <span>Appointments Request</span>
         </a>
 
         <a href="/lab_request" class="nav-item">
-            <i class="ri-time-line"></i>
+            <i class="fa-solid fa-flask"></i>
             <span>Lab Requests</span>
         </a>
 
          <a href="/medicine_orders" class="nav-item">
-             <i class="ri-time-line"></i>
+             <i class="fa-solid fa-capsules"></i>
            <span>Medicine Orders</span>
 
         <a href="/manage_doctors" class="nav-item">
-             <i class="ri-account-circle-line"></i>
+             <i class="fa-regular fa-user"></i>
            <span> Manage Doctors</span>
         </a>
 

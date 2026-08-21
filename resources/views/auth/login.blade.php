@@ -42,7 +42,7 @@
 
   <div class="login-card">
     <div class="brand-col">
-      <img src="image/logo3.png" alt="logo" style=" margin-right: 50rem;">
+      <img src="image/logo2.png" alt="logo" style=" margin-right: 50rem;">
 
       <div class="form-col">
       <h1 style="font-size:26px; font-weight:800; color:#16213E; margin:0 0 4px; letter-spacing:-0.01em;">LOGIN</h1>
