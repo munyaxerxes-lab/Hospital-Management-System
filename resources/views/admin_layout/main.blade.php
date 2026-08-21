@@ -9,7 +9,8 @@
     </div>
     <div class="admin-user">
         <div class="admin-avatar"><i class="fa-solid fa-user"></i></div>
-        <span>Administrator</span><i class="fa-solid fa-chevron-down chev"></i>
+        <span>                {{ Str::of(Auth::user()->name)->headline()->explode(' ')->map(fn($word) => Str::substr($word, 0, 1))->take(2)->implode('') }}
+            </span><i class="fa-solid fa-chevron-down chev"></i>
     </div>
 </header>
 

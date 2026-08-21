@@ -282,7 +282,7 @@
 
             class="logo" 
 
-            src="logo.png"
+            src="logo2.png"
 
             alt="MediLink"
 

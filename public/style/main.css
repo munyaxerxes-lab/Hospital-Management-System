@@ -1,5 +1,85 @@
+:root{
+    --topbar-height:52px;
+    --navy:#123462;
+    --navy-2:#0f2d56;
+    --blue:#2f65df;
+    --blue-2:#1f58d8;
+    --text:#18243a;
+    --muted:#6c7890;
+    --line:#e8edf4;
+    --bg:#ffffff;
+    --green:#20a866;
+    --orange:#ff9f1c;
+    --red:#ff4b4b;
+    --purple:#7954e8;
+    --sidebar-width:272px;
+}
+
+.topbar{
+    height:var(--topbar-height);
+    border-bottom:1px solid #d8dde5;
+    box-shadow:0 1px 4px rgba(0,0,0,.13);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 26px;
+    background:#fff;
+}
+.topbar .doctors-tools .search{
+    width: 300px;
+    margin-top: .5rem;
+}
+.admin-user{
+    display:flex;
+    align-items:center;
+    gap:8px;font-size:15px;
+    color:#222
+}
+.admin-avatar{
+    width:31px;
+    height:31px;
+    border-radius:50%;
+    background:#1756a9;
+    color:#fff;
+    display:grid;
+    place-items:center;
+    font-size:18px;
+}
+.admin-user .chev{font-size:10px;margin-left:1px}
 
 
+        .auth-buttoncont{
+            background-color: #1260ec;
+            width: 7rem;
+            border: white 1px solid;
+            height: 2.5rem;
+            color: #cce2fa;
+            border-radius: 6px;
+            font-size: 20px;
+            font: 700;
+        }
+        .auth-button:hover{
+            background: #1852c9;
+            
+        }
+        .auth-buttonlogin{
+            border-radius: 6px;
+            border: 1px white solid;
+            width: 7rem;
+            height: 2rem;
+            margin-top: 2rem;
+            margin-left: 5rem;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Times New Roman', Times, serif;
+            color: red;
+            transition: 0.5s;
+        }
+        .auth-buttonlogin:hover{
+            background: rgb(245, 90, 90);
+            color: white;
+            border: white 1px solid;
+        }
         .login-page {
             width: 100%;
             min-height: 100vh;

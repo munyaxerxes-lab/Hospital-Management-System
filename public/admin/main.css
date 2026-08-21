@@ -1115,10 +1115,10 @@ h2 span{
     flex-end;
     margin-bottom:8px
 }
-.search{
-    height: 30px;
-    width:205px;
-    border:1px solid #dfe5ed;
+.searchbar{
+    height: 2rem;
+    width: 10rem;
+    border:1px solid #fbfdff;
     border-radius:4px;
     padding:0 9px;
     font-size:18px
