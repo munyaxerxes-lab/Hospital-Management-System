@@ -146,5 +146,39 @@ Route::get('/logout', function () {
     return view('auth.logout');
 });
 
+/*========= view profile Routes ==========*/
+
+Route::get('/Dr john', function () {
+    return view('account.viewprofile.john-doe');
+});
+Route::get('/Dr jane', function () {
+    return view('account.viewprofile.jane');
+});
+Route::get('/Dr sarah', function () {
+    return view('account.viewprofile.sarah-jen');
+});
+Route::get('/Dr michael', function () {
+    return view('account.viewprofile.michael');
+});
+
+/*========= back Routes ==========*/
+Route::get('/back', function () {
+    return view('account.patient.appointments');
+});
+
+Route::get('/appointmentdone', function () {
+    return view('account.patient.appointments');
+});
+Route::get('/backtolab', function () {
+    return view('account.patient.labtests');
+});
+
+/*========= book routes ======*/
+Route::get('/book', function () {
+    return view('multi.apptm');
+});
+Route::get('/request', function () {
+    return view('multi.lab');
+});
 
 
