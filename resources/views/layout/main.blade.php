@@ -9,7 +9,7 @@
              @if(Auth::check())
                 <p>hello, {{ Auth::user()->name }}</p>
                 @else
-                    <p>Hello, Username! 👋</p>
+                    <p>Hello, Guest</p>
                 @endif
                 
         </div>
@@ -44,8 +44,9 @@
         <!-- The Floating Dropdown Menu Panel -->
         <div class="dropdown-menu-panel">
             <div class="dropdown-user-info">
-                <strong>{{ auth()->user()->name }}</strong>
-                <p>{{ auth()->user()->email }}</p>
+                <strong>{{ auth()->user()?->name }}</strong>
+
+                <p>{{ auth()->user()?->email }}</p>
             </div>
             
             <hr class="dropdown-divider">
