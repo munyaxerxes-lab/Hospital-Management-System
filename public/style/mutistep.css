@@ -1,0 +1,2198 @@
+
+/* =========================================
+   apptm-pay
+========================================= */
+
+
+
+
+.booking-container {
+    width: 90%;
+    margin:auto;
+}
+
+
+/* =========================================
+   STEPPER
+========================================= */
+
+.stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 7%;
+    margin-bottom: 2%;
+}
+
+.step-item {
+    width: 180px;
+    height: 40px;
+    border-radius: 50%;
+    background: #d9d9d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.step-number {
+    font-size: 25px;
+    color: #333;
+    font-weight: 600;
+}
+
+.step-item.active,
+.step-item.completed {
+    background: #16b77f;
+}
+
+.step-item.active .step-number,
+.step-item.completed .step-number {
+    color: #ffffff;
+}
+
+.step-line {
+    width: 90%;
+    height: 4px;
+    background: #d9d9d9;
+}
+
+.step-item.completed + .step-line {
+    background: #16b77f;
+}
+
+
+
+/* =========================================
+   FORM STEPS
+========================================= */
+
+.form-step {
+    display: none;
+}
+
+.form-step.active {
+    display: block;
+
+}
+
+
+/* =========================================
+   STEP CARD
+========================================= */
+
+.step--card {
+    width: 100%;
+    margin: 0 auto;
+    background: #f7f7f7;
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 9%;
+    display: flex;
+    min-height: 300px;
+}
+
+.step--card h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+
+/* =========================================
+   DATE & TIME
+========================================= */
+
+.step--card {
+    display: flex;
+    gap: 60px;
+}
+
+.date-section,
+.time-section {
+    flex: 1;
+    
+}
+.time-section{
+ align-content: center;
+}
+
+.date-font{
+    font-size: 20px;
+}
+input[type="date"] {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+}
+
+.time-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.time-slot {
+    border: none;
+    background: #eeeeee;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 20px;
+}
+
+.time-slot:hover {
+    background: #d9f5eb;
+}
+
+.time-slot.selected {
+    background: #16b77f;
+    color: #ffffff;
+}
+
+
+/* =========================================
+   CONSULTATION
+========================================= */
+
+.consultation-card {
+    display: block;
+    font-size: 20px;
+}
+
+.consultation-card label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 18;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    resize: none;
+    font-family: inherit;
+    font-size: 20px;
+}
+
+
+/* =========================================
+   SUMMARY & PAYMENT
+========================================= */
+
+.summary--payment {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    width: 100%;
+    margin: 9% auto 0;
+    background: #f7f7f7;
+    border-radius: 20px;
+    padding: 20px;
+    height: 400px;
+
+    font-size: 20px;
+}
+
+
+.booking--summary,
+.payment--details {
+    padding: 25px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+    align-content: center; 
+}
+
+.booking--summary h3,
+.payment--details h3 {
+    margin-bottom: 20px;
+    font-size: 18;
+    
+}
+
+.summary--item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 19;
+}
+
+.price {
+    color: #16b77f;
+}
+
+.payment-method-title {
+    margin-bottom: 8px;
+    font-size: 19;
+}
+
+.momo-logo {
+    margin-bottom: 8px;
+}
+
+.phone{
+    font-size: 19;
+}
+.phone-put{
+    margin-top: 4%;
+}
+.mobile-money input {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+
+.button--container {
+ margin-top: 3%;
+ justify-content: center;
+ display: flex;
+ gap: 15px;
+}
+
+
+.form-step > .button--container {
+    margin-top: var(--card-button-gap);
+}
+
+.btn,
+.lab-next-btn,
+.lab-prev-btn {
+    border: none;
+    border-radius: 20px;
+    padding: 10px 35px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 21px;
+}
+
+.btn-primary,
+.lab-next-btn {
+    background: #2166e8;
+    color: white;
+}
+
+.btn-primary:hover,
+.lab-next-btn:hover {
+    background: #1454c7;
+}
+
+.btn-secondary,
+.lab-prev-btn {
+    background: #eeeeee;
+    color: #333;
+}
+
+.btn-secondary:hover,
+.lab-prev-btn:hover {
+    background: #ddd;
+}
+
+
+
+/* =========================================
+   PROCESSING
+========================================= */
+
+.processing-card {
+    width: 100%;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 20px;
+    min-height: 300px;
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 20px;
+}
+
+.phone-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.phone-icon img {
+    max-width: 100%;
+    height: auto;
+}
+
+.processing-card h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #222;
+}
+
+.processing-card p {
+    color: #777;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.loader {
+    width: 35px;
+    height: 35px;
+    border: 4px solid #eee;
+    border-top: 4px solid #16b77f;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 30px auto;
+}
+
+@keyframes spin {
+
+    100% {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.success-card {
+    text-align: center;
+    width: 100%;
+    margin: 9% auto 0;
+    background: #f7f7f7;
+    border-radius: 20px;
+    padding: 20px;
+    min-height: 300px;
+    font-size: 20px;
+}
+
+.success-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #16b77f;
+    color: #ffffff;
+    font-size: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto auto 20px;
+}
+
+.success-card h2 {
+    margin-bottom: 30px;
+}
+
+.confirmation-box {
+    text-align: left;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.confirmation-box div {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.confirmation-box div:last-child {
+    border-bottom: none;
+}
+
+.email-message {
+    margin-bottom: 25px;
+    color: #555;
+}
+
+/* =========================================================
+   LAB MULTISTEP PAGE
+========================================================= */
+
+
+/* =========================================================
+   LAB PROGRESS CONTAINER
+========================================================= */
+
+/* =========================================================
+   LAB FORM STEP
+========================================================= */
+
+.lab-form-step {
+display: none;
+    
+}
+
+
+.lab-form-step.active {
+
+    display: block;
+
+    animation:
+        labFadeIn 0.25s ease;
+}
+
+
+/* =========================================================
+   LAB FADE ANIMATION
+========================================================= */
+
+@keyframes labFadeIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(5px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/* =========================================================
+   LAB GENERAL STEP CARD
+========================================================= */
+
+.lab-step-card {
+
+   width: 100%;
+   margin: 0 auto;
+   background: #f7f7f7;
+   border-radius: 20px;
+   padding: 20px;
+   margin-top: 9%;
+   min-height: 300px;
+}
+
+
+/* =========================================================
+   LAB HEADINGS
+========================================================= */
+
+.lab-step-card h3 {
+
+    font-size: 21px;
+
+    font-weight: 700;
+
+    margin-bottom: 12px;
+}
+
+
+/* =========================================================
+   LAB STEP 1
+========================================================= */
+
+.lab-step-one-card {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 30px;
+}
+
+
+/* =========================================================
+   LAB ADDRESS
+========================================================= */
+
+.lab-address-area textarea {
+
+    width: 100%;
+
+    height: 115px;
+
+    resize: none;
+
+    border: 1px solid #ddd;
+
+    border-radius: 7px;
+
+    padding: 12px;
+
+    font-size: 16px;
+
+    font-family: inherit;
+
+    outline: none;
+
+    background: #fff;
+
+    box-sizing: border-box;
+}
+
+
+.lab-address-area textarea:focus {
+
+    border-color: #2166e8;
+}
+
+
+/* =========================================================
+   LAB MAP
+========================================================= */
+
+.lab-map-box {
+
+    width: 100%;
+
+    height: 115px;
+
+    border-radius: 6px;
+
+    overflow: hidden;
+}
+
+
+.lab-map-background {
+
+    width: 100%;
+
+    height: 100%;
+
+    position: relative;
+
+    background-color: #dce9d6;
+
+    background-image:
+        linear-gradient(
+            35deg,
+            rgba(255,255,255,.4) 25%,
+            transparent 25%
+        ),
+        linear-gradient(
+            125deg,
+            rgba(255,255,255,.35) 25%,
+            transparent 25%
+        );
+
+    background-size: 45px 45px;
+}
+
+
+/* LAB MAP PIN */
+
+.lab-map-pin {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 52%;
+
+    transform:
+        translate(-50%, -50%);
+
+    font-size: 27px;
+}
+
+
+/* LAB ZOOM CONTROLS */
+
+.lab-zoom-controls {
+
+    position: absolute;
+
+    right: 7px;
+
+    top: 7px;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.lab-zoom-controls button {
+
+    width: 23px;
+
+    height: 23px;
+
+    background: #fff;
+
+    border: 1px solid #ddd;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   LAB MAP ACTIONS
+========================================================= */
+
+.lab-map-actions {
+
+    display: flex;
+
+    gap: 7px;
+
+    margin-top: 6px;
+}
+
+
+.lab-map-actions button {
+
+    border: none;
+
+    background: #fff;
+
+    font-size: 16px;
+
+    padding: 5px 8px;
+
+    border-radius: 4px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   LAB BUTTON WRAPPER
+========================================================= */
+
+.lab-button-wrapper {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 13px;
+}
+
+
+/* =========================================================
+   LAB BUTTONS
+========================================================= */
+
+.lab-btn {
+
+    border: none;
+
+    border-radius: 20px;
+
+    padding: 7px 24px;
+
+    font-size: 20px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.lab-btn-primary {
+
+    background: #2166e8;
+
+    color: #fff;
+
+    margin-top: 3%;
+}
+
+
+.lab-btn-primary:hover {
+
+    background: #1455c7;
+}
+
+
+.lab-btn-back {
+
+    background: #ededed;
+
+    color: #333;
+
+    margin-top: 3%;
+}
+
+
+/* =========================================================
+   LAB STEP 2
+========================================================= */
+
+.lab-step-two-card {
+
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 35px;
+}
+
+
+/* =========================================================
+   LAB SELECTED DATE
+========================================================= */
+
+.lab-selected-date {
+
+    margin-bottom: 8px;
+
+    font-size: 18px;
+
+    font-weight: 200;
+}
+
+
+.lab-date-area input {
+
+    width: 100%;
+
+    padding: 9px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 5px;
+
+    background: #fff;
+
+    outline: none;
+
+    box-sizing: border-box;
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   LAB TIME
+========================================================= */
+
+.lab-time-area select {
+
+    width: 100%;
+
+    padding: 9px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 5px;
+
+    background: #fff;
+
+    font-size: 16px;
+
+    outline: none;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   LAB STEP 3
+========================================================= */
+
+.lab-step-three-card {
+
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 30px;
+}
+
+
+/* =========================================================
+   LAB ORDER SUMMARY
+========================================================= */
+
+.lab-order-summary,
+.lab-payment-area {
+
+    background: #fff;
+
+    padding: 15px;
+
+    border-radius: 6px;
+   align-content: center;
+}
+
+
+.lab-order-summary h3,
+.lab-payment-area h3 {
+
+    margin-bottom: 12px;
+}
+
+
+/* =========================================================
+   LAB SUMMARY ITEMS
+========================================================= */
+
+.lab-summary-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 7px 0;
+
+    border-bottom:
+        1px solid #eee;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   LAB TOTAL
+========================================================= */
+
+.lab-total-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding-top: 12px;
+
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
+
+.lab-total-item strong {
+
+    color: #10a873;
+}
+
+
+/* =========================================================
+   LAB PAYMENT
+========================================================= */
+
+.lab-payment-area p {
+
+    font-size: 18px;
+
+    margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   LAB MOBILE MONEY
+========================================================= */
+
+
+
+.lab-momo img {
+
+    max-width: 100%;
+
+    max-height: 100%;
+
+    object-fit: contain;
+}
+
+
+.lab-payment-area label {
+
+    display: block;
+
+    font-size: 18px;
+
+    margin-bottom: 5px;
+}
+
+
+.lab-payment-area input {
+
+    width: 100%;
+
+    padding: 9px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 5px;
+
+    outline: none;
+
+    box-sizing: border-box;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   LAB STEP 4
+========================================================= */
+
+.lab-processing-container {
+
+     width: 100%;
+    margin: 5% auto 0;
+    background: #ffffff;
+    border-radius: 20px;
+    min-height: 300px;
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   LAB PAYMENT IMAGE
+========================================================= */
+
+
+
+.lab-payment-image img {
+
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   LAB PROCESSING TEXT
+========================================================= */
+
+.lab-processing-container h2 {
+
+
+    margin-bottom: 15px;
+}
+
+
+.lab-processing-container p {
+
+    color: #777;
+
+    
+}
+
+
+/* =========================================================
+   LAB SPINNER
+========================================================= */
+
+.lab-spinner {
+
+    width: 35px;
+
+    height: 35px;
+
+    margin: 30px auto 0;
+
+    border-radius: 50%;
+
+    border:
+        4px solid #eee;
+
+    border-top-color:
+        #10b981;
+
+    animation:
+        labSpin 1s linear infinite;
+}
+
+
+@keyframes labSpin {
+
+    to {
+
+        transform: rotate(360deg);
+
+    }
+
+}
+
+
+/* =========================================================
+   LAB STEP 5
+========================================================= */
+
+.lab-success-container {
+    
+     
+     margin-top: 9%;
+     border-radius: 20px;
+     background: #f7f7f7;
+     min-height: 400px;
+     align-content: center;
+     text-align:center;
+
+
+   
+}
+
+
+/* =========================================================
+   LAB SUCCESS CIRCLE
+========================================================= */
+
+.lab-success-circle {
+
+    width: 50px;
+
+    height: 50px;
+
+    margin: 0 auto 10px;
+
+    border:
+        2px solid #10b981;
+
+    border-radius: 50%;
+
+    color: #10b981;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 30px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   LAB SUCCESS TEXT
+========================================================= */
+
+.lab-success-container h2 {
+
+    font-size: 21px;
+
+    color: #087c45;
+
+    margin-bottom: 20px;
+}
+
+
+.lab-success-text {
+
+    font-size: 18px;
+
+    color: #087c45;
+
+    margin-bottom: 30px;
+}
+
+
+/* =========================================================
+   LAB CONFIRMATION CARD
+========================================================= */
+
+.lab-confirmation-card {
+
+    
+
+    border:
+        1px solid #eee;
+
+    border-radius: 6px;
+
+    text-align: left;
+
+    margin-bottom: 15px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   LAB CONFIRMATION ROW
+========================================================= */
+
+.lab-confirmation-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 9px 13px;
+
+    border-bottom:
+        1px solid #eee;
+
+    font-size: 18px;
+
+    gap: 15px;
+}
+
+
+.lab-confirmation-row:last-child {
+
+    border-bottom: none;
+}
+
+
+.lab-confirmation-row strong {
+
+    font-weight: 600;
+
+    text-align: right;
+}
+
+
+/* =========================================================
+   LAB GREEN TEXT
+========================================================= */
+
+.lab-green {
+
+    color: #10a873;
+}
+
+
+/* =========================================================
+   LAB DONE LINK
+========================================================= */
+
+.lab-done-link {
+
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   LAB DONE BUTTON
+========================================================= */
+
+.lab-done-button {
+
+    min-width: 60px;
+}
+
+
+
+/* =========================================================
+   CART MULTISTEP
+   ALL CLASSES ARE PREFIXED WITH cart-
+========================================================= */
+
+.cart-multistep{
+    margin: auto;
+    width: 90%;
+}
+
+
+/* =========================================================
+   STEP CONTENT
+========================================================= */
+
+.cart-step-content {
+    display: none;
+
+    min-height: 260px;
+}
+
+
+.cart-step-content.cart-step-visible {
+    display: block;
+}
+
+
+/* =========================================================
+   STEP 1
+========================================================= */
+
+.cart-step-one-container {
+    width: 90%;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr
+        1fr;
+
+    gap: 30px;
+
+    align-items: start;
+
+    margin-top: 5%;
+
+    justify-items: center;
+}
+
+
+/* =========================================================
+   SECTION TITLES
+========================================================= */
+
+.cart-section-title {
+    margin: 0 0 20px;
+
+    font-size: 21px;
+
+    line-height: 1;
+
+    font-weight: 400;
+
+    color: #111111;
+}
+
+
+/* =========================================================
+   CUSTOMER INFORMATION
+========================================================= */
+
+.cart-customer-information {
+    padding-top: 5px;
+}
+
+
+.cart-form-group {
+    width: 100%;
+
+    margin-bottom: 11px;
+}
+
+
+.cart-form-group label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 18px;
+
+    line-height: 1;
+
+    color: #222222;
+}
+
+
+.cart-form-group input {
+    display: block;
+
+    width: 170px;
+    height: 25px;
+
+    padding: 5px 7px;
+
+    border:
+        1px solid #555555;
+
+    border-radius: 3px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    font-size: 9px;
+}
+
+
+.cart-form-group input:focus {
+    border-color: #2864e8;
+}
+
+
+/* =========================================================
+   ADDRESS
+========================================================= */
+
+.cart-address-section {
+    padding-top: 5px;
+}
+
+
+.cart-address-section textarea {
+    display: block;
+
+    width: 200px;
+    height: 150px;
+
+    padding: 10px;
+
+    resize: none;
+
+    border:
+        1px solid #dddddd;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    font-size: 16px;
+
+    line-height: 1.4;
+
+    color: #333333;
+}
+
+
+.cart-address-section textarea:focus {
+    border-color: #2864e8;
+}
+
+
+.cart-address-section textarea::placeholder {
+    color: #b8b8b8;
+}
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
+.cart-map-section {
+    padding-top: 5px;
+}
+
+
+.cart-map-container {
+    position: relative;
+
+    width: 145px;
+    height: 125px;
+
+    overflow: hidden;
+
+    border-radius: 5px;
+
+    background: #dbe8ca;
+
+    transition:
+        transform .25s ease;
+}
+
+
+.cart-map-background {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            30deg,
+            transparent 42%,
+            #ffffff 43%,
+            #ffffff 45%,
+            transparent 46%
+        ),
+        linear-gradient(
+            135deg,
+            transparent 42%,
+            #ffffff 43%,
+            #ffffff 45%,
+            transparent 46%
+        ),
+        linear-gradient(
+            70deg,
+            transparent 47%,
+            #eef3e8 48%,
+            #eef3e8 51%,
+            transparent 52%
+        ),
+        #dbe8ca;
+}
+
+
+/* =========================================================
+   MAP ROADS
+========================================================= */
+
+.cart-map-road {
+    position: absolute;
+
+    height: 2px;
+
+    background: #ffffff;
+
+    opacity: .95;
+}
+
+
+.cart-map-road-one {
+    width: 180px;
+
+    left: -18px;
+    top: 60px;
+
+    transform: rotate(-12deg);
+}
+
+
+.cart-map-road-two {
+    width: 170px;
+
+    left: -20px;
+    top: 87px;
+
+    transform: rotate(13deg);
+}
+
+
+.cart-map-road-three {
+    width: 170px;
+
+    left: -15px;
+    top: 37px;
+
+    transform: rotate(28deg);
+}
+
+
+.cart-map-road-four {
+    width: 150px;
+
+    left: 12px;
+    top: 105px;
+
+    transform: rotate(-32deg);
+}
+
+
+/* =========================================================
+   MAP LABELS
+========================================================= */
+
+.cart-map-label {
+    position: absolute;
+
+    z-index: 2;
+
+    font-size: 6px;
+
+    color: #88907f;
+}
+
+
+.cart-map-label-one {
+    top: 15px;
+    left: 45px;
+}
+
+
+.cart-map-label-two {
+    top: 80px;
+    left: 12px;
+}
+
+
+.cart-map-label-three {
+    bottom: 22px;
+    right: 20px;
+}
+
+
+.cart-map-label-four {
+    top: 50px;
+    right: 10px;
+}
+
+
+/* =========================================================
+   MAP MARKER
+========================================================= */
+
+.cart-map-marker {
+    position: absolute;
+
+    z-index: 5;
+
+    top: 45px;
+    left: 66px;
+
+    width: 17px;
+    height: 22px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #ef4b3e;
+
+    font-size: 24px;
+
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, .15);
+}
+
+
+.cart-map-marker span {
+    display: block;
+}
+
+
+/* =========================================================
+   MAP ZOOM
+========================================================= */
+
+.cart-map-zoom {
+    position: absolute;
+
+    z-index: 10;
+
+    top: 7px;
+    right: 5px;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.cart-map-zoom button {
+    width: 21px;
+    height: 21px;
+
+    padding: 0;
+
+    border:
+        1px solid #dddddd;
+
+    background: #ffffff;
+
+    color: #333333;
+
+    font-size: 14px;
+
+    line-height: 18px;
+
+    cursor: pointer;
+}
+
+
+.cart-map-zoom button:hover {
+    background: #f4f4f4;
+}
+
+
+/* =========================================================
+   MAP ACTIONS
+========================================================= */
+
+.cart-map-actions {
+    display: flex;
+
+    gap: 5px;
+
+    margin-top: 5px;
+}
+
+
+.cart-map-actions button {
+    padding: 4px 6px;
+
+    border: 0;
+
+    border-radius: 3px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, .12);
+
+    color: #333333;
+
+    font-size: 6.5px;
+
+    cursor: pointer;
+}
+
+
+.cart-map-actions button:hover {
+    background: #f5f5f5;
+}
+
+
+/* =========================================================
+   ERROR MESSAGES
+========================================================= */
+
+.cart-error-message {
+    display: block;
+
+    min-height: 10px;
+
+    margin-top: 3px;
+
+    color: #e53935;
+
+    font-size: 7px;
+
+    line-height: 1.2;
+}
+
+
+/* =========================================================
+   BUTTON CONTAINER
+========================================================= */
+
+.cart-button-container {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 22px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.cart-button {
+    min-width: 70px;
+
+    padding: 6px 18px;
+
+    border: 0;
+
+    border-radius: 20px;
+
+    font-size: 21px;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        transform .2s ease;
+}
+
+
+.cart-button:hover {
+    transform: translateY(-1px);
+}
+
+
+.cart-primary-button {
+    background: #2864e8;
+
+    color: #ffffff;
+}
+
+
+.cart-primary-button:hover {
+    background: #1552d5;
+}
+
+
+.cart-back-button {
+    background: #eeeeee;
+
+    color: #333333;
+}
+
+
+.cart-back-button:hover {
+    background: #dddddd;
+}
+
+
+/* =========================================================
+   STEP 2
+========================================================= */
+
+.cart-order-payment-card {
+    width: 90%;
+
+    margin: 0 auto;
+
+    padding: 14px 15px;
+
+    display: grid;
+
+    grid-template-columns:
+        1.7fr
+        .8fr;
+
+    gap: 30px;
+
+    border-radius: 7px;
+
+    background: #f7f7f7;
+
+    margin-top: 5%;
+}
+
+
+/* =========================================================
+   CARD TITLE
+========================================================= */
+
+.cart-card-title {
+    margin: 0 0 12px;
+
+    font-size: 21px;
+
+    line-height: 1;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   ORDER HEADER
+========================================================= */
+
+.cart-order-header {
+    display: grid;
+
+    grid-template-columns:
+        2.1fr
+        .5fr
+        .8fr
+        .8fr;
+
+    margin-bottom: 3%;
+
+    font-size: 18px;
+
+    color: #111111;
+}
+
+
+/* =========================================================
+   ORDER ITEMS
+========================================================= */
+
+.cart-order-item {
+    display: grid;
+
+    grid-template-columns:
+        2.1fr
+        .5fr
+        .8fr
+        .8fr;
+
+    margin-bottom: 9px;
+
+    font-size: 7px;
+
+    line-height: 1.2;
+
+    color: #333333;
+}
+
+.cart-order-item{
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   DELIVERY ITEM
+========================================================= */
+
+.cart-delivery-item {
+    display: grid;
+
+    grid-template-columns:
+        2.1fr
+        .5fr
+        .8fr
+        .8fr;
+
+    margin-top: 14px;
+
+    font-size: 16px;
+
+    color: #333333;
+}
+
+
+/* =========================================================
+   ORDER TOTAL
+========================================================= */
+
+.cart-order-total {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 8px;
+
+    font-size: 16px;
+}
+
+
+.cart-order-total strong:last-child {
+    color: #10a873;
+    margin-right: 50px;
+}
+
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+.cart-payment-section {
+    text-align: center;
+    padding: 20px 0;
+}
+
+
+.cart-payment-description {
+    margin: 10px 0 25px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #222222;
+    text-align: center;
+}
+
+
+/* =========================================================
+   MOMO
+========================================================= */
+
+.cart-momo-logo {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #ffd600;
+    color: #111111;
+    border-radius: 8px;
+}
+
+.cart-momo-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.cart-payment-phone-label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #222222;
+    text-align: center;
+}
+
+.cart-payment-phone {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 15px;
+    padding: 12px 15px;
+    border: 2px solid #d9d9d9;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #222222;
+    background: #ffffff;
+}
+
+.cart-payment-phone:focus {
+    outline: none;
+    border-color: #16b77f;
+    box-shadow: 0 0 5px rgba(22, 183, 127, 0.2);
+}
+
+
+
+/* =========================================================
+   STEP 4 - SUCCESS
+========================================================= */
+
+.cart-success-container {
+    width: 100%;
+    min-height: 260px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+
+    margin-top: 5%;
+}
+
+
+/* =========================================================
+   SUCCESS ICON
+========================================================= */
+
+.cart-success-icon {
+    width: 60px;
+    height: 60px;
+
+    margin-bottom: 9px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1.5px solid #10b981;
+
+    border-radius: 50%;
+
+    color: #10b981;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   SUCCESS TITLE
+========================================================= */
+
+.cart-success-title {
+    margin: 0 0 8px;
+
+    font-size: 21px;
+
+    line-height: 1;
+
+    color: #087b43;
+}
+
+
+.cart-success-message {
+    margin: 0 0 12px;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    color: #087b43;
+}
+
+
+/* =========================================================
+   CONFIRMATION
+========================================================= */
+
+.cart-confirmation-card {
+    width: 100%;
+    max-width: 255px;
+
+    margin-bottom: 8px;
+
+    overflow: hidden;
+
+    border:
+        1px solid #eeeeee;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    text-align: left;
+}
+
+
+.cart-confirmation-row {
+    min-height: 21px;
+
+    padding:
+        5px 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    border-bottom:
+        1px solid #eeeeee;
+
+    font-size: 16px;
+}
+
+
+.cart-confirmation-row:last-child {
+    border-bottom: 0;
+}
+
+
+.cart-confirmation-row span {
+    color: #222222;
+}
+
+
+.cart-confirmation-row strong {
+    font-weight: 600;
+
+    color: #222222;
+}
+
+
+.cart-success-price {
+    color: #10a873 !important;
+}
+
+
+/* =========================================================
+   DELIVERY
+========================================================= */
+
+.cart-delivery-information {
+    width: 100%;
+    max-width: 285px;
+
+    margin-bottom: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    text-align: left;
+}
+
+
+.cart-delivery-icon {
+    position: relative;
+
+    width: 35px;
+    height: 27px;
+
+    flex-shrink: 0;
+}
+
+
+/* Truck body */
+
+.cart-truck-body {
+    position: absolute;
+
+    left: 2px;
+    top: 6px;
+
+    width: 24px;
+    height: 14px;
+
+    border:
+        2px solid #222222;
+
+    background: #ffffff;
+}
+
+
+/* Truck front */
+
+.cart-truck-body::after {
+    content: "";
+
+    position: absolute;
+
+    right: -9px;
+    bottom: -2px;
+
+    width: 9px;
+    height: 10px;
+
+    border:
+        2px solid #222222;
+
+    background: #ffffff;
+}
+
+
+/* Wheels */
+
+.cart-truck-wheel {
+    position: absolute;
+
+    bottom: 1px;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    border:
+        2px solid #222222;
+}
+
+
+.cart-truck-wheel-one {
+    left: 6px;
+}
+
+
+.cart-truck-wheel-two {
+    right: 2px;
+}
+
+
+/* =========================================================
+   DELIVERY TEXT
+========================================================= */
+
+.cart-delivery-text h3 {
+    margin: 0 0 4px;
+
+    font-size: 18px;
+
+    font-weight: 500;
+
+    color: #222222;
+}
+
+
+.cart-delivery-text p {
+    margin: 0;
+
+    font-size: 7px;
+
+    line-height: 1.3;
+
+    color: #333333;
+}
+
+
+/* =========================================================
+   DONE BUTTON
+========================================================= */
+
+.cart-done-button {
+    min-width: 65px;
+
+    margin-top: 0;
+}
+

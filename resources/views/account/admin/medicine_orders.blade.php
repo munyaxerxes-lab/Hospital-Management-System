@@ -23,7 +23,7 @@
         </div>
 
 
-        <button popovertarget="my-modal" class="open-btn">view more</button>
+ <button popovertarget="my-modal" class="open-btn">view more</button>
 
 <!-- 2. The Modal Element -->
 <div id="my-modal" popover class="modal-box">
