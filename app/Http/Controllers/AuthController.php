@@ -30,7 +30,7 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
-            'password' => $validated['password'],
+            'password' => Hash::make($validated['password']),
             'role_id' => $patientRole->id,
         ]);
 

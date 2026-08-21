@@ -120,6 +120,13 @@ Route::get('/reset-password', function () {
 })->name('reset.password');
 
 
+Route::get('/user', function () {
+    // Fetch the logged-in user record
+    $user = Auth::user();
+    
+    // Pass the user data into the dashboard blade template
+    return view('account.patient.dashboard', compact('user'));
+})->name('user.dashboard');
 
 /*========= Account Admin Routes ==========*/
 
