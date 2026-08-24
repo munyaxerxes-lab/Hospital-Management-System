@@ -106,4 +106,84 @@ class AuthController extends Controller
 
         return redirect('/login');
     }
+
+
+    public function showSettings()
+{
+    return view('account.admin.profile-settings', ['user' => Auth::user()]);
+}
+
+public function updateProfile(Request $request)
+{
+    $validated = $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+    ]);
+
+    Auth::user()->update([
+        'name' => $validated['name'],
+    ]);
+
+    return back()->with('status', 'Profile name updated successfully.');
+}
+
+/**
+ * 3. Safely Change Account Email Address
+ */
+public function changeEmail(Request $request)
+{
+    $user = Auth::user();
+
+    $validated = $request->validate([
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,' . $user->id],
+        'current_password' => ['required', 'string'],
+    ]);
+
+    // Security Verification Check: Confirm identity before swapping sensitive data
+    if (!Hash::check($validated['current_password'], $user->password)) {
+        return back()->withErrors(['current_password' => 'The provided password does not match our records.']);
+    }
+
+    $user->update([
+        'email' => $validated['email'],
+        'email_verified_at' => null, // Resets status if you want them to verify the new address via OTP later
+    ]);
+
+    return back()->with('status', 'Email address successfully updated.');
+}
+
+/**
+ * 4. Change Account Phone Number Data
+ */
+public function changePhone(Request $request)
+{
+    $validated = $request->validate([
+        'phone' => ['required', 'string', 'max:20'],
+    ]);
+
+    Auth::user()->update([
+        'phone' => $validated['phone'],
+    ]);
+
+    return back()->with('status', 'Phone number successfully updated.');
+}
+
+/**
+ * 5. Update/Change Security Access Password
+ */
+public function updatePassword(Request $request)
+{
+    $user = Auth::user();
+
+    $validated = $request->validate([
+        'current_password' => ['required', 'current_password'], // Laravel built-in current validation rule verification
+        'password' => ['required', 'confirmed', Password::defaults()],
+    ]);
+
+    $user->update([
+        'password' => Hash::make($validated['password']),
+    ]);
+
+    return back()->with('status', 'Password modified successfully.');
+}
+
 }

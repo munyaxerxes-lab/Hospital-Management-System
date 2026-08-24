@@ -9,43 +9,68 @@ use App\Models\medicine as Medicine;
 
 /*
 |--------------------------------------------------------------------------
+| Global Fallback Handler (Bypasses Guest Group Loops)
+|--------------------------------------------------------------------------
+*/
+Route::get("/", function () {
+    // If a user is already signed in, dynamically throw them past the login wall
+    if (Auth::check()) {
+        $user = Auth::user();
+        if ($user->role && $user->role->name === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect()->route('patient.dashboard');
+    }
+    
+    // Otherwise, show unauthenticated visitors your signup view layout
+    return view('auth.register');
+});
+
+/*
+|--------------------------------------------------------------------------
 | 1. Public Guest Flow (Unauthenticated Users)
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
-    Route::get("/", function () {
-        return view('auth.register');
-    });
+    //  REMOVED Route::get('/', ...) from here to stop the looping crashes!
 
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('show.register');
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
+    Route::get('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])->name('show.register');
+    Route::post('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'store'])->name('register');
 
-    // 🌟 FIXED: Unified names so BOTH route('login') and route('login.submit') work perfectly
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->name('show.login');
+    // Naming references for login forms
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::get('/login-page', [AuthController::class, 'showLogin'])->name('show.login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
     
-    // 🌟 FIXED: Unified names so BOTH route('password.request') and route('password.update') work perfectly
-    Route::get('/reset-password', function () {
-        return view('auth.reset-password');
-    })->name('password.request')->name('reset.password');
+    // Naming references for forgot/reset flows
+    Route::get('/reset-password', function () { return view('auth.reset-password'); })->name('password.request');
+    Route::get('/forgot-password', function () { return view('auth.reset-password'); })->name('reset.password');
 
     Route::post('/reset-password', function (\Illuminate\Http\Request $request) {
         return back()->with('status', 'If your email is registered, we have sent a reset link.');
     })->name('password.update');
+
+    //  FIXED: Mapped 'register.verify-otp' to the GET route and '.submit' to the POST form handler
+    Route::get('/verify-otp', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'showVerifyOtp'])->name('register.verify-otp');
+    Route::post('/verify-otp', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'verifyOtp'])->name('register.verify-otp.submit');
+    Route::post('/resend-otp', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'resendOtp'])->name('register.resend-otp');
 });
-
-// Explicit handle for global logout POST requests safely
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 
 /*
 |--------------------------------------------------------------------------
-| 2. Authenticated Patient Workspace
+| 2. Global Route: Secure Logout Handling
+|--------------------------------------------------------------------------
+| Extracted out of specific workspaces so both Admins and Patients can access it
+*/
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+/*
+|--------------------------------------------------------------------------
+| 3. Authenticated Patient Workspace
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:patient'])->group(function () {
     
-    //: Passed the $user variable to prevent "Undefined variable $user" errors
     Route::get('/patient/dashboard', function () {
         $user = Auth::user();
         return view('account.patient.dashboard', compact('user'));
@@ -89,16 +114,27 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::get('/backtolab', function () { return view('account.patient.labtests'); });
 
     Route::delete('/account/delete', [AuthController::class, 'deleteAccount'])->name('account.delete');
-});
 
+        // Profile Management inside Patient Workspace
+        Route::prefix('patient/profile')->group(function () {
+        Route::get('/settings', [AuthController::class, 'showSettings'])->name('profile.settings');
+        Route::put('/update', [AuthController::class, 'updateProfile'])->name('profile.update');
+        Route::put('/change-email', [AuthController::class, 'changeEmail'])->name('profile.change-email');
+        Route::put('/change-phone', [AuthController::class, 'changePhone'])->name('profile.change-phone');
+        Route::put('/update-password', [AuthController::class, 'updatePassword'])->name('profile.update-password');
+    });
+
+
+});
 
 /*
 |--------------------------------------------------------------------------
-| 3. Authenticated Admin Workspace (Staff Management)
+| 4. Authenticated Admin Workspace (Staff Management)
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    
+        
+
     Route::get('/admin/dashboard', function () {
         return view('account.admin.admin_dashboard');
     })->name('admin.dashboard');
@@ -122,12 +158,20 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/medicine_orders', function () {
         return view('account.admin.medicine_orders');
     });
-});
+        // Profile Management inside Admin Workspace
+    Route::prefix('admin/profile')->group(function () {
+        Route::get('/settings', [AuthController::class, 'showSettings'])->name('admin.profile.settings');
+        Route::put('/update', [AuthController::class, 'updateProfile'])->name('admin.profile.update');
+        Route::put('/change-email', [AuthController::class, 'changeEmail'])->name('admin.profile.change-email');
+        Route::put('/change-phone', [AuthController::class, 'changePhone'])->name('admin.profile.change-phone');
+        Route::put('/update-password', [AuthController::class, 'updatePassword'])->name('admin.profile.update-password');
+    });
 
+});
 
 /*
 |--------------------------------------------------------------------------
-| 4. Cart Management Functions
+| 5. Cart Management Functions
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -137,10 +181,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
 });
 
-
 /*
 |--------------------------------------------------------------------------
-| 5. Internal System Profiles & External Requirements
+| 6. Internal System Profiles & External Requirements
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
