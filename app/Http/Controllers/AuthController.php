@@ -44,80 +44,57 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(Request $request)
+        public function login(Request $request)
     {
         /*
         |--------------------------------------------------------------------------
         | 1. Validate login information
         |--------------------------------------------------------------------------
         */
-
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | 2. Find the user by email
-        |--------------------------------------------------------------------------
-        */
-
-        $user = User::where('email', $credentials['email'])->first();
-
-        /*
-        |--------------------------------------------------------------------------
-        | 3. Check if the user exists
-        |--------------------------------------------------------------------------
-        */
-
-        if (!$user) {
-            return back()
-                ->withErrors([
-                    'email' => 'User not found.',
-                ])
-                ->onlyInput('email');
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | 4. Check the password
-        |--------------------------------------------------------------------------
-        */
-
-        if (!Hash::check($credentials['password'], $user->password)) {
-            return back()
-                ->withErrors([
-                    'password' => 'Incorrect password.',
-                ])
-                ->onlyInput('email');
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | 5. Log the user in
-        |--------------------------------------------------------------------------
-        */
-
         $remember = $request->filled('remember');
 
-        Auth::login($user, $remember);
+        /*
+        |--------------------------------------------------------------------------
+        | 2. Securely authenticate via Native Laravel Attempt
+        |--------------------------------------------------------------------------
+        */
+        if (Auth::attempt($credentials, $remember)) {
+            
+            // Regenerate session to protect against session fixation attacks
+            $request->session()->regenerate();
+            
+            // Get the authenticated user record
+            $user = Auth::user();
+
+            /*
+            |--------------------------------------------------------------------------
+            | 3. Dynamic Multi-Role Workspace Redirection
+            |--------------------------------------------------------------------------
+            | Checks your database relation names to assign proper route folders
+            */
+            if ($user->role && $user->role->name === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
+            // Default safe workspace fall-back path for Patients
+            return redirect()->route('patient.dashboard');
+        }
 
         /*
         |--------------------------------------------------------------------------
-        | 6. Regenerate the session
+        | 4. Return secure failed attempt notices
         |--------------------------------------------------------------------------
         */
-
-        $request->session()->regenerate();
-
-        /*
-        |--------------------------------------------------------------------------
-        | 7. Redirect to the user dashboard
-        |--------------------------------------------------------------------------
-        */
-
-        return redirect()->route('user.dashboard');
+        return back()
+            ->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])
+            ->onlyInput('email');
     }
 
     public function logout(Request $request)

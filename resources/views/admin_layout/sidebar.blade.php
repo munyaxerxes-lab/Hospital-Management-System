@@ -42,11 +42,18 @@
     </nav>
 
     <!-- Logout -->
+ 
+
     <div class="logout-container">
+        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+        @csrf
         <a href="/Logout" class="logout">
+            <button type="submit" class="btn-logout">
             <i class="ri-logout-box-r-line"></i>
             <span>Logout</span>
+            </button>
         </a>
+        </form>
     </div>
   
 </aside>
