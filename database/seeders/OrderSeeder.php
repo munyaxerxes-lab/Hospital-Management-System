@@ -15,13 +15,13 @@ class OrderSeeder extends Seeder
     {
         //
         DB::table('orders')->insert([
-    [
-        'patient_id' => 1,
-        'payment_id' => 1,
-        'status' => 'confirmed',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ],
-]);
+            [
+                'patient_id' => 1,
+                'payment_id' => 1,
+                'status' => 'confirmed',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 }
