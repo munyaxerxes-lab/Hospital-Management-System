@@ -390,9 +390,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         return view('account.admin.lab_request');
     });
 
-    Route::get('/manage_doctors', function () {
-        return view('account.admin.manage_doctors');
-    });
+    // Route::get('/manage_doctors', function () {
+    //     return view('account.admin.manage_doctors');
+    // });
 
     Route::get('/medicine_orders', function () {
         return view('account.admin.medicine_orders');
