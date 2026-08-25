@@ -11,7 +11,7 @@
     <!-- Navigation -->
     <nav class="navigation">
 
-        <a href="/" class="nav-item active">
+        <a href="/dashboard" class="nav-item active">
             <i class="ri-home-4-line"></i>
             <span>Dashboard</span>
         </a>

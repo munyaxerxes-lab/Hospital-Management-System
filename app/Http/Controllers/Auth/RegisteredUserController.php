@@ -53,12 +53,12 @@ class RegisteredUserController extends Controller
         // OTP expires after 1 minute
         $otpExpiresAt = now()->addMinute();
 
-        // Create the user with a default role assignment
+        // Create the user explicitly assigning role_id 1 (patient)
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => 3, //missing default error
+            'role_id' => 1, // Corrected from 3: Points directly to 'patient'
         ]);
 
         // Save OTP information
@@ -147,6 +147,7 @@ class RegisteredUserController extends Controller
         $user->forceFill([
             'otp_code' => null,
             'otp_expires_at' => null,
+            'email_verified_at' => now(), // Sets verified timestamp upon correct entry
         ])->save();
 
         // Remove pending verification session
@@ -158,8 +159,8 @@ class RegisteredUserController extends Controller
         // Regenerate the session for security
         $request->session()->regenerate();
 
-        // Send the verified user directly to the dashboard
-       return redirect()->route('user.dashboard');
+        // Send the verified user directly to their dashboard route
+        return redirect()->route('patient.dashboard');
     }
 
     /**
