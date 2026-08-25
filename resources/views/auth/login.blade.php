@@ -30,9 +30,9 @@
     }
 
     .login-card {
-      width:100%; max-width:920px; border:1.5px solid #F6C9CE; border-radius:18px;
+      width:100%; max-width:920px; border:1.5px solid white; border-radius:18px;
       padding:48px 56px; display:flex; align-items:center; gap:40px; flex-wrap:wrap;
-      box-shadow: 0 10px 40px rgba(21,84,179,0.06);
+      box-shadow: 0 10px 40px rgba(2, 65, 255, 0.26);
     }
     .brand-col { flex:1; min-width:280px; text-align:center; }
     .form-col { flex:1; min-width:280px; }
@@ -42,7 +42,7 @@
 
   <div class="login-card">
     <div class="brand-col">
-      <img src="image/logo3.png" alt="logo" style=" margin-right: 50rem;">
+      <img src="{{ asset('image/logo3.png') }}" alt="logo" style=" margin-right: 50rem;">
 
       <div class="form-col">
       <h1 style="font-size:26px; font-weight:800; color:#16213E; margin:0 0 4px; letter-spacing:-0.01em;">LOGIN</h1>
@@ -85,7 +85,7 @@
           </a>
         </div>
 
-        <button type="submit" class="btn-primary" style="width:100%;">LOGIN</button>
+        <button type="submit" class="btn-primary" style="width:30%;">LOGIN</button>
 
         <p style="text-align:center; font-size:13.5px; color:#6B7280; margin-top:20px;">
           Dont have an account?

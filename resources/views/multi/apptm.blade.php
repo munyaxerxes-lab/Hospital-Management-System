@@ -1,12 +1,12 @@
-<link rel="stylesheet" href="{{ asset('style/appointment-pay.css') }}">
+<link rel="stylesheet" href="{{ asset('style/mutistep.css') }}">
 
 @extends('layout.index')
 @section('content')
     <div class="booking-container">
 
         <!-- =========================
-         PROGRESS STEPPER
-    ========================== -->
+                 PROGRESS STEPPER
+                ========================== -->
 
         <div class="stepper">
 
@@ -43,23 +43,23 @@
 
 
         <!-- =========================
-         BOOKING FORM
-    ========================== -->
+                 BOOKING FORM
+            ========================== -->
 
 
         <!-- =========================
-             STEP 1
-        ========================== -->
+                     STEP 1
+                ========================== -->
 
         <div class="form-step active" id="step1">
 
-            <div class="step-card">
+            <div class="step--card">
 
                 <div class="date-section">
 
                     <h3>Select date</h3>
 
-                    <input type="date" name="appointment_date" id="appointment_date" required>
+                    <input type="date" name="appointment_date" class="date-font" id="appointment_date" required>
 
                 </div>
 
@@ -99,7 +99,7 @@
             </div>
 
 
-            <div class="button-container">
+            <div class="button--container">
 
                 <button type="button" class="btn btn-primary next-btn">
                     Continue
@@ -111,8 +111,8 @@
 
 
         <!-- =========================
-             STEP 2
-        ========================== -->
+                     STEP 2
+                ========================== -->
 
         <div class="form-step" id="step2">
 
@@ -127,7 +127,7 @@
             </div>
 
 
-            <div class="button-container">
+            <div class="button--container">
 
                 <button type="button" class="btn btn-secondary prev-btn">
                     Back
@@ -143,48 +143,48 @@
 
 
         <!-- =========================
-             STEP 3
-        ========================== -->
+                     STEP 3
+                ========================== -->
 
         <div class="form-step" id="step3">
 
-            <div class="summary-payment">
+            <div class="summary--payment">
 
                 <!-- BOOKING SUMMARY -->
 
-                <div class="booking-summary">
+                <div class="booking--summary">
 
                     <h3>Booking Summary</h3>
 
-                    <div class="summary-item">
+                    <div class="summary--item">
                         <span>Date</span>
                         <strong id="summaryDate">
                             -
                         </strong>
                     </div>
 
-                    <div class="summary-item">
+                    <div class="summary--item">
                         <span>Time</span>
                         <strong id="summaryTime">
                             -
                         </strong>
                     </div>
 
-                    <div class="summary-item">
+                    <div class="summary--item">
                         <span>Doctor</span>
                         <strong>
                             Dr. James Bla
                         </strong>
                     </div>
 
-                    <div class="summary-item">
+                    <div class="summary--item">
                         <span>Specialty</span>
                         <strong>
                             Cardiologist
                         </strong>
                     </div>
 
-                    <div class="summary-item">
+                    <div class="summary--item">
                         <span>Consultation Fee</span>
                         <strong class="price">
                             5000 FCFA
@@ -196,7 +196,7 @@
 
                 <!-- PAYMENT -->
 
-                <div class="payment-details">
+                <div class="payment--details">
 
                     <h3>Payment Details</h3>
 
@@ -210,9 +210,9 @@
                             <img src="{{ asset('image/momo.png') }}" alt="momo">
                         </div>
 
-                        <div>
+                        <div class="phone-put">
 
-                            <label for="phone">
+                            <label for="phone" class="phone">
                                 Enter your phone number
                             </label>
 
@@ -227,7 +227,7 @@
             </div>
 
 
-            <div class="button-container">
+            <div class="button--container">
 
                 <button type="button" class="btn btn-secondary prev-btn">
                     Back
@@ -245,8 +245,8 @@
 
 
         <!-- =========================
-             STEP 4
-        ========================== -->
+                     STEP 4
+                ========================== -->
 
         <div class="form-step" id="step4">
 
@@ -273,8 +273,8 @@
 
 
         <!-- =========================
-             STEP 5
-        ========================== -->
+                     STEP 5
+                ========================== -->
 
         <div class="form-step" id="step5">
 
@@ -319,287 +319,113 @@
                 <p class="email-message">
                     A confirmation has been sent to your email.
                 </p>
+
+            </div>
+            <div class="button--container">
                 <a href="/appointmentdone">
                     <button type="submit" class="btn btn-primary">
-
                         Done
-
                     </button>
                 </a>
             </div>
-
         </div>
 
         </form>
 
     </div>
 
-
     <script>
-
         document.addEventListener('DOMContentLoaded', function () {
+            const steps = Array.from(document.querySelectorAll('.form-step'));
+            const stepItems = Array.from(document.querySelectorAll('.step-item'));
+            const nextButtons = document.querySelectorAll('.next-btn');
+            const prevButtons = document.querySelectorAll('.prev-btn');
+            const timeSlots = document.querySelectorAll('.time-slot');
+            const dateInput = document.getElementById('appointment_date');
+            const timeInput = document.getElementById('appointment_time');
+            const reasonInput = document.getElementById('reason');
+            const summaryDate = document.getElementById('summaryDate');
+            const summaryTime = document.getElementById('summaryTime');
+            const finalDateTime = document.getElementById('finalDateTime');
+            const payButton = document.getElementById('payButton');
 
             let currentStep = 1;
 
-            const formSteps = document.querySelectorAll('.form-step');
+            function updateStepDisplay(stepNumber) {
+                currentStep = stepNumber;
 
-            const stepItems = document.querySelectorAll('.step-item');
-
-            const labels = document.querySelectorAll('.label');
-
-            const nextButtons = document.querySelectorAll('.next-btn');
-
-            const previousButtons = document.querySelectorAll('.prev-btn');
-
-            const timeSlots = document.querySelectorAll('.time-slot');
-
-            const appointmentDate =
-                document.getElementById('appointment_date');
-
-            const appointmentTime =
-                document.getElementById('appointment_time');
-
-            const summaryDate =
-                document.getElementById('summaryDate');
-
-            const summaryTime =
-                document.getElementById('summaryTime');
-
-            const finalDateTime =
-                document.getElementById('finalDateTime');
-
-
-            /*
-            ========================================
-            SHOW STEP
-            ========================================
-            */
-
-            function showStep(step) {
-
-                currentStep = step;
-
-                formSteps.forEach(function (formStep) {
-
-                    formStep.classList.remove('active');
-
+                steps.forEach((step, index) => {
+                    const stepId = index + 1;
+                    step.classList.toggle('active', stepId === stepNumber);
                 });
 
-                document
-                    .getElementById('step' + step)
-                    .classList.add('active');
-
-
-                /*
-                UPDATE STEPPER
-                */
-
-                stepItems.forEach(function (item) {
-
-                    const itemStep =
-                        parseInt(item.dataset.step);
-
-                    item.classList.remove('active');
-                    item.classList.remove('completed');
-
-                    if (itemStep < step) {
-
-                        item.classList.add('completed');
-
-                    }
-
-                    if (itemStep === step) {
-
-                        item.classList.add('active');
-
-                    }
-
+                stepItems.forEach((item, index) => {
+                    const itemStep = index + 1;
+                    item.classList.toggle('active', itemStep === stepNumber);
+                    item.classList.toggle('completed', itemStep < stepNumber);
                 });
 
-
+                updateSummary();
             }
-
-
-            /*
-            ========================================
-            NEXT BUTTON
-            ========================================
-            */
-
-            nextButtons.forEach(function (button) {
-
-                button.addEventListener('click', function () {
-
-                    if (currentStep === 1) {
-
-                        if (!appointmentDate.value) {
-
-                            alert('Please select an appointment date.');
-
-                            return;
-
-                        }
-
-                        if (!appointmentTime.value) {
-
-                            alert('Please select a time slot.');
-
-                            return;
-
-                        }
-
-                    }
-
-
-                    if (currentStep === 2) {
-
-                        const reason =
-                            document.getElementById('reason').value;
-
-                        if (!reason.trim()) {
-
-                            alert(
-                                'Please describe the reason for your consultation.'
-                            );
-
-                            return;
-
-                        }
-
-                    }
-
-
-                    if (currentStep < 5) {
-
-                        showStep(currentStep + 1);
-
-                    }
-
-                });
-
-            });
-
-
-            /*
-            ========================================
-            PREVIOUS BUTTON
-            ========================================
-            */
-
-            previousButtons.forEach(function (button) {
-
-                button.addEventListener('click', function () {
-
-                    if (currentStep > 1) {
-
-                        showStep(currentStep - 1);
-
-                    }
-
-                });
-
-            });
-
-
-            /*
-            ========================================
-            TIME SLOT SELECTION
-            ========================================
-            */
-
-            timeSlots.forEach(function (slot) {
-
-                slot.addEventListener('click', function () {
-
-                    timeSlots.forEach(function (item) {
-
-                        item.classList.remove('selected');
-
-                    });
-
-                    slot.classList.add('selected');
-
-                    appointmentTime.value =
-                        slot.dataset.time;
-
-                });
-
-            });
-
-
-            /*
-            ========================================
-            UPDATE BOOKING SUMMARY
-            ========================================
-            */
 
             function updateSummary() {
+                const dateValue = dateInput ? dateInput.value : '';
+                const timeValue = timeInput ? timeInput.value : '';
 
-                summaryDate.textContent =
-                    appointmentDate.value;
-
-                summaryTime.textContent =
-                    appointmentTime.value;
-
-                finalDateTime.textContent =
-                    appointmentDate.value +
-                    ' - ' +
-                    appointmentTime.value;
-
+                if (summaryDate) summaryDate.textContent = dateValue ? dateValue : '-';
+                if (summaryTime) summaryTime.textContent = timeValue ? timeValue : '-';
+                if (finalDateTime) {
+                    finalDateTime.textContent = dateValue && timeValue ? `${dateValue} at ${timeValue}` : '-';
+                }
             }
 
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    if (currentStep < steps.length) {
+                        updateStepDisplay(currentStep + 1);
+                    }
+                });
+            });
 
-            /*
-            ========================================
-            PAYMENT BUTTON
-            ========================================
-            */
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    if (currentStep > 1) {
+                        updateStepDisplay(currentStep - 1);
+                    }
+                });
+            });
 
-            document
-                .getElementById('payButton')
-                .addEventListener('click', function () {
+            timeSlots.forEach(button => {
+                button.addEventListener('click', function () {
+                    timeSlots.forEach(slot => slot.classList.remove('selected'));
+                    this.classList.add('selected');
 
-                    const phone =
-                        document.getElementById('phone').value;
-
-                    if (!phone) {
-
-                        alert(
-                            'Please enter your Mobile Money phone number.'
-                        );
-
-                        return;
-
+                    if (timeInput) {
+                        timeInput.value = this.dataset.time;
                     }
 
-
                     updateSummary();
+                });
+            });
 
+            [dateInput, reasonInput].forEach(input => {
+                if (input) {
+                    input.addEventListener('input', updateSummary);
+                }
+            });
 
-                    /*
-                    GO TO PAYMENT PROCESSING
-                    */
-
-                    showStep(4);
-
-
-                    /*
-                    SIMULATE PAYMENT PROCESSING
-        
-                    Replace this with your real
-                    Mobile Money API integration.
-                    */
+            if (payButton) {
+                payButton.addEventListener('click', function () {
+                    updateStepDisplay(4);
 
                     setTimeout(function () {
-
-                        showStep(5);
-
-                    }, 3000);
-
+                        updateStepDisplay(5);
+                    }, 1200);
                 });
+            }
 
-
+            updateStepDisplay(1);
         });
-
     </script>
+
 @endsection

@@ -3,42 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<link rel="stylesheet" href="{{ asset('style/main.css') }}">
     <title>Forgot Password | MediLink</title>
 
 </head>
 
 <body>
 
-<div class="auth-page">
+<div class="auth-page" style="width: 80%;
+ height: 90vh;
+ border: 1px solid none;
+ border-radius: 12px;
+ justify-self: center;
+ display: flex;
+ justify-contents: space-between;
 
+ 
+ ">
+<div style="
+border: 1px solid none;
+">
     <img
-        src="{{ asset('images/auth/medilink-logo.png') }}"
+        src="{{ asset('image/login_image.png') }}"
         class="auth-logo"
-        alt="MediLink">
+        alt="MediLink"
+        style="width: 90%;"
+        >
 
-    <div class="auth-container">
+<div class="auth-illustration">
 
-        <!-- Illustration -->
-        <div class="auth-illustration">
+           
 
-            <img
-                src="{{ asset('images/auth/forgot-password.png') }}"
-                alt="Forgot Password">
+</div>
+</div>
+    
 
-        </div>
+    <div class="auth-container"
+    style="
+    width: 50%;
+    align-items: center;
+    "
+    >
+
+       
+        
 
         <!-- Form -->
-        <div class="auth-form-section">
+        <div 
+         style="display: flex;
+         justify: space-between;
+         gap: 2rem;
+         ">
+             <a href="login"><button
+                    type="submit"
+                    class="auth-buttonlogin"
+                    
+                    >Login</button></a>
 
-            <h1 class="auth-title no-line">
+                     <a href="register"><button
+                    type="submit"
+                    class="auth-buttonlogin"
+                    >Sign UP</button></a>
+        </div>
+        
+        <div class="auth-form-section" 
+        style="margin-top: 16rem;">
+
+            <h1 class="auth-title no-line"
+            style="color: navy;">
                 Forgot Password
             </h1>
 
             <form
                 method="POST"
                 action="{{ route('password.email') }}"
-                class="auth-form">
+                class="auth-form"
+                style="
+                line-height:2rem">
 
                 @csrf
 
@@ -52,15 +93,19 @@
                         type="email"
                         id="email"
                         name="email"
+                        placeholder="Input you email"
                         class="form-control"
                         required
-                        autofocus>
+                        autofocus
+                        style="
+                        width:80%">
 
                 </div>
 
                 <button
                     type="submit"
-                    class="auth-button">
+                    class="auth-buttoncont"
+                    >
 
                     Continue
 

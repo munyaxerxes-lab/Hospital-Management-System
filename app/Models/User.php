@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,25 +16,30 @@ class User extends Authenticatable
     {
         return $this->hasOne(Doctor::class);
     }
+
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
+
     public function patient()
     {
         return $this->hasOne(Patient::class);
     }
+
     public function pharmacist()
     {
-        return $this->hasOne(pharmacist::class);
+        return $this->hasOne(Pharmacist::class);
     }
+
     public function lab_technician()
     {
-        return $this->hasMany(lab_technician::class);
+        return $this->hasMany(LabTechnician::class);
     }
+
     public function delivery_agent()
     {
-        return $this->hasMany(delivery_agent::class);
+        return $this->hasMany(DeliveryAgent::class);
     }
 
     /**
@@ -44,14 +48,14 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-    'name',
-    'email',
-    'phone',
-    'password',
-    'role_id',
-    'otp',
-    'otp_expires_at',
-];
+        'name',
+        'email',
+        'phone',
+        'password',
+        'role_id',
+        'otp_code', // 🌟 Kept matched with your controller ('otp_code')
+        'otp_expires_at',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -73,10 +77,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'otp_expires_at' => 'datetime', // 🌟 Safely unified inside the modern casts function
         ];
     }
-    protected $casts = [
-    // ...existing casts
-    'otp_expires_at' => 'datetime',
-    ];
 }

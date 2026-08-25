@@ -1,7 +1,7 @@
-<!-- Main Content -->
+<!-- Main Content Wrapper Shell Layout Framework -->
 <main class="main-content">
 
-  <!-- Top Header -->
+  <!-- Top Header Navigation Dashboard Area -->
   <header class="topbar">
     <div class="doctors-tools">
         <input class="searchbar" placeholder="Search ...."
@@ -13,17 +13,17 @@
         >
     </div>
    
-    <!-- Top Header Nav Wrapper -->
+    <!-- Top Header Nav Inline Actions Context -->
     <div class="header-nav" style="display: flex; justify-content: flex-end; align-items: center; padding: 15px; position: relative;">
         
-        <!-- User Profile Dropdown Container -->
+        <!-- User Profile Dropdown Drop-panel Menu Anchor Frame -->
         <div class="user-dropdown-container" style="position: relative; display: inline-block;">
             
-            <!-- Clickable Profile Trigger Wrap -->
+            <!-- Clickable Interactive Target Trigger Wrap -->
             <div class="profile-trigger" id="dropdownTrigger" tabindex="0"
                  style="display: flex; gap: 0.5rem; align-items: center; cursor: pointer; user-select: none;">
                
-                <!-- Circular Avatar Initials Indicator -->
+                <!-- Circular Avatar Initials Graphic Indicator -->
                 <div style="
                     border: none;
                     border-radius: 50%;
@@ -53,18 +53,31 @@
                     </span>
                 </div>
                 
-                <!-- Concatenated Username and Icon Arrow -->
+                
                 <span style="font-weight: 500; color: #333;">
                     {{ Auth::check() ? Auth::user()->name : 'Guest' }}
                 </span>
                 <i class="fa-solid fa-chevron-down chev" style="font-size: 12px; color: #666; transition: transform 0.2s;"></i>
             </div>
 
-            <!-- 🌟 Floating Dropdown Menu Panel -->
+            <!-- Floating Overlay Dropdown Nav Options Menu Element -->
             <div id="userDropdownMenu" class="dropdown-menu">
-                <a href="{{ route('user.dashboard') }}">📊 Dashboard</a>
                 
-                <!-- Account Deletion Action Form Wrapper -->
+                <!-- Home Dashboard Dynamic Redirection Check link -->
+                @if(Auth::check() && Auth::user()->role && Auth::user()->role->name === 'admin')
+                    <a href="{{ route('admin.dashboard') }}">📊 Dashboard</a>
+                @else
+                    <a href="{{ route('patient.dashboard') }}">📊 Dashboard</a>
+                @endif
+               
+                <!-- Interactive Operational Settings Form Redirection Panel link -->
+                @if(Auth::check() && Auth::user()->role && Auth::user()->role->name === 'admin')
+                    <a href="{{ route('admin.profile.settings') }}">⚙️ Settings</a>
+                @else
+                    <a href="{{ route('profile.settings') }}">⚙️ Settings</a>
+                @endif
+
+                <!-- Account Deletion Action Execution Form Pipeline element -->
                 <form action="{{ route('account.delete') }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete your account?');" style="margin: 0;">
                     @csrf
                     @method('DELETE')
@@ -73,10 +86,9 @@
 
                 <hr style="margin: 4px 0; border: 0; border-top: 1px solid #eee;">
 
-                <!-- Logout Form Wrapper -->
+                <!-- Session Termination Invalidation Form Pipeline element -->
                 <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
                     @csrf
-                    <!-- 🌟 FIXED: Removed broken text '@button' syntax directive right here -->
                     <button type="submit" class="dropdown-item logout-btn">🚪 Log Out</button>
                 </form>
             </div>
@@ -85,7 +97,7 @@
     </div>
   </header>
     
-  <!-- Page Content -->
+  <!-- Core Layout Content View Yield Nodes -->
   <section class="content">
       @yield('content')
       @yield('scripts')
@@ -93,64 +105,7 @@
 
 </main>
 
-<!-- 🌟 Essential Dropdown Presentation Styles -->
-<style>
-  .dropdown-menu {
-      display: none;
-      position: absolute;
-      right: 0;
-      top: 115%;
-      background-color: #ffffff;
-      min-width: 200px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.12);
-      border-radius: 8px;
-      padding: 6px 0;
-      z-index: 1000;
-      border: 1px solid #eef0f6;
-  }
-
-  .dropdown-menu.show {
-      display: block;
-  }
-
-  .dropdown-item {
-      display: block;
-      width: 100%;
-      padding: 10px 16px;
-      text-align: left;
-      background: none;
-      border: none;
-      color: #333333;
-      font-size: 14px;
-      text-decoration: none;
-      cursor: pointer;
-      box-sizing: border-box;
-      font-family: inherit;
-  }
-
-  .dropdown-menu a {
-      text-decoration: none;
-      color: #333333;
-      display: block;
-      padding: 10px 16px;
-      font-size: 14px;
-  }
-
-  .dropdown-menu a:hover, .dropdown-item:hover {
-      background-color: #f4f6f9;
-  }
-
-  .dropdown-menu .delete-btn {
-      color: #dc3545;
-  }
-
-  .dropdown-menu .logout-btn {
-      color: #164dad;
-      font-weight: 500;
-  }
-</style>
-
-<!-- JavaScript Handler logic -->
+<!-- Vanilla JS Event Interface Logic Bindings -->
 <script>
   document.getElementById('dropdownTrigger').addEventListener('click', function(event) {
       event.stopPropagation();

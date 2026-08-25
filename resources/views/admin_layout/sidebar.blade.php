@@ -3,58 +3,57 @@
 
     <!-- Logo -->
     <div class="logo">
-        <img src="{{ asset('image/logo1.png') }}" alt="MediLink Logo" class="logo-image">
-        <div><h2>Medi<span>Link</span></h2>
-        <p class="logo-text">Health Services</p></div>
+       <div class="brand">
+            <img class="brand-logo" src="{{ asset('image/logo1.png') }}" alt="Admin System Logo">
+            <div class="brand-name">Admin<span>SYSTEM</span></div>
+        </div>
     </div>
 
     <!-- Navigation -->
     <nav class="navigation">
 
-        <a href="/dashboard" class="nav-item active">
-            <i class="ri-home-4-line"></i>
+        <a href="/admin_dashboard" class="nav-item active">
+            <i class="fa-solid fa-house"></i>
             <span>Dashboard</span>
         </a>
 
-        <a href="/appointments" class="nav-item">
-            <i class="ri-calendar-line"></i>
-            <span>Appointments</span>
+        <a href="/appointment_request" class="nav-item">
+            <i class="fa-regular fa-calendar"></i>
+            <span>Appointments Request</span>
         </a>
 
-        <a href="/labtests" class="nav-item">
-            <i class="ri-flask-line"></i>
-            <span>Lab Tests</span>
+        <a href="/lab_request" class="nav-item">
+            <i class="fa-solid fa-flask"></i>
+            <span>Lab Requests</span>
         </a>
 
-        <a href="/pharmacy" class="nav-item">
-            <i class="ri-calendar-2-line"></i>
-            <span>Pharmacy</span>
+         <a href="/medicine_orders" class="nav-item">
+             <i class="fa-solid fa-capsules"></i>
+           <span>Medicine Orders</span>
+
+        <a href="/manage_doctors" class="nav-item">
+             <i class="fa-regular fa-user"></i>
+           <span> Manage Doctors</span>
         </a>
 
-        <a href="/history" class="nav-item">
-            <i class="ri-time-line"></i>
-            <span>History</span>
-        </a>
-
-        <a href="/cart" class="nav-item">
-            <i class="ri-shopping-cart-line"></i>
-            <span>Cart</span>
-            @if(isset($cartCount) && $cartCount > 0)
-                <span class="cart-badge"><p>{{ $cartCount }}</p></span>
-            @endif
-        </a>
-
-        <!-- Active Navigation -->
+       
        
 
     </nav>
 
     <!-- Logout -->
+ 
+
     <div class="logout-container">
+        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+        @csrf
         <a href="/Logout" class="logout">
+            <button type="submit" class="btn-logout">
             <i class="ri-logout-box-r-line"></i>
             <span>Logout</span>
+            </button>
         </a>
+        </form>
     </div>
   
 </aside>
