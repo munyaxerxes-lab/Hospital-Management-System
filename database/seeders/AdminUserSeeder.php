@@ -39,9 +39,9 @@ class AdminUserSeeder extends Seeder
             ['email' => 'admin@medilink.com'],
             [
                 'name' => 'Hospital Administrator',
-                'password' => Hash::make('SecureAdminSecret2026!'),
+                'password' => Hash::make('admin123'),
                 'role_id' => 3, // Admin role
-                'email_verified_at' => now(), // 🌟 Critical: Keeps the Admin clear of the OTP page
+                'email_verified_at' => now(), //  Keeps the Admin clear of the OTP page
                 'otp_code' => null,
                 'otp_expires_at' => null,
             ]
