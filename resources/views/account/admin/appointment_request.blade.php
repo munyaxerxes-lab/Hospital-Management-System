@@ -318,7 +318,7 @@
 
                <p>
                   <i class="ri-mail-line"></i>
-                   michael.tchoua@email.com
+                   michael.tchoua@gmail.com
                </p>
 
             </div>
