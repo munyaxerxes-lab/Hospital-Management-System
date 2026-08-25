@@ -4,12 +4,6 @@
     <header>
      <main class="main">
 
-        <div class="topbar">
-
-            
-
-        </div>
-
     <section class="welcome">
             <div>
                 <h1>Welcome back, {{ $user->name }}! 👋</h1>
