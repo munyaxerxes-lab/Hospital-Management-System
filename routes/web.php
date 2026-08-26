@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LabTestController;
 use App\Models\medicine as Medicine;
 
 
@@ -111,25 +113,25 @@ Route::middleware('auth')->group(function () {
 
 /*================== DOCTOR ROUTES ==================*/
 
-Route::get('/appointment', function () {
-    return view('account.doctor.appointment');
-});
+// Route::get('/appointment', function () {
+//     return view('account.doctor.appointment');
+// });
 
-Route::get('/availability', function () {
-    return view('account.doctor.availability');
-});
+// Route::get('/availability', function () {
+//     return view('account.doctor.availability');
+// });
 
-Route::get('/consultation', function () {
-    return view('account.doctor.consultation');
-});
+// Route::get('/consultation', function () {
+//     return view('account.doctor.consultation');
+// });
 
-Route::get('/profile', function () {
-    return view('account.doctor.profile');
-});
+// Route::get('/profile', function () {
+//     return view('account.doctor.profile');
+// });
 
-Route::get('/home', function () {
-    return view('account.doctor.home');
-});
+// Route::get('/home', function () {
+//     return view('account.doctor.home');
+// });
 
 
 /*================== CART MANAGEMENT ROUTES ==================*/
@@ -242,8 +244,6 @@ Route::delete('/admin/doctors/{doctor}', [DoctorController::class, 'destroy'])
     ->name('admin.doctors.delete');
 
 
-/*================== END ADMIN medicines MANAGEMENT ==================*/
-
 
 /*================== ADMIN medicines MANAGEMENT ==================*/
 
@@ -310,6 +310,11 @@ Route::delete('/admin/medicines/{medicine}', [MedicineController::class, 'destro
 
 /*================== END ADMIN medicine MANAGEMENT ==================*/
 
+Route::get('/admin/lab_request', [LabTestController::class, 'index'])
+    ->name('admin.lab_tests.index');
+
+Route::post('/admin/lab_request', [LabTestController::class, 'store'])
+    ->name('admin.lab_tests.store');
 
 
 /*================== OTHER ADMIN ROUTES ==================*/
@@ -449,13 +454,53 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         return view('account.admin.admin_dashboard');
     });
 
-    Route::get('/appointment_request', function () {
-        return view('account.admin.appointment_request');
-    });
+    /*================== ADMIN APPOINTMENT MANAGEMENT ==================*/
+    Route::get('/appointment_request', [AppointmentController::class, 'index'])
+        ->name('admin.appointments.index');
 
-    Route::get('/lab_request', function () {
-        return view('account.admin.lab_request');
-    });
+    Route::get('/admin/appointments/create', [AppointmentController::class, 'create'])
+        ->name('admin.appointments.create');
+
+    Route::post('/admin/appointments', [AppointmentController::class, 'store'])
+        ->name('admin.appointments.store');
+
+    Route::get('/admin/appointments/{id}/edit', [AppointmentController::class, 'edit'])
+        ->name('admin.appointments.edit');
+
+    Route::put('/admin/appointments/{id}', [AppointmentController::class, 'update'])
+        ->name('admin.appointments.update');
+
+    Route::patch('/admin/appointments/{id}/toggle-status', [AppointmentController::class, 'toggleStatus'])
+        ->name('admin.appointments.toggleStatus');
+
+    Route::delete('/admin/appointments/{id}', [AppointmentController::class, 'destroy'])
+        ->name('admin.appointments.delete');
+    /*================== END ADMIN APPOINTMENT MANAGEMENT ==================*/
+    /*================== ADMIN LAB TEST MANAGEMENT ==================*/
+
+        Route::get('/lab_request', [LabTestController::class, 'index'])
+            ->name('admin.lab_tests.index');
+
+        Route::post('/admin/lab-tests', [LabTestController::class, 'store'])
+            ->name('admin.lab_tests.store');
+
+        Route::get('/admin/lab-tests/{lab_test}/edit', [LabTestController::class, 'edit'])
+            ->name('admin.lab_tests.edit');
+
+        Route::put('/admin/lab-tests/{lab_test}', [LabTestController::class, 'update'])
+            ->name('admin.lab_tests.update');
+
+        Route::patch('/admin/lab-tests/{id}/toggle-status', [LabTestController::class, 'toggleStatus'])
+            ->name('admin.lab_tests.toggleStatus');
+
+        Route::delete('/admin/lab-tests/{lab_test}', [LabTestController::class, 'destroy'])
+            ->name('admin.lab_tests.delete');
+
+/*================== END ADMIN LAB TEST MANAGEMENT ==================*/
+
+    // Route::get('/lab_request', function () {
+    //     return view('account.admin.lab_request');
+    // });
 
     // Route::get('/manage_doctors', function () {
     //     return view('account.admin.manage_doctors');

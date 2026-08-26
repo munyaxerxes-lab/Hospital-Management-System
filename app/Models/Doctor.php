@@ -21,4 +21,9 @@ class Doctor extends Model
         'years_of_experience' => 'integer',
         'consultation_fee' => 'decimal:2',
     ];
+
+    public function schedules()
+    {
+        return $this->hasMany(doctor_schedule::class, 'doctor_id');
+    }
 }

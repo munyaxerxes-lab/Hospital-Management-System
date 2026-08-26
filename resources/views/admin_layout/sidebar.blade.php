@@ -24,16 +24,16 @@
 
         <a href="/lab_request" class="nav-item">
             <i class="fa-solid fa-flask"></i>
-            <span>Lab Requests</span>
+            <span>Laboratory</span>
         </a>
 
          <a href="/medicine_orders" class="nav-item">
              <i class="fa-solid fa-capsules"></i>
-           <span>Medicine</span>
+           <span>Pharmacy</span>
 
         <a href="/manage_doctors" class="nav-item">
              <i class="fa-regular fa-user"></i>
-           <span> Manage Doctors</span>
+           <span>Doctors</span>
         </a>
 
        
