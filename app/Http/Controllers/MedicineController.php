@@ -13,7 +13,7 @@ class MedicineController extends Controller
         return view('account.admin.medicine_orders', compact('medicines'));
     }
 
-   public function store(Request $request)
+public function store(Request $request)
 {
     $validated = $request->validate([
         'name'        => 'required|string|max:255',
@@ -22,28 +22,26 @@ class MedicineController extends Controller
         'expiry_date' => 'required|date',
         'price'       => 'required|numeric|min:0',
         'description' => 'nullable|string|max:1000',
-        'status'      => 'required|in:1,0', 
         'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
     ]);
-       // Handle Image Upload
+
+    // Handle image upload
     if ($request->hasFile('image')) {
-        // Saves to storage/app/public/medicines and returns path name
         $path = $request->file('image')->store('medicines', 'public');
+
         $validated['image'] = $path;
     }
 
+    // New medicines are active/available by default
+    $validated['status'] = true;
 
-    // Convert string status to boolean
-    $validated['status'] = (bool) $validated['status'];
-
- 
-
-    \App\Models\Medicine::create($validated);
+    Medicine::create($validated);
 
     return redirect()
         ->route('admin.medicines.index')
         ->with('success', 'Medicine added successfully.');
 }
+
 
 
     public function update(Request $request, Medicine $medicine)

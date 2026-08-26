@@ -19,7 +19,7 @@
 
         <a href="/appointment_request" class="nav-item">
             <i class="fa-regular fa-calendar"></i>
-            <span>Appointments Request</span>
+            <span>Appointments</span>
         </a>
 
         <a href="/lab_request" class="nav-item">
@@ -29,7 +29,7 @@
 
          <a href="/medicine_orders" class="nav-item">
              <i class="fa-solid fa-capsules"></i>
-           <span>Medicine Orders</span>
+           <span>Medicine</span>
 
         <a href="/manage_doctors" class="nav-item">
              <i class="fa-regular fa-user"></i>

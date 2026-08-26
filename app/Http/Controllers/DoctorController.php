@@ -22,6 +22,8 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
+     
+
         $validated = $request->validate([
 
             'doctor_name' => [
@@ -60,7 +62,7 @@ class DoctorController extends Controller
                 'required',
                 'string',
                 'max:255',
-                'unique:doctors,username',
+                'unique:doctor,username',
             ],
 
             'status' => [
