@@ -6,9 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class lab_test extends Model
 {
-    //
-    public function lab_test()
-    {
-        return $this->hasMany(lab_request_items::class);
-    }
+    protected $fillable = [
+        'name',
+        'category',
+        'price',
+        'description',
+        'preparation',
+        'image',
+        'status',
+    ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+        'status' => 'boolean',
+    ];
 }
