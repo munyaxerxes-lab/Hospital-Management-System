@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
@@ -81,10 +82,10 @@ Route::middleware('auth')->group(function () {
         return view('account.patient.appointments');
     });
 
-    Route::get('/pharmacy', function () {
+     Route::get('/pharmacy', function () {
 
         $medicines = Medicine::whereNotNull('image')
-            ->where('image', '!=', '')
+           ->where('image', '!=', '')
             ->get();
 
         return view('account.patient.pharmacy', compact('medicines'));
@@ -241,7 +242,73 @@ Route::delete('/admin/doctors/{doctor}', [DoctorController::class, 'destroy'])
     ->name('admin.doctors.delete');
 
 
-/*================== END ADMIN DOCTOR MANAGEMENT ==================*/
+/*================== END ADMIN medicines MANAGEMENT ==================*/
+
+
+/*================== ADMIN medicines MANAGEMENT ==================*/
+
+
+/*
+|--------------------------------------------------------------------------
+| Display Manage medicines page
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/medicine_orders', [MedicineController::class, 'index'])
+    ->name('admin.medicines.index');
+
+
+/*
+|--------------------------------------------------------------------------
+| Create Doctor
+|--------------------------------------------------------------------------
+*/
+
+Route::post('/admin/medicines', [MedicineController::class, 'store'])
+    ->name('admin.medicines.store');
+
+
+/*
+|--------------------------------------------------------------------------
+| Edit Doctor
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/admin/medicines/{medicine}/edit', [MedicineController::class, 'edit'])
+    ->name('admin.medicines.edit');
+
+
+/*
+|--------------------------------------------------------------------------
+| Update Doctor
+|--------------------------------------------------------------------------
+*/
+
+Route::put('/admin/medicines/{medicine}', [MedicineController::class, 'update'])
+    ->name('admin.medicines.update');
+
+
+/*
+|--------------------------------------------------------------------------
+| Activate / Deactivate Doctor
+|--------------------------------------------------------------------------
+*/
+
+Route::patch('/admin/medicines/{id}/toggle-status', [MedicineController::class, 'toggleStatus'])
+    ->name('admin.medicines.toggleStatus');
+
+
+/*
+|--------------------------------------------------------------------------
+| Delete Doctor
+|--------------------------------------------------------------------------
+*/
+
+Route::delete('/admin/medicines/{medicine}', [MedicineController::class, 'destroy'])
+    ->name('admin.medicines.delete');
+
+
+/*================== END ADMIN medicine MANAGEMENT ==================*/
 
 
 
@@ -394,9 +461,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     //     return view('account.admin.manage_doctors');
     // });
 
-    Route::get('/medicine_orders', function () {
-        return view('account.admin.medicine_orders');
-    });
+    // Route::get('/medicine_orders', function () {
+    //     return view('account.admin.medicine_orders');
+    // });
         // Profile Management inside Admin Workspace
     Route::prefix('admin/profile')->group(function () {
         Route::get('/settings', [AuthController::class, 'showSettings'])->name('admin.profile.settings');

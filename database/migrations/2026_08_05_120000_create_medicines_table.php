@@ -9,13 +9,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('medicine', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->decimal('price', 10, 2)->default(0);
-            $table->integer('stock')->default(0);
-            $table->timestamps();
-        });
+    $table->id();
+    $table->string('name');
+    $table->string('type');
+    $table->integer('stock')->default(0); 
+    $table->boolean('status')->default(true);
+    $table->dateTime('expiry_date');
+    $table->text('description')->nullable();
+    $table->decimal('price', 10, 2)->default(0);
+    $table->string('image')->nullable();
+    $table->timestamps();
+});
+
     }
 
     public function down(): void
