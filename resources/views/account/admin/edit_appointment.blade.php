@@ -2,52 +2,48 @@
 
 @section('content')
 
-<div class="app">
+<section class="page" style="padding-bottom: 40px;">
 
-    <main class="main">
+    <!-- Breadcrumbs -->
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:14px;color:#64748b;">
+        <a href="{{ route('admin.dashboard') }}" style="color:#095eff;text-decoration:none;">Dashboard</a>
+        <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i>
+        <a href="{{ route('admin.appointments.index') }}" style="color:#095eff;text-decoration:none;">Appointments</a>
+        <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i>
+        <span style="color:#1e293b;font-weight:600;">Edit Schedule #{{ $schedule->id }}</span>
+    </div>
 
-        <section class="page" style="padding-bottom: 60px;">
+    <!-- Header -->
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
+        <div>
+            <h1 class="page-title" style="margin-bottom:6px;font-size:26px;font-weight:700;color:#0f172a;">
+                Edit Appointment Schedule
+            </h1>
+            <p class="page-subtitle" style="margin:0;color:#64748b;font-size:15px;">
+                Update doctor assignment, modify consultation hours, or change pricing.
+            </p>
+        </div>
 
-            <!-- Breadcrumbs -->
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:14px;color:#64748b;">
-                <a href="{{ route('admin.dashboard') }}" style="color:#095eff;text-decoration:none;">Dashboard</a>
-                <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i>
-                <a href="{{ route('admin.appointments.index') }}" style="color:#095eff;text-decoration:none;">Appointments</a>
-                <i class="fa-solid fa-chevron-right" style="font-size:10px;"></i>
-                <span style="color:#1e293b;font-weight:600;">Edit Schedule #{{ $schedule->id }}</span>
-            </div>
+        <a href="{{ route('admin.appointments.index') }}" style="background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;padding:10px 18px;border-radius:8px;font-weight:600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:14px;">
+            <i class="fa-solid fa-arrow-left"></i> Back to Appointments
+        </a>
+    </div>
 
-            <!-- Header -->
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
-                <div>
-                    <h1 class="page-title" style="margin-bottom:6px;font-size:26px;font-weight:700;color:#0f172a;">
-                        Edit Appointment Schedule
-                    </h1>
-                    <p class="page-subtitle" style="margin:0;color:#64748b;font-size:15px;">
-                        Update doctor assignment, modify consultation hours, or change pricing.
-                    </p>
-                </div>
+    {{-- ERROR ALERTS --}}
+    @if (isset($errors) && $errors->any())
+        <div class="alert alert-danger" style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;padding:16px;border-radius:10px;margin-bottom:24px;">
+            <strong style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:15px;">
+                <i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> Please correct the following errors:
+            </strong>
+            <ul style="margin:0;padding-left:22px;">
+                @foreach ($errors->all() as $error)
+                    <li style="margin-bottom:4px;">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-                <a href="{{ route('admin.appointments.index') }}" style="background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;padding:10px 18px;border-radius:8px;font-weight:600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:14px;">
-                    <i class="fa-solid fa-arrow-left"></i> Back to Appointments
-                </a>
-            </div>
-
-            {{-- ERROR ALERTS --}}
-            @if (isset($errors) && $errors->any())
-                <div class="alert alert-danger" style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;padding:16px;border-radius:10px;margin-bottom:24px;">
-                    <strong style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:15px;">
-                        <i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> Please correct the following errors:
-                    </strong>
-                    <ul style="margin:0;padding-left:22px;">
-                        @foreach ($errors->all() as $error)
-                            <li style="margin-bottom:4px;">{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.04);padding:32px;max-width:960px;margin:0 auto;">
+    <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.04);padding:32px;max-width:960px;margin:0 auto 40px auto;">
 
                 <form method="POST" action="{{ route('admin.appointments.update', $schedule->id) }}" id="appointmentEditForm">
                     @csrf
@@ -268,11 +264,7 @@
 
             </div>
 
-        </section>
-
-    </main>
-
-</div>
+</section>
 
 <style>
 .time-slot-pill .slot-box:hover {

@@ -1,9 +1,8 @@
-```blade
 @extends('admin_layout.index')
 
 @section('content')
 
-<section class="page">
+<section class="page" style="padding-bottom: 50px;">
 
     <h1 class="page-title">Manage Medicine Orders</h1>
 
@@ -66,6 +65,17 @@
 
         <div class="modal-content">
 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fa-solid fa-capsules"></i>
+                    Add New Medicine to Pharmacy
+                </h3>
+                <button type="button" popovertarget="my-modal" popovertargetaction="hide" class="modal-close-x" title="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
             <form
                 method="POST"
                 action="{{ route('admin.medicines.store') }}"
@@ -75,10 +85,7 @@
 
                 @csrf
 
-
-                <div class="form-title">
-                    Add New Medicine to Pharmacy
-                </div>
+                <div class="modal-body">
 
 
 
@@ -341,46 +348,33 @@
 
 
 
-                <!-- FORM BUTTONS -->
+                    <div class="required-note">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>All fields marked with * are required.</span>
+                    </div>
 
-                <div class="save-row">
+                </div>
 
+                <!-- Modal Footer Actions -->
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        popovertarget="my-modal"
+                        popovertargetaction="hide"
+                        class="close-btn"
+                    >
+                        Cancel
+                    </button>
                     <button
                         type="submit"
-                        class="btn btn-primary save-btn"
+                        class="save-btn"
                     >
-
                         <i class="fa-regular fa-floppy-disk"></i>
-
-                        Save Medicine
-
+                        <span>Save Medicine</span>
                     </button>
-
                 </div>
-
-
-                <div class="required-note">
-
-                    <i class="fa-solid fa-circle-info"></i>
-
-                    All fields marked with * are required.
-
-                </div>
-
 
             </form>
-
-
-
-            <!-- CLOSE -->
-
-            <button
-                popovertarget="my-modal"
-                popovertargetaction="hide"
-                class="close-btn"
-            >
-                Close
-            </button>
 
         </div>
 
@@ -573,37 +567,49 @@
 
 
 
-                                <!-- DELETE -->
-
-                                <form
-                                    method="POST"
-                                    action="{{ route('admin.medicines.delete', $med->id) }}"
-                                    style="display:inline;"
-                                    onsubmit="return confirm('Are you sure you want to delete this medicine?');"
+                                <!-- DELETE TRIGGER -->
+                                <button
+                                    type="button"
+                                    class="icon-btn red"
+                                    popovertarget="delete-med-{{ $med->id }}"
+                                    title="Delete medicine"
                                 >
-
-                                    @csrf
-
-                                    @method('DELETE')
-
-
-                                    <button
-                                        type="submit"
-                                        class="icon-btn red"
-                                        title="Delete medicine"
-                                    >
-
-                                        <i class="fa-solid fa-trash"></i>
-
-                                    </button>
-
-                                </form>
-
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
 
                             </td>
 
-
                         </tr>
+
+                        <!-- =====================================================
+                             DELETE MEDICINE CONFIRMATION MODAL
+                        ====================================================== -->
+                        <div id="delete-med-{{ $med->id }}" popover class="alert-modal-box">
+                            <div class="alert-modal-content">
+                                <div class="alert-modal-icon">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                </div>
+                                <h3 class="alert-modal-title">Delete Pharmacy Medicine</h3>
+                                <p class="alert-modal-desc">
+                                    Are you sure you want to delete <strong>{{ $med->medicine_name }}</strong>?
+                                </p>
+                                <div class="alert-modal-box-warning">
+                                    <strong>Warning:</strong> This item will be removed from the pharmacy catalog.
+                                </div>
+                                <div class="alert-modal-actions">
+                                    <button type="button" popovertarget="delete-med-{{ $med->id }}" popovertargetaction="hide" class="btn-modal-cancel">
+                                        Cancel
+                                    </button>
+                                    <form method="POST" action="{{ route('admin.medicines.delete', $med->id) }}" style="margin: 0;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-modal-danger">
+                                            <i class="fa-solid fa-trash"></i> Yes, Delete Medicine
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
 
 
@@ -619,6 +625,16 @@
 
                             <div class="modal-content">
 
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                    <h3 class="modal-title">
+                                        <i class="fa-solid fa-pills"></i>
+                                        Update Medicine Details
+                                    </h3>
+                                    <button type="button" popovertarget="edit-medicine-{{ $med->id }}" popovertargetaction="hide" class="modal-close-x" title="Close">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
 
                                 <form
                                     method="POST"
@@ -631,10 +647,7 @@
 
                                     @method('PUT')
 
-
-                                    <div class="form-title">
-                                        Update Medicine
-                                    </div>
+                                    <div class="modal-body">
 
 
 
@@ -856,36 +869,28 @@
 
                                     <!-- UPDATE BUTTON -->
 
-                                    <div class="save-row">
-
-                                        <button
-                                            type="submit"
-                                            class="btn btn-primary save-btn"
-                                        >
-
-                                            <i class="fa-solid fa-pen"></i>
-
-                                            Update Medicine
-
-                                        </button>
-
                                     </div>
 
+                                    <!-- Modal Footer Actions -->
+                                    <div class="modal-footer">
+                                        <button
+                                            type="button"
+                                            popovertarget="edit-medicine-{{ $med->id }}"
+                                            popovertargetaction="hide"
+                                            class="close-btn"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            class="save-btn"
+                                        >
+                                            <i class="fa-solid fa-pen"></i>
+                                            <span>Update Medicine</span>
+                                        </button>
+                                    </div>
 
                                 </form>
-
-
-
-                                <!-- CLOSE -->
-
-                                <button
-                                    popovertarget="edit-medicine-{{ $med->id }}"
-                                    popovertargetaction="hide"
-                                    class="close-btn"
-                                >
-                                    Cancel
-                                </button>
-
 
                             </div>
 
@@ -1032,4 +1037,3 @@
 </section>
 
 @endsection
-```

@@ -2,13 +2,9 @@
 
 @section('content')
 
- <div class="app">
+<section class="page" style="padding-bottom: 40px;">
 
-    <main class="main">
-
-        <section class="page">
-
-            <h1 class="page-title">Manage Doctor Accounts</h1>
+    <h1 class="page-title">Manage Doctor Accounts</h1>
 
             <p class="page-subtitle">
                 Create, update, activate, deactivate or delete doctor accounts.
@@ -51,6 +47,17 @@
 
                 <div class="modal-content">
 
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h3 class="modal-title">
+                            <i class="fa-solid fa-user-doctor"></i>
+                            Create New Doctor Account
+                        </h3>
+                        <button type="button" popovertarget="my-modal" popovertargetaction="hide" class="modal-close-x" title="Close">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
                     <form
                         method="POST"
                         action="{{ route('admin.doctors.store') }}"
@@ -59,9 +66,7 @@
 
                         @csrf
 
-                        <div class="form-title">
-                            Create New Doctor Account
-                        </div>
+                        <div class="modal-body">
 
 
                         <!-- Validation Summary -->
@@ -353,44 +358,33 @@
                         </div>
 
 
-                        <!-- Save -->
-
-                        <div class="save-row">
-
-                            <button
-                                type="submit"
-                                class="btn btn-primary save-btn"
-                            >
-
-                                <i class="fa-regular fa-floppy-disk"></i>
-
-                                Save Doctor
-
-                            </button>
+                            <div class="required-note">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>All fields marked with * are required.</span>
+                            </div>
 
                         </div>
 
-
-                        <div class="required-note">
-
-                            <i class="fa-solid fa-circle-info"></i>
-
-                            All fields marked with * are required.
-
+                        <!-- Modal Footer Actions -->
+                        <div class="modal-footer">
+                            <button
+                                type="button"
+                                popovertarget="my-modal"
+                                popovertargetaction="hide"
+                                class="close-btn"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                class="save-btn"
+                            >
+                                <i class="fa-regular fa-floppy-disk"></i>
+                                <span>Save Doctor</span>
+                            </button>
                         </div>
 
                     </form>
-
-
-                    <!-- Close Button -->
-
-                    <button
-                        popovertarget="my-modal"
-                        popovertargetaction="hide"
-                        class="close-btn"
-                    >
-                        Close
-                    </button>
 
                 </div>
 
@@ -505,29 +499,16 @@
 
 
                                         {{-- =================================================
-                                             DELETE DOCTOR ACCOUNT
+                                             DELETE DOCTOR ACCOUNT TRIGGER
                                              ================================================= --}}
-
-                                        <form
-                                            method="POST"
-                                            action="{{ route('admin.doctors.delete', $doctor->id) }}"
-                                            style="display:inline;"
-                                            onsubmit="return confirm('Are you sure you want to delete this doctor account?');"
+                                        <button
+                                            type="button"
+                                            class="icon-btn red"
+                                            popovertarget="delete-doctor-{{ $doctor->id }}"
+                                            title="Delete doctor account"
                                         >
-
-                                            @csrf
-
-                                            @method('DELETE')
-
-                                            <button
-                                                type="submit"
-                                                class="icon-btn red"
-                                                title="Delete doctor"
-                                            >
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-
-                                        </form>
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
 
 
                                         {{-- =================================================
@@ -547,6 +528,35 @@
 
                                 </tr>
 
+                                <!-- =====================================================
+                                     DELETE DOCTOR ACCOUNT CONFIRMATION MODAL
+                                ====================================================== -->
+                                <div id="delete-doctor-{{ $doctor->id }}" popover class="alert-modal-box">
+                                    <div class="alert-modal-content">
+                                        <div class="alert-modal-icon">
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+                                        </div>
+                                        <h3 class="alert-modal-title">Delete Doctor Account</h3>
+                                        <p class="alert-modal-desc">
+                                            Are you sure you want to permanently delete <strong>Dr. {{ $doctor->doctor_name }}</strong> ({{ $doctor->specialty }})?
+                                        </p>
+                                        <div class="alert-modal-box-warning">
+                                            <strong>Warning:</strong> This will erase their profile and remove all associated appointment schedules from the database.
+                                        </div>
+                                        <div class="alert-modal-actions">
+                                            <button type="button" popovertarget="delete-doctor-{{ $doctor->id }}" popovertargetaction="hide" class="btn-modal-cancel">
+                                                Cancel
+                                            </button>
+                                            <form method="POST" action="{{ route('admin.doctors.delete', $doctor->id) }}" style="margin: 0;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn-modal-danger">
+                                                    <i class="fa-solid fa-trash"></i> Yes, Delete Doctor
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <!-- =====================================================
                                      EDIT / UPDATE DOCTOR PROFILE MODAL
@@ -560,6 +570,17 @@
 
                                     <div class="modal-content">
 
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h3 class="modal-title">
+                                                <i class="fa-solid fa-user-pen"></i>
+                                                Update Doctor Profile
+                                            </h3>
+                                            <button type="button" popovertarget="edit-doctor-{{ $doctor->id }}" popovertargetaction="hide" class="modal-close-x" title="Close">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+
                                         <form
                                             method="POST"
                                             action="{{ route('admin.doctors.update', $doctor->id) }}"
@@ -570,10 +591,7 @@
 
                                             @method('PUT')
 
-
-                                            <div class="form-title">
-                                                Update Doctor Profile
-                                            </div>
+                                            <div class="modal-body">
 
 
                                             <div class="form-grid">
@@ -780,44 +798,33 @@
                                             </div>
 
 
-                                            <!-- Update -->
-
-                                            <div class="save-row">
-
-                                                <button
-                                                    type="submit"
-                                                    class="btn btn-primary save-btn"
-                                                >
-
-                                                    <i class="fa-solid fa-pen"></i>
-
-                                                    Update Doctor
-
-                                                </button>
+                                                <div class="required-note">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                    <span>Update the doctor's details and save your changes.</span>
+                                                </div>
 
                                             </div>
 
-
-                                            <div class="required-note">
-
-                                                <i class="fa-solid fa-circle-info"></i>
-
-                                                Update the doctor's information and save your changes.
-
+                                            <!-- Modal Footer Actions -->
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    popovertarget="edit-doctor-{{ $doctor->id }}"
+                                                    popovertargetaction="hide"
+                                                    class="close-btn"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    type="submit"
+                                                    class="save-btn"
+                                                >
+                                                    <i class="fa-solid fa-pen"></i>
+                                                    <span>Update Doctor</span>
+                                                </button>
                                             </div>
 
                                         </form>
-
-
-                                        <!-- Close -->
-
-                                        <button
-                                            popovertarget="edit-doctor-{{ $doctor->id }}"
-                                            popovertargetaction="hide"
-                                            class="close-btn"
-                                        >
-                                            Cancel
-                                        </button>
 
                                     </div>
 
@@ -934,10 +941,6 @@
 
             </div>
 
-        </section>
-
-    </main>
-
-</div>
+</section>
 
 @endsection

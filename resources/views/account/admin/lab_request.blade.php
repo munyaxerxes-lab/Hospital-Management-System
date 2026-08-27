@@ -2,7 +2,7 @@
 
 @section('content')
 
-<section class="page">
+<section class="page" style="padding-bottom: 50px;">
 
 <h1 class="page-title">Manage Lab Tests</h1>
 
@@ -65,6 +65,17 @@
 
     <div class="modal-content">
 
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h3 class="modal-title">
+                <i class="fa-solid fa-flask"></i>
+                Add New Laboratory Test
+            </h3>
+            <button type="button" popovertarget="my-modal" popovertargetaction="hide" class="modal-close-x" title="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
         <form
             method="POST"
             action="{{ route('admin.lab_tests.store') }}"
@@ -74,10 +85,7 @@
 
             @csrf
 
-
-            <div class="form-title">
-                Add New Laboratory Test
-            </div>
+            <div class="modal-body">
 
 
 
@@ -325,48 +333,33 @@
 
 
 
-            <!-- =================================================
-                 SAVE BUTTON
-            ================================================== -->
+                <div class="required-note">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>All fields marked with * are required.</span>
+                </div>
 
-            <div class="save-row">
+            </div>
 
+            <!-- Modal Footer Actions -->
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    popovertarget="my-modal"
+                    popovertargetaction="hide"
+                    class="close-btn"
+                >
+                    Cancel
+                </button>
                 <button
                     type="submit"
-                    class="btn btn-primary save-btn"
+                    class="save-btn"
                 >
-
                     <i class="fa-regular fa-floppy-disk"></i>
-
-                    Save Lab Test
-
+                    <span>Save Lab Test</span>
                 </button>
-
             </div>
-
-
-            <div class="required-note">
-
-                <i class="fa-solid fa-circle-info"></i>
-
-                All fields marked with * are required.
-
-            </div>
-
 
         </form>
-
-
-
-        <!-- CLOSE -->
-
-        <button
-            popovertarget="my-modal"
-            popovertargetaction="hide"
-            class="close-btn"
-        >
-            Close
-        </button>
 
     </div>
 
@@ -578,38 +571,49 @@
 
 
 
-                            <!-- DELETE -->
-
-                            <form
-                                method="POST"
-                                action="{{ route('admin.lab_tests.delete', $test->id) }}"
-                                style="display:inline;"
-                                onsubmit="return confirm('Are you sure you want to delete this laboratory test?');"
+                            <!-- DELETE TRIGGER -->
+                            <button
+                                type="button"
+                                class="icon-btn red"
+                                popovertarget="delete-lab-{{ $test->id }}"
+                                title="Delete lab test"
                             >
-
-                                @csrf
-
-                                @method('DELETE')
-
-                                <button
-                                    type="submit"
-                                    class="icon-btn red"
-                                    title="Delete lab test"
-                                >
-
-                                    <i class="fa-solid fa-trash"></i>
-
-                                </button>
-
-                            </form>
-
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
 
                         </td>
 
-
                     </tr>
 
-
+                    <!-- =====================================================
+                         DELETE LAB TEST CONFIRMATION MODAL
+                    ====================================================== -->
+                    <div id="delete-lab-{{ $test->id }}" popover class="alert-modal-box">
+                        <div class="alert-modal-content">
+                            <div class="alert-modal-icon">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <h3 class="alert-modal-title">Delete Laboratory Test</h3>
+                            <p class="alert-modal-desc">
+                                Are you sure you want to delete <strong>{{ $test->test_name }}</strong>?
+                            </p>
+                            <div class="alert-modal-box-warning">
+                                <strong>Warning:</strong> This lab test will be removed from patient requisition catalogs.
+                            </div>
+                            <div class="alert-modal-actions">
+                                <button type="button" popovertarget="delete-lab-{{ $test->id }}" popovertargetaction="hide" class="btn-modal-cancel">
+                                    Cancel
+                                </button>
+                                <form method="POST" action="{{ route('admin.lab_tests.delete', $test->id) }}" style="margin: 0;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-modal-danger">
+                                        <i class="fa-solid fa-trash"></i> Yes, Delete Test
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- =====================================================
                          EDIT LAB TEST MODAL
@@ -623,6 +627,16 @@
 
                         <div class="modal-content">
 
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h3 class="modal-title">
+                                    <i class="fa-solid fa-flask-vial"></i>
+                                    Update Laboratory Test
+                                </h3>
+                                <button type="button" popovertarget="edit-lab-test-{{ $test->id }}" popovertargetaction="hide" class="modal-close-x" title="Close">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
 
                             <form
                                 method="POST"
@@ -635,10 +649,7 @@
 
                                 @method('PUT')
 
-
-                                <div class="form-title">
-                                    Update Laboratory Test
-                                </div>
+                                <div class="modal-body">
 
 
 
@@ -838,38 +849,28 @@
 
 
 
-                                <!-- UPDATE BUTTON -->
-
-                                <div class="save-row">
-
-                                    <button
-                                        type="submit"
-                                        class="btn btn-primary save-btn"
-                                    >
-
-                                        <i class="fa-solid fa-pen"></i>
-
-                                        Update Lab Test
-
-                                    </button>
-
                                 </div>
 
+                                <!-- Modal Footer Actions -->
+                                <div class="modal-footer">
+                                    <button
+                                        type="button"
+                                        popovertarget="edit-lab-test-{{ $test->id }}"
+                                        popovertargetaction="hide"
+                                        class="close-btn"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        class="save-btn"
+                                    >
+                                        <i class="fa-solid fa-pen"></i>
+                                        <span>Update Lab Test</span>
+                                    </button>
+                                </div>
 
                             </form>
-
-
-
-                            <!-- CLOSE -->
-
-                            <button
-                                popovertarget="edit-lab-test-{{ $test->id }}"
-                                popovertargetaction="hide"
-                                class="close-btn"
-                            >
-                                Cancel
-                            </button>
-
 
                         </div>
 

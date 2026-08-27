@@ -3,7 +3,7 @@
 
 
 
-      <section class="page">
+<section class="page" style="padding-bottom: 90px; min-height: calc(100vh - 280px);">
     <h1 class="page-title dashboard-title">Hello Administrator,</h1>
     <p class="page-subtitle dashboard-subtitle">Here's what's happening with your System today.</p>
 

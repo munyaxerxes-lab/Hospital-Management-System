@@ -1,330 +1,29 @@
 <?php
 
-use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\LabTestController;
+use App\Http\Controllers\MedicineController;
+use App\Models\Medicine;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LabTestController;
-use App\Models\medicine as Medicine;
-
-
-/*================== LANDING PAGE ===========*/
-
-Route::get("/", function () 
-{
-    return view('auth.register');
-});
-
-
-/*================== DASHBOARD ROUTES ==================*/
-
-Route::middleware('auth')->group(function () {
-
-    Route::get('/patient/dashboard', function () {
-        return view('account.patient.dashboard');
-    })->name('patient.dashboard');
-
-    Route::get('/doctor/dashboard', function () {
-        return view('account.doctor.dashboard');
-    })->name('doctor.dashboard');
-
-    Route::get('/admin/dashboard', function () {
-        return view('account.admin.admin_dashboard');
-    })->name('admin.dashboard');
-
-    Route::get('/pharmacist/dashboard', function () {
-        return view('account.pharmacist.dashboard');
-    })->name('pharmacist.dashboard');
-
-    Route::get('/lab/dashboard', function () {
-        return view('account.lab.dashboard');
-    })->name('account.lab.dashboard');
-
-    Route::get('/delivery/dashboard', function () {
-        return view('account.delivery.dashboard');
-    })->name('delivery.dashboard');
-
-});
-
-
-/*================== REGISTRATION ROUTES ==================*/
-
-Route::get('/register', [AuthController::class, 'showRegister'])
-    ->name('show.register');
-
-Route::post('/register', [AuthController::class, 'register'])
-    ->name('register');
-
-
-/*================== LOGIN ROUTES ==================*/
-
-Route::get('/login', [AuthController::class, 'showLogin'])
-    ->name('show.login');
-
-Route::post('/login', [AuthController::class, 'login'])
-    ->name('login');
-
-Route::post('/logout', [AuthController::class, 'logout'])
-    ->name('logout');
-
-
-/*================== USER / PATIENT ROUTES ==================*/
-
-Route::middleware('auth')->group(function () {
-
-    Route::get('/user', function () {
-        return view('account.patient.dashboard');
-    })->name('user.dashboard');
-
-    Route::get('/appointments', function () {
-        return view('account.patient.appointments');
-    });
-
-     Route::get('/pharmacy', function () {
-
-        $medicines = Medicine::whereNotNull('image')
-           ->where('image', '!=', '')
-            ->get();
-
-        return view('account.patient.pharmacy', compact('medicines'));
-    });
-
-    Route::get('/notifications', function () {
-        return view('account.patient.notifications');
-    });
-
-    Route::get('/labtests', function () {
-        return view('account.patient.labtests');
-    });
-
-    Route::get('/history', function () {
-        return view('account.patient.history');
-    });
-
-    Route::get('/cart', [CartController::class, 'index'])
-        ->name('cart.index');
-
-});
-
-
-/*================== DOCTOR ROUTES ==================*/
-
-// Route::get('/appointment', function () {
-//     return view('account.doctor.appointment');
-// });
-
-// Route::get('/availability', function () {
-//     return view('account.doctor.availability');
-// });
-
-// Route::get('/consultation', function () {
-//     return view('account.doctor.consultation');
-// });
-
-// Route::get('/profile', function () {
-//     return view('account.doctor.profile');
-// });
-
-// Route::get('/home', function () {
-//     return view('account.doctor.home');
-// });
-
-
-/*================== CART MANAGEMENT ROUTES ==================*/
-
-Route::post('/cart', [CartController::class, 'store'])
-    ->name('cart.store');
-
-Route::post('/cart/add/{id}', [CartController::class, 'add'])
-    ->name('cart.add');
-
-Route::put('/cart/{id}', [CartController::class, 'update'])
-    ->name('cart.update');
-
-Route::delete('/cart/{id}', [CartController::class, 'destroy'])
-    ->name('cart.destroy');
-
-
-/*================== AUTH ROUTES ==================*/
-
-require __DIR__.'/auth.php';
-
-
-/*================== RESET PASSWORD ROUTES ==================*/
-
-Route::get('/reset-password', function () {
-    return view('auth.reset-password');
-})->name('reset.password');
-
-
-/*================== USER DASHBOARD ==================*/
-
-Route::get('/user', function () {
-
-    // Fetch the logged-in user record
-    $user = Auth::user();
-
-    // Pass the user data into the dashboard blade template
-    return view('account.patient.dashboard', compact('user'));
-
-})->name('user.dashboard');
-
 
 /*
 |--------------------------------------------------------------------------
-|                  ADMIN ROUTES
-|-------------------------------------------------------------------------
-*/
-
-
-/*================== ADMIN DOCTOR MANAGEMENT ==================*/
-
-
-/*
-|--------------------------------------------------------------------------
-| Display Manage Doctors page
+| Web Routes
 |--------------------------------------------------------------------------
 */
 
-Route::get('/manage_doctors', [DoctorController::class, 'index'])
-    ->name('admin.doctors.index');
-
-
 /*
 |--------------------------------------------------------------------------
-| Create Doctor
-|--------------------------------------------------------------------------
-*/
-
-Route::post('/admin/doctors', [DoctorController::class, 'store'])
-    ->name('admin.doctors.store');
-
-
-/*
-|--------------------------------------------------------------------------
-| Edit Doctor
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/admin/doctors/{doctor}/edit', [DoctorController::class, 'edit'])
-    ->name('admin.doctors.edit');
-
-
-/*
-|--------------------------------------------------------------------------
-| Update Doctor
-|--------------------------------------------------------------------------
-*/
-
-Route::put('/admin/doctors/{doctor}', [DoctorController::class, 'update'])
-    ->name('admin.doctors.update');
-
-
-/*
-|--------------------------------------------------------------------------
-| Activate / Deactivate Doctor
-|--------------------------------------------------------------------------
-*/
-
-Route::patch('/admin/doctors/{id}/toggle-status', [DoctorController::class, 'toggleStatus'])
-    ->name('admin.doctors.toggleStatus');
-
-
-/*
-|--------------------------------------------------------------------------
-| Delete Doctor
-|--------------------------------------------------------------------------
-*/
-
-Route::delete('/admin/doctors/{doctor}', [DoctorController::class, 'destroy'])
-    ->name('admin.doctors.delete');
-
-
-
-/*================== ADMIN medicines MANAGEMENT ==================*/
-
-
-/*
-|--------------------------------------------------------------------------
-| Display Manage medicines page
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/medicine_orders', [MedicineController::class, 'index'])
-    ->name('admin.medicines.index');
-
-
-/*
-|--------------------------------------------------------------------------
-| Create Doctor
-|--------------------------------------------------------------------------
-*/
-
-Route::post('/admin/medicines', [MedicineController::class, 'store'])
-    ->name('admin.medicines.store');
-
-
-/*
-|--------------------------------------------------------------------------
-| Edit Doctor
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/admin/medicines/{medicine}/edit', [MedicineController::class, 'edit'])
-    ->name('admin.medicines.edit');
-
-
-/*
-|--------------------------------------------------------------------------
-| Update Doctor
-|--------------------------------------------------------------------------
-*/
-
-Route::put('/admin/medicines/{medicine}', [MedicineController::class, 'update'])
-    ->name('admin.medicines.update');
-
-
-/*
-|--------------------------------------------------------------------------
-| Activate / Deactivate Doctor
-|--------------------------------------------------------------------------
-*/
-
-Route::patch('/admin/medicines/{id}/toggle-status', [MedicineController::class, 'toggleStatus'])
-    ->name('admin.medicines.toggleStatus');
-
-
-/*
-|--------------------------------------------------------------------------
-| Delete Doctor
-|--------------------------------------------------------------------------
-*/
-
-Route::delete('/admin/medicines/{medicine}', [MedicineController::class, 'destroy'])
-    ->name('admin.medicines.delete');
-
-
-/*================== END ADMIN medicine MANAGEMENT ==================*/
-
-Route::get('/admin/lab_request', [LabTestController::class, 'index'])
-    ->name('admin.lab_tests.index');
-
-Route::post('/admin/lab_request', [LabTestController::class, 'store'])
-    ->name('admin.lab_tests.store');
-
-
-/*================== OTHER ADMIN ROUTES ==================*/
-/*
-|--------------------------------------------------------------------------
-| Global Fallback Handler (Bypasses Guest Group Loops)
+| Global Fallback & Entry Handler (Bypasses Guest Group Loops)
 |--------------------------------------------------------------------------
 */
 Route::get("/", function () {
-    // If a user is already signed in, dynamically throw them past the login wall
     if (Auth::check()) {
         $user = Auth::user();
         if ($user->role && $user->role->name === 'admin') {
@@ -332,8 +31,6 @@ Route::get("/", function () {
         }
         return redirect()->route('patient.dashboard');
     }
-    
-    // Otherwise, show unauthenticated visitors your signup view layout
     return view('auth.register');
 });
 
@@ -343,10 +40,8 @@ Route::get("/", function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
-    //  REMOVED Route::get('/', ...) from here to stop the looping crashes!
-
-    Route::get('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])->name('show.register');
-    Route::post('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'store'])->name('register');
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('show.register');
+    Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
 
     // Naming references for login forms
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -357,21 +52,19 @@ Route::middleware('guest')->group(function () {
     Route::get('/reset-password', function () { return view('auth.reset-password'); })->name('password.request');
     Route::get('/forgot-password', function () { return view('auth.reset-password'); })->name('reset.password');
 
-    Route::post('/reset-password', function (\Illuminate\Http\Request $request) {
+    Route::post('/reset-password', function (Request $request) {
         return back()->with('status', 'If your email is registered, we have sent a reset link.');
     })->name('password.update');
 
-    //  FIXED: Mapped 'register.verify-otp' to the GET route and '.submit' to the POST form handler
-    Route::get('/verify-otp', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'showVerifyOtp'])->name('register.verify-otp');
-    Route::post('/verify-otp', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'verifyOtp'])->name('register.verify-otp.submit');
-    Route::post('/resend-otp', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'resendOtp'])->name('register.resend-otp');
+    Route::get('/verify-otp', [RegisteredUserController::class, 'showVerifyOtp'])->name('register.verify-otp');
+    Route::post('/verify-otp', [RegisteredUserController::class, 'verifyOtp'])->name('register.verify-otp.submit');
+    Route::post('/resend-otp', [RegisteredUserController::class, 'resendOtp'])->name('register.resend-otp');
 });
 
 /*
 |--------------------------------------------------------------------------
 | 2. Global Route: Secure Logout Handling
 |--------------------------------------------------------------------------
-| Extracted out of specific workspaces so both Admins and Patients can access it
 */
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -426,16 +119,14 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
 
     Route::delete('/account/delete', [AuthController::class, 'deleteAccount'])->name('account.delete');
 
-        // Profile Management inside Patient Workspace
-        Route::prefix('patient/profile')->group(function () {
+    // Profile Management inside Patient Workspace
+    Route::prefix('patient/profile')->group(function () {
         Route::get('/settings', [AuthController::class, 'showSettings'])->name('profile.settings');
         Route::put('/update', [AuthController::class, 'updateProfile'])->name('profile.update');
         Route::put('/change-email', [AuthController::class, 'changeEmail'])->name('profile.change-email');
         Route::put('/change-phone', [AuthController::class, 'changePhone'])->name('profile.change-phone');
         Route::put('/update-password', [AuthController::class, 'updatePassword'])->name('profile.update-password');
     });
-
-
 });
 
 /*
@@ -445,7 +136,6 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
 */
 Route::middleware(['auth', 'role:admin'])->group(function () {
         
-
     Route::get('/admin/dashboard', function () {
         return view('account.admin.admin_dashboard');
     })->name('admin.dashboard');
@@ -475,41 +165,69 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::delete('/admin/appointments/{id}', [AppointmentController::class, 'destroy'])
         ->name('admin.appointments.delete');
-    /*================== END ADMIN APPOINTMENT MANAGEMENT ==================*/
+
+    /*================== ADMIN DOCTOR MANAGEMENT ==================*/
+    Route::get('/manage_doctors', [DoctorController::class, 'index'])
+        ->name('admin.doctors.index');
+
+    Route::post('/admin/doctors', [DoctorController::class, 'store'])
+        ->name('admin.doctors.store');
+
+    Route::get('/admin/doctors/{doctor}/edit', [DoctorController::class, 'edit'])
+        ->name('admin.doctors.edit');
+
+    Route::put('/admin/doctors/{doctor}', [DoctorController::class, 'update'])
+        ->name('admin.doctors.update');
+
+    Route::patch('/admin/doctors/{id}/toggle-status', [DoctorController::class, 'toggleStatus'])
+        ->name('admin.doctors.toggleStatus');
+
+    Route::delete('/admin/doctors/{doctor}', [DoctorController::class, 'destroy'])
+        ->name('admin.doctors.delete');
+
+    /*================== ADMIN MEDICINE MANAGEMENT ==================*/
+    Route::get('/medicine_orders', [MedicineController::class, 'index'])
+        ->name('admin.medicines.index');
+
+    Route::post('/admin/medicines', [MedicineController::class, 'store'])
+        ->name('admin.medicines.store');
+
+    Route::get('/admin/medicines/{medicine}/edit', [MedicineController::class, 'edit'])
+        ->name('admin.medicines.edit');
+
+    Route::put('/admin/medicines/{medicine}', [MedicineController::class, 'update'])
+        ->name('admin.medicines.update');
+
+    Route::patch('/admin/medicines/{id}/toggle-status', [MedicineController::class, 'toggleStatus'])
+        ->name('admin.medicines.toggleStatus');
+
+    Route::delete('/admin/medicines/{medicine}', [MedicineController::class, 'destroy'])
+        ->name('admin.medicines.delete');
+
     /*================== ADMIN LAB TEST MANAGEMENT ==================*/
+    Route::get('/lab_request', [LabTestController::class, 'index'])
+        ->name('admin.lab_tests.index');
 
-        Route::get('/lab_request', [LabTestController::class, 'index'])
-            ->name('admin.lab_tests.index');
+    Route::get('/admin/lab_request', [LabTestController::class, 'index']);
 
-        Route::post('/admin/lab-tests', [LabTestController::class, 'store'])
-            ->name('admin.lab_tests.store');
+    Route::post('/admin/lab-tests', [LabTestController::class, 'store'])
+        ->name('admin.lab_tests.store');
 
-        Route::get('/admin/lab-tests/{lab_test}/edit', [LabTestController::class, 'edit'])
-            ->name('admin.lab_tests.edit');
+    Route::post('/admin/lab_request', [LabTestController::class, 'store']);
 
-        Route::put('/admin/lab-tests/{lab_test}', [LabTestController::class, 'update'])
-            ->name('admin.lab_tests.update');
+    Route::get('/admin/lab-tests/{lab_test}/edit', [LabTestController::class, 'edit'])
+        ->name('admin.lab_tests.edit');
 
-        Route::patch('/admin/lab-tests/{id}/toggle-status', [LabTestController::class, 'toggleStatus'])
-            ->name('admin.lab_tests.toggleStatus');
+    Route::put('/admin/lab-tests/{lab_test}', [LabTestController::class, 'update'])
+        ->name('admin.lab_tests.update');
 
-        Route::delete('/admin/lab-tests/{lab_test}', [LabTestController::class, 'destroy'])
-            ->name('admin.lab_tests.delete');
+    Route::patch('/admin/lab-tests/{id}/toggle-status', [LabTestController::class, 'toggleStatus'])
+        ->name('admin.lab_tests.toggleStatus');
 
-/*================== END ADMIN LAB TEST MANAGEMENT ==================*/
+    Route::delete('/admin/lab-tests/{lab_test}', [LabTestController::class, 'destroy'])
+        ->name('admin.lab_tests.delete');
 
-    // Route::get('/lab_request', function () {
-    //     return view('account.admin.lab_request');
-    // });
-
-    // Route::get('/manage_doctors', function () {
-    //     return view('account.admin.manage_doctors');
-    // });
-
-    // Route::get('/medicine_orders', function () {
-    //     return view('account.admin.medicine_orders');
-    // });
-        // Profile Management inside Admin Workspace
+    /*================== ADMIN PROFILE SETTINGS ==================*/
     Route::prefix('admin/profile')->group(function () {
         Route::get('/settings', [AuthController::class, 'showSettings'])->name('admin.profile.settings');
         Route::put('/update', [AuthController::class, 'updateProfile'])->name('admin.profile.update');
@@ -517,12 +235,34 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::put('/change-phone', [AuthController::class, 'changePhone'])->name('admin.profile.change-phone');
         Route::put('/update-password', [AuthController::class, 'updatePassword'])->name('admin.profile.update-password');
     });
-
 });
 
 /*
 |--------------------------------------------------------------------------
-| 5. Cart Management Functions
+| 5. Other Role Dashboards (Protected by Auth)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::get('/doctor/dashboard', function () {
+        return view('account.doctor.dashboard');
+    })->name('doctor.dashboard');
+
+    Route::get('/pharmacist/dashboard', function () {
+        return view('account.pharmacist.dashboard');
+    })->name('pharmacist.dashboard');
+
+    Route::get('/lab/dashboard', function () {
+        return view('account.lab.dashboard');
+    })->name('account.lab.dashboard');
+
+    Route::get('/delivery/dashboard', function () {
+        return view('account.delivery.dashboard');
+    })->name('delivery.dashboard');
+});
+
+/*
+|--------------------------------------------------------------------------
+| 6. Cart Management Functions
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -534,7 +274,7 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| 6. Internal System Profiles & External Requirements
+| 7. Internal System Profiles & External Requirements
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -543,3 +283,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/Dr sarah', function () { return view('account.viewprofile.sarah-jen'); });
     Route::get('/Dr michael', function () { return view('account.viewprofile.michael'); });
 });
+
+/*
+|--------------------------------------------------------------------------
+| 8. Auth Scaffold Routes (OTP & Password Reset Handlers)
+|--------------------------------------------------------------------------
+*/
+require __DIR__.'/auth.php';
