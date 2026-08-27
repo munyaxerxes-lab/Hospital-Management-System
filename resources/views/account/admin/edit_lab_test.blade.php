@@ -126,6 +126,12 @@
                         accept="image/jpeg,image/png,image/webp"
                         style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:14px;background:#fff;"
                     >
+                    @if($lab_test->image_url)
+                        <div style="margin-top:8px;display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">
+                            <img src="{{ $lab_test->image_url }}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;border:1px solid #cbd5e1;" onerror="this.onerror=null; this.src='{{ asset('image/lab1.png') }}';">
+                            <span style="font-size:13px;color:#64748b;">Current test image</span>
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Preparation -->

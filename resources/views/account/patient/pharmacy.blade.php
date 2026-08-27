@@ -22,18 +22,8 @@
     @if(isset($medicines) && $medicines->count())
 
         @foreach($medicines as $medicine)
-            @php
-                $imgSrc = '/image/pharma3.png';
-                if (!empty($medicine->image)) {
-                    if (\Illuminate\Support\Str::startsWith($medicine->image, ['http://', 'https://', 'image/'])) {
-                        $imgSrc = asset($medicine->image);
-                    } else {
-                        $imgSrc = asset('storage/' . $medicine->image);
-                    }
-                }
-            @endphp
             <div class="image card">
-                <img src="{{ $imgSrc }}" alt="{{ $medicine->name }}" onerror="this.src='/image/pharma3.png'">
+                <img src="{{ $medicine->image_url ?? asset('image/pharma3.png') }}" alt="{{ $medicine->name }}" onerror="this.onerror=null; this.src='{{ asset('image/pharma3.png') }}';">
                 <div class="text">
                     <h2>{{ $medicine->name }}</h2>
                     <p>{{ \Illuminate\Support\Str::limit($medicine->description, 80) }}</p>

@@ -40,7 +40,7 @@
                       <tr>
                         <td>
                             <div class="cart-img">
-                            <img src="{{ asset(ltrim($item->medicine->image ?? '/image/pharma.png', '/')) }}" alt="medicine" onerror="this.src='/image/pharma.png'">
+                            <img src="{{ optional($item->medicine)->image_url ?? asset('image/pharma.png') }}" alt="medicine" onerror="this.onerror=null; this.src='{{ asset('image/pharma.png') }}';">
                             <p>{{ $item->medicine->name ?? 'Medicine' }}</p>
                             </div>
                         </td>

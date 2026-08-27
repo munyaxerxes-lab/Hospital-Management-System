@@ -15,27 +15,39 @@ class LabTestSeeder extends Seeder
     {
         //
         DB::table('lab_tests')->insert([
-    [
-        'name' => 'Malaria Test',
-        'description' => 'Malaria parasite examination',
-        'price' => 3000,
-        'created_at' => now(),
-        'updated_at' => now(),
-    ],
-    [
-        'name' => 'Full Blood Count',
-        'description' => 'Complete blood cell analysis',
-        'price' => 5000,
-        'created_at' => now(),
-        'updated_at' => now(),
-    ],
-    [
-        'name' => 'Blood Sugar',
-        'description' => 'Blood glucose test',
-        'price' => 2500,
-        'created_at' => now(),
-        'updated_at' => now(),
-    ],
-]);
+            [
+                'name' => 'Malaria Test',
+                'category' => 'Parasitology',
+                'description' => 'Malaria parasite examination',
+                'preparation' => 'No special preparation needed',
+                'price' => 3000,
+                'image' => '/image/malaria.png',
+                'status' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Full Blood Count',
+                'category' => 'Hematology',
+                'description' => 'Complete blood cell analysis',
+                'preparation' => 'Fasting not required',
+                'price' => 5000,
+                'image' => '/image/bp.png',
+                'status' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Blood Sugar',
+                'category' => 'Biochemistry',
+                'description' => 'Blood glucose test',
+                'preparation' => '8 hours overnight fasting',
+                'price' => 2500,
+                'image' => '/image/hypertension.png',
+                'status' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 }

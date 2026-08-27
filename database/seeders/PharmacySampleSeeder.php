@@ -22,7 +22,7 @@ class PharmacySampleSeeder extends Seeder
                 'expiry_date' => '2027-05-15',
                 'price' => 2500,
                 'description' => 'Broad-spectrum antibiotic used to treat bacterial infections.',
-                'image' => null
+                'image' => '/image/pharma3.png'
             ]);
             Medicine::create([
                 'name' => 'Paracetamol Extra 500mg',
@@ -32,7 +32,7 @@ class PharmacySampleSeeder extends Seeder
                 'expiry_date' => '2027-11-20',
                 'price' => 1000,
                 'description' => 'Fast-acting pain reliever and fever reducer.',
-                'image' => null
+                'image' => '/image/pharma.png'
             ]);
             Medicine::create([
                 'name' => 'Cough & Chest Syrup 150ml',
@@ -42,7 +42,7 @@ class PharmacySampleSeeder extends Seeder
                 'expiry_date' => '2026-12-30',
                 'price' => 3200,
                 'description' => 'Soothing cough formula for chest congestion.',
-                'image' => null
+                'image' => '/image/pharma3.png'
             ]);
             Medicine::create([
                 'name' => 'Ceftriaxone Injection 1g',
@@ -52,7 +52,7 @@ class PharmacySampleSeeder extends Seeder
                 'expiry_date' => '2027-02-10',
                 'price' => 4500,
                 'description' => 'Sterile injectable antibiotic for acute infections.',
-                'image' => null
+                'image' => '/image/pharma.png'
             ]);
             Medicine::create([
                 'name' => 'Sterile Cotton Wool 500g',
@@ -62,7 +62,7 @@ class PharmacySampleSeeder extends Seeder
                 'expiry_date' => '2029-01-01',
                 'price' => 1500,
                 'description' => 'High absorbent pure medical grade cotton.',
-                'image' => null
+                'image' => '/image/med.png'
             ]);
         }
 

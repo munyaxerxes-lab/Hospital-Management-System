@@ -221,9 +221,10 @@
                             <tr>
                                 <!-- Image -->
                                 <td>
-                                    @if($test->image)
-                                        <img src="{{ asset('storage/' . $test->image) }}" alt="{{ $test->name }}"
-                                             style="width:44px;height:44px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0;">
+                                    @if($test->image_url)
+                                        <img src="{{ $test->image_url }}" alt="{{ $test->name }}"
+                                             style="width:44px;height:44px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0;"
+                                             onerror="this.onerror=null; this.src='{{ asset('image/lab1.png') }}';">
                                     @else
                                         <div style="width:44px;height:44px;background:#eff6ff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#2563eb;border:1px solid #dbeafe;">
                                             <i class="fa-solid fa-vial"></i>
@@ -346,10 +347,10 @@
                                 <div class="field full">
                                     <label>Test Illustration Image</label>
                                     <input type="file" name="image" accept="image/*" style="border:1px dashed #cbd5e1;padding:8px;width:100%;border-radius:6px;">
-                                    @if($test->image)
+                                    @if($test->image_url)
                                         <div style="margin-top:6px;display:flex;align-items:center;gap:8px;font-size:12px;color:#64748b;">
                                             <span>Current:</span>
-                                            <img src="{{ asset('storage/' . $test->image) }}" style="width:34px;height:34px;border-radius:6px;object-fit:cover;">
+                                            <img src="{{ $test->image_url }}" style="width:34px;height:34px;border-radius:6px;object-fit:cover;border:1px solid #e2e8f0;" onerror="this.onerror=null; this.src='{{ asset('image/lab1.png') }}';">
                                         </div>
                                     @endif
                                 </div>
@@ -797,7 +798,16 @@
                                 @foreach($req->items as $item)
                                     <tr style="border-bottom:1px solid #f1f5f9;">
                                         <td style="padding:10px;font-weight:600;color:#1e293b;">
-                                            {{ $item->test_name ?? ($item->test->name ?? 'Lab Test') }}
+                                            <div style="display:flex;align-items:center;gap:10px;">
+                                                @if(optional($item->test)->image_url)
+                                                    <img src="{{ $item->test->image_url }}" style="width:30px;height:30px;border-radius:6px;object-fit:cover;border:1px solid #e2e8f0;" onerror="this.onerror=null; this.src='{{ asset('image/lab1.png') }}';">
+                                                @else
+                                                    <div style="width:30px;height:30px;border-radius:6px;background:#eff6ff;color:#2563eb;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">
+                                                        <i class="fa-solid fa-flask"></i>
+                                                    </div>
+                                                @endif
+                                                <span>{{ $item->test_name ?? ($item->test->name ?? 'Lab Test') }}</span>
+                                            </div>
                                         </td>
                                         <td style="padding:10px;color:#475569;">
                                             {{ $item->test->category ?? 'General' }}
