@@ -17,7 +17,7 @@ class AppointmentSeeder extends Seeder
         DB::table('appointments')->insert([
     [
         'patient_id' => 1,
-        'doctor_id' => 1,
+        'doctor_id' => 1 ,
         'schedule_id' => 1,
         'payment_id' => 1,
         'reason' => 'Routine medical consultation',
