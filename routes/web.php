@@ -86,9 +86,21 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     })->name('user.dashboard');
     
     Route::get('/appointments', function () {
-        return view('account.patient.appointments');
-    });
-    
+        $doctors = \App\Models\Doctor::where('status', 'active')
+            ->with(['schedules' => function ($q) {
+                $q->where('status', 'available')
+                  ->whereDate('date', '>=', now()->toDateString())
+                  ->orderBy('date')
+                  ->orderBy('start_time');
+            }])
+            ->orderBy('doctor_name')
+            ->get();
+        return view('account.patient.appointments', compact('doctors'));
+    })->name('patient.appointments');
+
+    Route::post('/patient/appointment/book', [AppointmentController::class, 'storePatientAppointment'])
+        ->name('patient.appointment.book');
+
     Route::get('/pharmacy', function () {
         $medicines = Medicine::where('status', true)->latest()->get();
         $categories = Medicine::where('status', true)->select('type')->distinct()->pluck('type')->filter()->values();

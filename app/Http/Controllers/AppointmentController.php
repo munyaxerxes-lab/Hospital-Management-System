@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\appointments;
 use App\Models\Doctor;
 use App\Models\doctor_schedule;
+use App\Models\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
 {
@@ -226,5 +230,62 @@ class AppointmentController extends Controller
         return redirect()
             ->route('admin.appointments.index')
             ->with('success', 'Appointment deleted successfully.');
+    }
+
+    /**
+     * Handle patient appointment booking from the Doctors List page.
+     */
+    public function storePatientAppointment(Request $request)
+    {
+        $validated = $request->validate([
+            'doctor_id'   => ['required', 'integer', 'exists:doctors,id'],
+            'schedule_id' => ['required', 'integer', 'exists:doctors_schedule,id'],
+            'reason'      => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Please log in first.'], 401);
+        }
+
+        $patient = Patient::firstOrCreate(['user_id' => $user->id]);
+
+        $schedule = doctor_schedule::findOrFail($validated['schedule_id']);
+
+        if ($schedule->status !== 'available') {
+            return response()->json(['success' => false, 'message' => 'This slot is no longer available. Please choose another.'], 409);
+        }
+
+        DB::beginTransaction();
+        try {
+            $appointment = appointments::create([
+                'patient_id'  => $patient->id,
+                'doctor_id'   => $validated['doctor_id'],
+                'schedule_id' => $validated['schedule_id'],
+                'reason'      => $validated['reason'] ?? 'General Consultation',
+                'status'      => 'confirmed',
+            ]);
+
+            // Mark the slot as booked so others can't take it
+            $schedule->status = 'booked';
+            $schedule->save();
+
+            DB::commit();
+
+            $doctor = Doctor::find($validated['doctor_id']);
+
+            return response()->json([
+                'success'        => true,
+                'message'        => 'Appointment booked successfully!',
+                'appointment_id' => $appointment->id,
+                'doctor_name'    => $doctor->doctor_name ?? 'Doctor',
+                'date'           => $schedule->date?->format('d M Y'),
+                'time'           => $schedule->start_time,
+                'fee'            => number_format($schedule->price, 0, '.', ' ') . ' FCFA',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Booking failed: ' . $e->getMessage()], 500);
+        }
     }
 }
