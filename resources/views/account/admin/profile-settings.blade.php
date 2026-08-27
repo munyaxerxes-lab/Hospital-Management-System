@@ -141,7 +141,7 @@
         </div>
 
         <!-- CARD 5: Danger Zone - Delete Account -->
-        <div class="card" style="background: #ffffff; padding: 24px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); margin-bottom: 24px; border: 1px solid #fee2e2;">
+        <!-- <div class="card" style="background: #ffffff; padding: 24px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); margin-bottom: 24px; border: 1px solid #fee2e2;">
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid #fee2e2;">
                 <div style="width: 38px; height: 38px; border-radius: 8px; background: #fef2f2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-size: 16px;">
                     <i class="fa-solid fa-triangle-exclamation"></i>
@@ -157,7 +157,7 @@
             <button type="button" popovertarget="delete-account-modal" class="btn-modal-danger" style="padding: 10px 20px;">
                 <i class="fa-solid fa-trash"></i> Delete Account
             </button>
-        </div>
+        </div> -->
 
     </div>
 </section>

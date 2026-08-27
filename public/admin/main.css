@@ -1712,9 +1712,10 @@ textarea {
 }
 
 .guide-title {
-    font-size: 9px;
+    font-size: 16px;
     font-weight: 700;
-    margin-bottom: 9px
+    margin-bottom: 9px;
+    margin-left: 9px;
 }
 
 .guide-grid {
@@ -1847,6 +1848,7 @@ textarea {
     position: fixed;
     top: 50%;
     left: 50%;
+    bottom: -30%;
     transform: translate(-50%, -50%);
     margin: 0;
     padding: 0;

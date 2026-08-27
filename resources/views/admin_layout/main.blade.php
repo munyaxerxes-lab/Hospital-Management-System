@@ -4,21 +4,21 @@
   <!-- Top Header Navigation Dashboard Area -->
   <header class="topbar">
     <div class="topbar-search-wrapper">
-        <div class="search-input-group">
+        <!-- <div class="search-input-group">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
             <input type="text" class="topbar-searchbar" placeholder="Search patients, doctors, tests..." id="globalAdminSearch">
             <span class="search-shortcut-badge">⌘K</span>
-        </div>
+        </div> -->
     </div>
    
     <!-- Top Header Nav Inline Actions Context -->
     <div class="header-nav">
         
         <!-- Live System Status Badge -->
-        <div class="system-status-indicator" title="All hospital services operational">
+        <!-- <div class="system-status-indicator" title="All hospital services operational">
             <span class="status-pulse-dot"></span>
             <span class="status-pulse-text">System Live</span>
-        </div>
+        </div> -->
 
         <!-- User Profile Dropdown Drop-panel Menu Anchor Frame -->
         <div class="user-dropdown-container">
@@ -73,13 +73,13 @@
                     <span>Account Settings</span>
                 </a>
 
-                <div class="dropdown-divider"></div>
+                <!-- <div class="dropdown-divider"></div> -->
 
-                <!-- Account Deletion Modal Trigger -->
+                <!-- Account Deletion Modal Trigger
                 <button type="button" popovertarget="delete-account-modal" class="dropdown-item delete-btn">
                     <i class="fa-solid fa-trash-can"></i>
                     <span>Delete Account</span>
-                </button>
+                </button> -->
 
                 <div class="dropdown-divider"></div>
 
@@ -137,9 +137,9 @@
       <div class="admin-footer-left">
         <span>&copy; {{ date('Y') }} <strong>MediLink Hospital Management System</strong>. All rights reserved.</span>
       </div>
-      <div class="admin-footer-right">
+      <!-- <div class="admin-footer-right">
         <span class="version-tag"><i class="fa-solid fa-shield-halved"></i> Enterprise Edition v2.4</span>
-      </div>
+      </div> -->
     </div>
   </footer>
 
