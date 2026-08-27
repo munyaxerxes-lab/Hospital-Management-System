@@ -90,7 +90,7 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     });
     
     Route::get('/pharmacy', function () {
-        $medicines = Medicine::whereNotNull('image')->where('image', '!=', '')->get();
+        $medicines = Medicine::where('status', true)->latest()->get();
         return view('account.patient.pharmacy', compact('medicines'));
     });
     
@@ -99,8 +99,15 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     });
     
     Route::get('/labtests', function () {
-        return view('account.patient.labtests');
-    });
+        $lab_tests = \App\Models\lab_test::where('status', true)->latest()->get();
+        return view('account.patient.labtests', compact('lab_tests'));
+    })->name('patient.labtests');
+    
+    Route::post('/patient/lab-request', [LabTestController::class, 'storePatientRequest'])
+        ->name('patient.lab_request.store');
+
+    Route::get('/patient/lab-results/{id}/download', [LabTestController::class, 'downloadResult'])
+        ->name('patient.lab_results.download');
     
     Route::get('/history', function () {
         return view('account.patient.history');
@@ -116,8 +123,6 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::get('/back', function () { return view('account.patient.appointments'); });
     Route::get('/appointmentdone', function () { return view('account.patient.appointments'); });
     Route::get('/backtolab', function () { return view('account.patient.labtests'); });
-
-    Route::delete('/account/delete', [AuthController::class, 'deleteAccount'])->name('account.delete');
 
     // Profile Management inside Patient Workspace
     Route::prefix('patient/profile')->group(function () {
@@ -137,11 +142,24 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
         
     Route::get('/admin/dashboard', function () {
-        return view('account.admin.admin_dashboard');
+        $stats = [
+            'appointments' => \App\Models\doctor_schedule::count(),
+            'available_slots' => \App\Models\doctor_schedule::where('status', 'available')->count(),
+            'booked_slots' => \App\Models\doctor_schedule::where('status', 'booked')->count(),
+            'lab_tests' => \Illuminate\Support\Facades\DB::table('lab_tests')->count(),
+            'medicines' => \App\Models\Medicine::count(),
+            'total_doctors' => \App\Models\Doctor::count(),
+            'active_doctors' => \App\Models\Doctor::where('status', 'active')->count(),
+        ];
+
+        $recentSchedules = \App\Models\doctor_schedule::with('doctor')->latest()->take(5)->get();
+        $recentDoctors = \App\Models\Doctor::latest()->take(4)->get();
+
+        return view('account.admin.admin_dashboard', compact('stats', 'recentSchedules', 'recentDoctors'));
     })->name('admin.dashboard');
 
     Route::get('/admin_dashboard', function () {
-        return view('account.admin.admin_dashboard');
+        return redirect()->route('admin.dashboard');
     });
 
     /*================== ADMIN APPOINTMENT MANAGEMENT ==================*/
@@ -204,6 +222,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/admin/medicines/{medicine}', [MedicineController::class, 'destroy'])
         ->name('admin.medicines.delete');
 
+    // Admin Order Management Actions
+    Route::patch('/admin/orders/{id}/status', [MedicineController::class, 'updateOrderStatus'])
+        ->name('admin.orders.updateStatus');
+
+    Route::delete('/admin/orders/{id}', [MedicineController::class, 'deleteOrder'])
+        ->name('admin.orders.delete');
+
     /*================== ADMIN LAB TEST MANAGEMENT ==================*/
     Route::get('/lab_request', [LabTestController::class, 'index'])
         ->name('admin.lab_tests.index');
@@ -227,6 +252,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/admin/lab-tests/{lab_test}', [LabTestController::class, 'destroy'])
         ->name('admin.lab_tests.delete');
 
+    // Admin Lab Request Fulfillment & Result Upload Actions
+    Route::patch('/admin/lab-requests/{id}/status', [LabTestController::class, 'updateRequestStatus'])
+        ->name('admin.lab_requests.updateStatus');
+
+    Route::post('/admin/lab-requests/{id}/upload-result', [LabTestController::class, 'uploadResult'])
+        ->name('admin.lab_requests.uploadResult');
+
+    Route::get('/admin/lab-requests/{id}/download-result', [LabTestController::class, 'downloadResult'])
+        ->name('admin.lab_requests.downloadResult');
+
+    Route::delete('/admin/lab-requests/{id}', [LabTestController::class, 'deleteRequest'])
+        ->name('admin.lab_requests.delete');
+
     /*================== ADMIN PROFILE SETTINGS ==================*/
     Route::prefix('admin/profile')->group(function () {
         Route::get('/settings', [AuthController::class, 'showSettings'])->name('admin.profile.settings');
@@ -235,6 +273,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::put('/change-phone', [AuthController::class, 'changePhone'])->name('admin.profile.change-phone');
         Route::put('/update-password', [AuthController::class, 'updatePassword'])->name('admin.profile.update-password');
     });
+});
+
+/*
+|--------------------------------------------------------------------------
+| Global Authenticated User Actions
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::delete('/account/delete', [AuthController::class, 'deleteAccount'])->name('account.delete');
 });
 
 /*
@@ -270,6 +317,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
     Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 });
 
 /*

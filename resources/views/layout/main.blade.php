@@ -1,20 +1,11 @@
 <!-- Main Content -->
 <main class="main-content">
 
-  <!-- Top Header -->
-  <header class="topbar">
-    <div class="doctors-tools">
-        <input class="searchbar" placeholder="Search ...."
-        style="width: 20rem;
-        height: 2rem;
-        border-radius: 12px;
-        border: 1px solid blue;
-        padding-left: 1rem"
-        >
-    </div>
+  <!-- Top Header Navigation Dashboard Area -->
+  <header class="topbar" style="display: flex; justify-content: flex-end; align-items: center; padding: 15px 25px; background: #ffffff; border-bottom: 1px solid #eef0f6;">
    
     <!-- Top Header Nav Wrapper -->
-    <div class="header-nav" style="display: flex; justify-content: flex-end; align-items: center; padding: 15px; position: relative;">
+    <div class="header-nav" style="display: flex; justify-content: flex-end; align-items: center; position: relative;">
         
         <!-- User Profile Dropdown Container -->
         <div class="user-dropdown-container" style="position: relative; display: inline-block;">
@@ -121,7 +112,7 @@
 
 </main>
 
-<!-- 🌟 Essential Dropdown Presentation Styles -->
+<!--  Essential Dropdown Presentation Styles -->
 <style>
   .dropdown-menu {
       display: none;

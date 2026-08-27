@@ -3,40 +3,31 @@
 
   <!-- Top Header Navigation Dashboard Area -->
   <header class="topbar">
-    <div class="doctors-tools">
-        <input class="searchbar" placeholder="Search ...."
-        style="width: 20rem;
-        height: 2rem;
-        border-radius: 12px;
-        border: 1px solid blue;
-        padding-left: 1rem"
-        >
+    <div class="topbar-search-wrapper">
+        <div class="search-input-group">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" class="topbar-searchbar" placeholder="Search patients, doctors, tests..." id="globalAdminSearch">
+            <span class="search-shortcut-badge">⌘K</span>
+        </div>
     </div>
    
     <!-- Top Header Nav Inline Actions Context -->
-    <div class="header-nav" style="display: flex; justify-content: flex-end; align-items: center; padding: 15px; position: relative;">
+    <div class="header-nav">
         
+        <!-- Live System Status Badge -->
+        <div class="system-status-indicator" title="All hospital services operational">
+            <span class="status-pulse-dot"></span>
+            <span class="status-pulse-text">System Live</span>
+        </div>
+
         <!-- User Profile Dropdown Drop-panel Menu Anchor Frame -->
-        <div class="user-dropdown-container" style="position: relative; display: inline-block;">
+        <div class="user-dropdown-container">
             
             <!-- Clickable Interactive Target Trigger Wrap -->
-            <div class="profile-trigger" id="dropdownTrigger" tabindex="0"
-                 style="display: flex; gap: 0.5rem; align-items: center; cursor: pointer; user-select: none;">
+            <div class="profile-trigger" id="dropdownTrigger" tabindex="0">
                
                 <!-- Circular Avatar Initials Graphic Indicator -->
-                <div style="
-                    border: none;
-                    border-radius: 50%;
-                    width: 2.5rem;
-                    height: 2.5rem;
-                    align-items: center;
-                    background: #164dad;
-                    color: white;
-                    font-size: 14px;
-                    font-weight: bold;
-                    display: flex;
-                    justify-content: center;
-                    ">
+                <div class="user-avatar-badge">
                     <span class="user-initials">
                         @if(Auth::check())
                             @php
@@ -48,16 +39,18 @@
                                 echo strtoupper(mb_substr($extractedInitials, 0, 2));
                             @endphp
                         @else
-                            U
+                            AD
                         @endif
                     </span>
                 </div>
                 
-                
-                <span style="font-weight: 500; color: #333;">
-                    {{ Auth::check() ? Auth::user()->name : 'Guest' }}
-                </span>
-                <i class="fa-solid fa-chevron-down chev" style="font-size: 12px; color: #666; transition: transform 0.2s;"></i>
+                <div class="profile-text-wrap">
+                    <span class="profile-user-name">
+                        {{ Auth::check() ? Auth::user()->name : 'Administrator' }}
+                    </span>
+                    <span class="profile-user-role">Hospital Admin</span>
+                </div>
+                <i class="fa-solid fa-chevron-down chev"></i>
             </div>
 
             <!-- Floating Overlay Dropdown Nav Options Menu Element -->
@@ -66,28 +59,26 @@
                 <!-- User Header Summary -->
                 <div class="dropdown-user-header">
                     <span class="dropdown-user-name">{{ Auth::check() ? Auth::user()->name : 'Administrator' }}</span>
-                    <span class="dropdown-user-role">Hospital Administrator</span>
+                    <span class="dropdown-user-email">{{ Auth::check() ? Auth::user()->email : 'admin@medilink.com' }}</span>
                 </div>
 
-                <!-- Home Dashboard Dynamic Redirection Check link -->
-                @if(Auth::check() && Auth::user()->role && Auth::user()->role->name === 'admin')
-                    <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-                @else
-                    <a href="{{ route('patient.dashboard') }}">Dashboard</a>
-                @endif
+                <!-- Navigation Links -->
+                <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
                
-                <!-- Operational Settings Form Redirection Panel link -->
-                @if(Auth::check() && Auth::user()->role && Auth::user()->role->name === 'admin')
-                    <a href="{{ route('admin.profile.settings') }}">Account Settings</a>
-                @else
-                    <a href="{{ route('profile.settings') }}">Account Settings</a>
-                @endif
+                <a href="{{ route('admin.profile.settings') }}" class="dropdown-item">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Account Settings</span>
+                </a>
 
                 <div class="dropdown-divider"></div>
 
                 <!-- Account Deletion Modal Trigger -->
                 <button type="button" popovertarget="delete-account-modal" class="dropdown-item delete-btn">
-                    Delete Account
+                    <i class="fa-solid fa-trash-can"></i>
+                    <span>Delete Account</span>
                 </button>
 
                 <div class="dropdown-divider"></div>
@@ -95,7 +86,10 @@
                 <!-- Session Termination Invalidation Form Pipeline element -->
                 <form action="{{ route('logout') }}" method="POST" style="margin: 0; width: 100%;">
                     @csrf
-                    <button type="submit" class="dropdown-item logout-btn">Log Out</button>
+                    <button type="submit" class="dropdown-item logout-btn">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span>Log Out</span>
+                    </button>
                 </form>
             </div>
 
@@ -137,36 +131,15 @@
       @yield('scripts')
   </section>
 
-  <!-- Footer -->
-  <footer class="site-footer" style="margin-top: 100px;">
-    <div class="footer-container">
-      <div class="footer-col">
-        <h4>Product</h4>
-        <ul>
-          <li><a href="#">Features</a></li>
-          <li><a href="#">Pricing</a></li>
-          <li><a href="#">Updates</a></li>
-        </ul>
+  <!-- Clean Admin Minimal Footer -->
+  <footer class="admin-footer">
+    <div class="admin-footer-content">
+      <div class="admin-footer-left">
+        <span>&copy; {{ date('Y') }} <strong>MediLink Hospital Management System</strong>. All rights reserved.</span>
       </div>
-      <div class="footer-col">
-        <h4>Resources</h4>
-        <ul>
-          <li><a href="#">Documentation</a></li>
-          <li><a href="#">Guides</a></li>
-          <li><a href="#">Support</a></li>
-        </ul>
+      <div class="admin-footer-right">
+        <span class="version-tag"><i class="fa-solid fa-shield-halved"></i> Enterprise Edition v2.4</span>
       </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Hospital Management. All rights reserved.</p>
     </div>
   </footer>
 

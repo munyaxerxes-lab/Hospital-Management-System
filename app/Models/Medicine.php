@@ -21,5 +21,16 @@ class Medicine extends Model
     protected $casts = [
         'expiry_date' => 'date',
         'price' => 'decimal:2',
+        'status' => 'boolean',
     ];
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(cart::class);
+    }
 }

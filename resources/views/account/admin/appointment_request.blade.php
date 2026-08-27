@@ -59,6 +59,16 @@
         </div>
 
         <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:18px;box-shadow:0 2px 6px rgba(0,0,0,0.03);display:flex;align-items:center;gap:16px;">
+            <div style="width:48px;height:48px;border-radius:10px;background:#fffbeb;color:#d97706;display:flex;align-items:center;justify-content:center;font-size:22px;">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <div>
+                <span style="font-size:13px;color:#64748b;font-weight:500;display:block;">Total Booked</span>
+                <strong style="font-size:22px;color:#d97706;font-weight:700;">{{ $stats['booked'] ?? 0 }}</strong>
+            </div>
+        </div>
+
+        <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:18px;box-shadow:0 2px 6px rgba(0,0,0,0.03);display:flex;align-items:center;gap:16px;">
             <div style="width:48px;height:48px;border-radius:10px;background:#fef2f2;color:#dc2626;display:flex;align-items:center;justify-content:center;font-size:22px;">
                 <i class="fa-solid fa-ban"></i>
             </div>
@@ -92,14 +102,14 @@
             </a>
 
             <!-- Quick Modal Trigger -->
-            <button type="button" popovertarget="quick-create-modal" style="background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;padding:12px 18px;border-radius:8px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
+            <!-- <button type="button" popovertarget="quick-create-modal" style="background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;padding:12px 18px;border-radius:8px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
                 <i class="fa-solid fa-bolt"></i> Quick Modal
-            </button>
+            </button> -->
 
             <!-- Manage Doctors Shortcut Button -->
-            <a href="{{ route('admin.doctors.index') }}" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:12px 18px;border-radius:8px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+            <!-- <a href="{{ route('admin.doctors.index') }}" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:12px 18px;border-radius:8px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
                 <i class="fa-solid fa-user-doctor"></i> Manage Doctors
-            </a>
+            </a> -->
         </div>
 
                 <!-- Search & Filters -->
@@ -435,9 +445,7 @@
                                             <p style="font-size:14px;color:#64748b;margin-bottom:18px;">
                                                 Start by scheduling doctor availability slots so clients can book appointments.
                                             </p>
-                                            <a href="{{ route('admin.appointments.create') }}" class="btn btn-primary" style="background:#095eff;color:#fff;padding:10px 22px;border-radius:8px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
-                                                <i class="fa-solid fa-plus"></i> Create First Appointment
-                                            </a>
+                                            
                                         </div>
                                     </td>
                                 </tr>

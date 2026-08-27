@@ -46,6 +46,7 @@ class AppointmentController extends Controller
         $stats = [
             'total' => doctor_schedule::count(),
             'available' => doctor_schedule::where('status', 'available')->count(),
+            'booked' => doctor_schedule::where('status', 'booked')->count(),
             'unavailable' => doctor_schedule::whereIn('status', ['unavailable', 'inactive'])->count(),
             'doctors_count' => Doctor::where('status', 'active')->count(),
         ];
@@ -73,7 +74,7 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'doctor_id'       => ['required', 'integer', 'exists:doctor,id'],
+            'doctor_id'       => ['required', 'integer', 'exists:doctors,id'],
             'price'           => ['required', 'numeric', 'min:0'],
             'status'          => ['required', 'in:available,unavailable,booked,active,inactive'],
             'reason'          => ['nullable', 'string', 'max:255'],
@@ -145,7 +146,7 @@ class AppointmentController extends Controller
         $schedule = doctor_schedule::findOrFail($id);
 
         $validated = $request->validate([
-            'doctor_id'       => ['required', 'integer', 'exists:doctor,id'],
+            'doctor_id'       => ['required', 'integer', 'exists:doctors,id'],
             'price'           => ['required', 'numeric', 'min:0'],
             'status'          => ['required', 'in:available,unavailable,booked,active,inactive'],
             'reason'          => ['nullable', 'string', 'max:255'],

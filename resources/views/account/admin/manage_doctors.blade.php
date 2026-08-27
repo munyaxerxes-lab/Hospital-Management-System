@@ -4,39 +4,82 @@
 
 <section class="page" style="padding-bottom: 40px;">
 
-    <h1 class="page-title">Manage Doctor Accounts</h1>
+    <h1 class="page-title">Manage Medical Specialists</h1>
+    <p class="page-subtitle">
+        Register medical staff, update qualifications, set consultation fees, and control duty status.
+    </p>
 
-            <p class="page-subtitle">
-                Create, update, activate, deactivate or delete doctor accounts.
-            </p>
+    {{-- SUCCESS MESSAGE --}}
+    @if (session('success'))
+        <div class="alert alert-success" id="success-message">
+            <i class="fa-solid fa-circle-check" style="font-size: 18px;"></i>
+            <span>{{ session('success') }}</span>
+        </div>
 
-            {{-- SUCCESS MESSAGE --}}
-           
-            @if (session('success'))
-                <div class="alert alert-success" id="success-message">
-                    <i class="fa-solid fa-circle-check"></i>
-                    {{ session('success') }}
-                </div>
-
-                <script>
+        <script>
+            setTimeout(function () {
+                const message = document.getElementById('success-message');
+                if (message) {
+                    message.style.transition = 'opacity 0.5s ease';
+                    message.style.opacity = '0';
                     setTimeout(function () {
-                        const message = document.getElementById('success-message');
+                        message.remove();
+                    }, 500);
+                }
+            }, 3000);
+        </script>
+    @endif
 
-                        if (message) {
-                            message.style.opacity = '0';
+    {{-- STATS CARDS --}}
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 26px;">
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); display: flex; align-items: center; gap: 16px;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                <i class="fa-solid fa-user-doctor"></i>
+            </div>
+            <div>
+                <span style="font-size: 13px; color: #64748b; font-weight: 600; display: block;">Total Specialists</span>
+                <strong style="font-size: 24px; color: #0f172a; font-weight: 800;">{{ $doctors->count() }}</strong>
+            </div>
+        </div>
 
-                            setTimeout(function () {
-                                message.remove();
-                            }, 500);
-                        }
-                    }, 3000);
-                </script>
-            @endif
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); display: flex; align-items: center; gap: 16px;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+                <span style="font-size: 13px; color: #64748b; font-weight: 600; display: block;">Active On Duty</span>
+                <strong style="font-size: 24px; color: #059669; font-weight: 800;">{{ $doctors->where('status', 'active')->count() }}</strong>
+            </div>
+        </div>
 
-            <!-- Create Doctor Button -->
-            <button popovertarget="my-modal" class="open-btn">
-                Create Doctors
-            </button>
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); display: flex; align-items: center; gap: 16px;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #fef2f2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                <i class="fa-solid fa-user-slash"></i>
+            </div>
+            <div>
+                <span style="font-size: 13px; color: #64748b; font-weight: 600; display: block;">Inactive / Off Duty</span>
+                <strong style="font-size: 24px; color: #dc2626; font-weight: 800;">{{ $doctors->where('status', 'inactive')->count() }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 22px;">
+        <button popovertarget="my-modal" class="open-btn" style="margin-bottom: 0;">
+            <i class="fa-solid fa-user-plus"></i> Add New Doctor
+        </button>
+
+        <div style="position: relative;">
+            <input
+                type="text"
+                id="doctorSearchInput"
+                placeholder="Filter specialists..."
+                onkeyup="filterDoctorsTable()"
+                style="padding: 10px 14px 10px 36px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 13.5px; outline: none; width: 240px; background: #ffffff;"
+            >
+            <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 13px;"></i>
+        </div>
+    </div>
 
 
             <!-- =========================
