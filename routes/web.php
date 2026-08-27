@@ -91,8 +91,11 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     
     Route::get('/pharmacy', function () {
         $medicines = Medicine::where('status', true)->latest()->get();
-        return view('account.patient.pharmacy', compact('medicines'));
-    });
+        $categories = Medicine::where('status', true)->select('type')->distinct()->pluck('type')->filter()->values();
+        $userId = auth()->id();
+        $cartCount = $userId ? \App\Models\cart::where('user_id', $userId)->sum('quantity') : 0;
+        return view('account.patient.pharmacy', compact('medicines', 'categories', 'cartCount'));
+    })->name('patient.pharmacy');
     
     Route::get('/notifications', function () {
         return view('account.patient.notifications');
@@ -110,8 +113,35 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
         ->name('patient.lab_results.download');
     
     Route::get('/history', function () {
-        return view('account.patient.history');
-    });
+        $user = Auth::user();
+        $patient = $user ? \App\Models\Patient::where('user_id', $user->id)->first() : null;
+
+        // Lab requests for this patient (with items eager-loaded)
+        $labRequests = $patient
+            ? \App\Models\LabRequest::with(['items.test'])
+                ->where('patient_id', $patient->id)
+                ->latest()
+                ->get()
+            : collect();
+
+        // Pharmacy orders for this patient (with items & medicines)
+        $orders = $patient
+            ? \App\Models\Order::with(['items.medicine'])
+                ->where('patient_id', $patient->id)
+                ->latest()
+                ->get()
+            : collect();
+
+        // Appointments for this patient (with doctor & schedule)
+        $appointments = $patient
+            ? \App\Models\appointments::with(['doctor.user', 'doctor_schedule'])
+                ->where('patient_id', $patient->id)
+                ->latest()
+                ->get()
+            : collect();
+
+        return view('account.patient.history', compact('labRequests', 'orders', 'appointments'));
+    })->name('patient.history');
     
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     

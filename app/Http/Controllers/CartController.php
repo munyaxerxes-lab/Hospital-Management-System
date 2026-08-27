@@ -37,7 +37,11 @@ class CartController extends Controller
 	{
 		$userId = $this->getUserId();
 		$carts = cart::with('medicine')->where('user_id', $userId)->get();
-		return view('account.patient.cart', compact('carts'));
+		$cartCount = $carts->sum('quantity');
+		$totalPrice = $carts->sum(function ($item) {
+			return ($item->medicine->price ?? 0) * $item->quantity;
+		});
+		return view('account.patient.cart', compact('carts', 'cartCount', 'totalPrice'));
 	}
 
 	public function add($id)
@@ -47,6 +51,12 @@ class CartController extends Controller
 		$cart = cart::where('user_id', $userId)->where('medicine_id', $medicine->id)->first();
 		$currentQty = $cart->quantity ?? 0;
 		if ($medicine->stock <= $currentQty) {
+			if (request()->wantsJson()) {
+				return response()->json([
+					'success' => false,
+					'message' => 'Not enough stock available for this medicine.'
+				], 422);
+			}
 			return back()->with('error', 'Not enough stock available');
 		}
 
@@ -61,15 +71,18 @@ class CartController extends Controller
 			]);
 		}
 
+		$totalCount = cart::where('user_id', $userId)->sum('quantity');
+
 		if (request()->wantsJson()) {
 			return response()->json([
 				'success' => true,
-				'message' => 'Added to cart',
-				'cartCount' => cart::where('user_id', $userId)->sum('quantity'),
+				'message' => "{$medicine->name} added to cart successfully!",
+				'medicineName' => $medicine->name,
+				'cartCount' => $totalCount,
 			]);
 		}
 
-		return back()->with('success', 'Added to cart');
+		return back()->with('success', "{$medicine->name} added to cart!");
 	}
 
 	public function store(Request $request)
@@ -82,9 +95,15 @@ class CartController extends Controller
 		$medicine = Medicine::findOrFail($request->medicine_id);
 		$userId = $this->getUserId();
 		$cart = cart::where('user_id', $userId)->where('medicine_id', $medicine->id)->first();
-		$qty = $request->quantity ?? 1;
+		$qty = (int)($request->quantity ?? 1);
 		$currentQty = $cart->quantity ?? 0;
 		if ($medicine->stock < ($currentQty + $qty)) {
+			if ($request->wantsJson()) {
+				return response()->json([
+					'success' => false,
+					'message' => "Requested quantity exceeds available stock ({$medicine->stock} left)."
+				], 422);
+			}
 			return back()->with('error', 'Requested quantity exceeds available stock');
 		}
 
@@ -96,6 +115,17 @@ class CartController extends Controller
 				'user_id' => $userId,
 				'medicine_id' => $medicine->id,
 				'quantity' => $qty,
+			]);
+		}
+
+		$totalCount = cart::where('user_id', $userId)->sum('quantity');
+
+		if ($request->wantsJson()) {
+			return response()->json([
+				'success' => true,
+				'message' => "{$qty}x {$medicine->name} added to cart!",
+				'medicineName' => $medicine->name,
+				'cartCount' => $totalCount,
 			]);
 		}
 
@@ -112,10 +142,35 @@ class CartController extends Controller
 		}
 		$medicine = Medicine::find($cart->medicine_id);
 		if ($medicine && $request->quantity > $medicine->stock) {
+			if ($request->wantsJson()) {
+				return response()->json([
+					'success' => false,
+					'message' => "Requested quantity exceeds available stock ({$medicine->stock} left)."
+				], 422);
+			}
 			return back()->with('error', 'Quantity exceeds available stock');
 		}
-		$cart->quantity = $request->quantity;
+		$cart->quantity = (int)$request->quantity;
 		$cart->save();
+
+		if ($request->wantsJson()) {
+			$userCarts = cart::with('medicine')->where('user_id', $userId)->get();
+			$totalAmount = $userCarts->sum(function ($c) {
+				return ($c->medicine->price ?? 0) * $c->quantity;
+			});
+			$totalQty = $userCarts->sum('quantity');
+			$lineTotal = ($medicine->price ?? 0) * $cart->quantity;
+
+			return response()->json([
+				'success' => true,
+				'message' => 'Cart updated successfully.',
+				'cartCount' => $totalQty,
+				'lineTotal' => number_format($lineTotal, 0, '.', ' ') . ' FCFA',
+				'totalAmount' => number_format($totalAmount, 0, '.', ' ') . ' FCFA',
+				'totalQty' => $totalQty,
+			]);
+		}
+
 		return back()->with('success', 'Cart updated successfully.');
 	}
 
@@ -127,6 +182,23 @@ class CartController extends Controller
 			abort(403);
 		}
 		$cart->delete();
+
+		if (request()->wantsJson()) {
+			$userCarts = cart::with('medicine')->where('user_id', $userId)->get();
+			$totalAmount = $userCarts->sum(function ($c) {
+				return ($c->medicine->price ?? 0) * $c->quantity;
+			});
+			$totalQty = $userCarts->sum('quantity');
+
+			return response()->json([
+				'success' => true,
+				'message' => 'Item removed from cart.',
+				'cartCount' => $totalQty,
+				'totalAmount' => number_format($totalAmount, 0, '.', ' ') . ' FCFA',
+				'isEmpty' => $userCarts->isEmpty(),
+			]);
+		}
+
 		return back()->with('success', 'Item removed from cart.');
 	}
 
