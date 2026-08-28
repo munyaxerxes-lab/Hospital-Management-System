@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasTable('doctors_schedule')) {
-            Schema::table('doctors_schedule', function (Blueprint $table) {
-                if (!Schema::hasColumn('doctors_schedule', 'price')) {
-                    $table->decimal('price', 10, 2)->nullable()->after('end_time');
+        if (Schema::hasTable('doctor_schedule')) {
+            Schema::table('doctor_schedule', function (Blueprint $table) {
+                if (!Schema::hasColumn('doctor_schedule', 'price')) {
+                    $table->decimal('price', 10, 2)->default(0.00)->after('end_time');
                 }
             });
         }
@@ -25,9 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if (Schema::hasTable('doctors_schedule')) {
-            Schema::table('doctors_schedule', function (Blueprint $table) {
-                if (Schema::hasColumn('doctors_schedule', 'price')) {
+        if (Schema::hasTable('doctor_schedule')) {
+            Schema::table('doctor_schedule', function (Blueprint $table) {
+                if (Schema::hasColumn('doctor_schedule', 'price')) {
                     $table->dropColumn('price');
                 }
             });

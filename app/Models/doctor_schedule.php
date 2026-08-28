@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class doctor_schedule extends Model
 {
-    protected $table = 'doctors_schedule';
+    protected $table = 'doctor_schedule';
 
     protected $fillable = [
         'doctor_id',

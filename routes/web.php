@@ -77,12 +77,40 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     
     Route::get('/patient/dashboard', function () {
         $user = Auth::user();
-        return view('account.patient.dashboard', compact('user'));
+        $patient = $user ? \App\Models\Patient::where('user_id', $user->id)->first() : null;
+
+        $appointments = $patient
+            ? \App\Models\appointments::with(['doctor', 'doctor_schedule'])
+                ->where('patient_id', $patient->id)
+                ->latest()
+                ->get()
+            : collect();
+
+        $orders = $patient
+            ? \App\Models\Order::with(['items.medicine'])
+                ->where('patient_id', $patient->id)
+                ->latest()
+                ->get()
+            : collect();
+
+        $labRequests = $patient
+            ? \App\Models\LabRequest::with(['items.test'])
+                ->where('patient_id', $patient->id)
+                ->latest()
+                ->get()
+            : collect();
+
+        $stats = [
+            'appointments' => $appointments->count(),
+            'medicines'    => $orders->count(),
+            'lab_tests'    => $labRequests->count(),
+        ];
+
+        return view('account.patient.dashboard', compact('user', 'patient', 'appointments', 'orders', 'labRequests', 'stats'));
     })->name('patient.dashboard');
 
     Route::get('/user', function () {
-        $user = Auth::user();
-        return view('account.patient.dashboard', compact('user'));
+        return redirect()->route('patient.dashboard');
     })->name('user.dashboard');
     
     Route::get('/appointments', function () {

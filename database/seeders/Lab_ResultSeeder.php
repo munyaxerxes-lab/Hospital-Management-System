@@ -2,26 +2,26 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class Lab_ResultSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
-        DB::table('lab_results')->insert([
-    [
-        'request_id' => 1,
-        'laboratory_technician_id' => 1,
-        'report_file' => 'lab-results/request-1.pdf',
-        'remarks' => 'Results uploaded and reviewed.',
-        'uploaded_at' => now(),
-    ],
-]);
+        $tech = DB::table('lab_technician')->first();
+        $req = DB::table('lab_reqests')->where('status', 'completed')->first() ?? DB::table('lab_reqests')->first();
+
+        if ($req && $tech) {
+            DB::table('lab_results')->updateOrInsert(
+                ['request_id' => $req->id],
+                [
+                    'laboratory_technician_id' => $tech->id,
+                    'created_at' => now()->subHours(8),
+                    'updated_at' => now()->subHours(8),
+                ]
+            );
+        }
     }
 }
+

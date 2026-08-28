@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class DeliveryAgent extends Model
 {
+    protected $table = 'delivery_agents';
+
+    protected $fillable = [
+        'user_id',
+        'status',
+        'vehicle_type',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -13,6 +21,6 @@ class DeliveryAgent extends Model
 
     public function deliveries()
     {
-        return $this->hasMany(Delivery::class);
+        return $this->hasMany(Delivery::class, 'agent_id');
     }
 }

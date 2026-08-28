@@ -105,6 +105,7 @@
                         method="POST"
                         action="{{ route('admin.doctors.store') }}"
                         class="doctor-form"
+                        enctype="multipart/form-data"
                     >
 
                         @csrf
@@ -398,6 +399,24 @@
 
                             </div>
 
+                            <!-- Avatar / Photo -->
+                            <div class="field full">
+                                <label for="avatar">
+                                    Doctor Avatar / Profile Photo
+                                </label>
+                                <input
+                                    type="file"
+                                    id="avatar"
+                                    name="avatar"
+                                    accept="image/*"
+                                >
+                                @error('avatar')
+                                    <small class="error-message">
+                                        {{ $message }}
+                                    </small>
+                                @enderror
+                            </div>
+
                         </div>
 
 
@@ -476,7 +495,15 @@
                                     </td>
 
                                     <td>
-                                        {{ $doctor->doctor_name }}
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            @php
+                                                $docAvatar = $doctor->avatar
+                                                    ? (str_starts_with($doctor->avatar, 'http') || str_starts_with($doctor->avatar, 'image/') ? asset($doctor->avatar) : asset('storage/' . $doctor->avatar))
+                                                    : asset('image/doc.png');
+                                            @endphp
+                                            <img src="{{ $docAvatar }}" alt="{{ $doctor->doctor_name }}" style="width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid #e2e8f0; flex-shrink: 0;">
+                                            <span>{{ $doctor->doctor_name }}</span>
+                                        </div>
                                     </td>
 
                                     <td>
@@ -628,6 +655,7 @@
                                             method="POST"
                                             action="{{ route('admin.doctors.update', $doctor->id) }}"
                                             class="doctor-form"
+                                            enctype="multipart/form-data"
                                         >
 
                                             @csrf
@@ -639,6 +667,36 @@
 
                                             <div class="form-grid">
 
+                                                <!-- Avatar Upload -->
+                                                <div class="field full">
+                                                    <label style="display:block;font-weight:600;font-size:13px;color:#1e293b;margin-bottom:8px;">
+                                                        Doctor Profile Photo / Avatar
+                                                    </label>
+                                                    <div style="display:flex;align-items:center;gap:14px;background:#f8fafc;padding:14px;border-radius:10px;border:1.5px dashed #cbd5e1;">
+                                                        @php
+                                                            $avatarSrc = $doctor->avatar
+                                                                ? (str_starts_with($doctor->avatar, 'http') || str_starts_with($doctor->avatar, 'image/') ? asset($doctor->avatar) : asset('storage/' . $doctor->avatar))
+                                                                : asset('image/doc.png');
+                                                        @endphp
+                                                        <img
+                                                            id="avatar-preview-{{ $doctor->id }}"
+                                                            src="{{ $avatarSrc }}"
+                                                            alt="Current Avatar"
+                                                            style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #095eff;flex-shrink:0;"
+                                                        >
+                                                        <div style="flex:1;">
+                                                            <input
+                                                                type="file"
+                                                                name="avatar"
+                                                                id="avatar-input-{{ $doctor->id }}"
+                                                                accept="image/*"
+                                                                style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;background:#fff;"
+                                                                onchange="document.getElementById('avatar-preview-{{ $doctor->id }}').src = URL.createObjectURL(this.files[0])"
+                                                            >
+                                                            <small style="color:#64748b;display:block;margin-top:4px;font-size:12px;">Leave empty to keep the current photo. (PNG, JPG, WEBP max 4MB)</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                                 <!-- Doctor Name -->
 

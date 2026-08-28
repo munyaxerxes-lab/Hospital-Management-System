@@ -17,7 +17,7 @@ class cart extends Model
 
     public function medicine()
     {
-        return $this->belongsTo(medicine::class);
+        return $this->belongsTo(Medicine::class, 'medicine_id');
     }
 
     public function user()

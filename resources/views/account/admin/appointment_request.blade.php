@@ -142,9 +142,42 @@
                         @endforeach
                     </select>
 
-                    @if(request()->hasAny(['search', 'status', 'doctor_id']) && (request('search') || request('status') !== 'all' || request('doctor_id') !== 'all'))
-                        <a href="{{ route('admin.appointments.index') }}" style="color:#ef4444;font-size:13px;text-decoration:none;font-weight:600;padding:8px 10px;">
-                            <i class="fa-solid fa-xmark"></i> Clear
+                    {{-- Date Range Filter --}}
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <label style="font-size:12px;font-weight:600;color:#64748b;white-space:nowrap;">
+                            <i class="fa-regular fa-calendar" style="color:#095eff;"></i> From:
+                        </label>
+                        <input
+                            type="date"
+                            name="date_from"
+                            value="{{ request('date_from') }}"
+                            onchange="this.form.submit()"
+                            style="padding:9px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px;outline:none;background:#fff;"
+                            title="Filter schedules from date"
+                        >
+                    </div>
+
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <label style="font-size:12px;font-weight:600;color:#64748b;white-space:nowrap;">
+                            To:
+                        </label>
+                        <input
+                            type="date"
+                            name="date_to"
+                            value="{{ request('date_to') }}"
+                            onchange="this.form.submit()"
+                            style="padding:9px 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px;outline:none;background:#fff;"
+                            title="Filter schedules to date"
+                        >
+                    </div>
+
+                    <button type="submit" style="background:#095eff;color:#fff;border:none;padding:9px 16px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+                        <i class="fa-solid fa-magnifying-glass"></i> Filter
+                    </button>
+
+                    @if(request()->hasAny(['search', 'status', 'doctor_id', 'date_from', 'date_to']) && (request('search') || request('status') !== 'all' || request('doctor_id') !== 'all' || request('date_from') || request('date_to')))
+                        <a href="{{ route('admin.appointments.index') }}" style="color:#ef4444;font-size:13px;text-decoration:none;font-weight:600;padding:8px 10px;display:inline-flex;align-items:center;gap:4px;">
+                            <i class="fa-solid fa-xmark"></i> Clear Filters
                         </a>
                     @endif
 

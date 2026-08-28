@@ -424,14 +424,16 @@
         @php
             $cnt    = $doctor->schedules->count();
             $has    = $cnt > 0;
-            $imgSrc = $docImages[($doctor->id - 1) % count($docImages)];
+            $imgSrc = $doctor->avatar
+                ? (str_starts_with($doctor->avatar, 'http') || str_starts_with($doctor->avatar, 'image/') ? asset($doctor->avatar) : asset('storage/' . $doctor->avatar))
+                : asset($docImages[($doctor->id - 1) % count($docImages)]);
         @endphp
         <div class="dl-card"
              data-name="{{ strtolower($doctor->doctor_name) }}"
              data-specialty="{{ strtolower($doctor->specialty ?? '') }}"
              data-avail="{{ $has ? 1 : 0 }}">
 
-            <img src="{{ asset($imgSrc) }}" alt="Dr. {{ $doctor->doctor_name }}"
+            <img src="{{ $imgSrc }}" alt="Dr. {{ $doctor->doctor_name }}"
                  class="dl-card-img"
                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
             <div class="dl-card-img-placeholder" style="display:none;">👨‍⚕️</div>

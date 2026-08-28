@@ -17,7 +17,7 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
-        $query = doctor_schedule::with('doctor')->latest();
+        $query = doctor_schedule::with('doctor')->latest('date');
 
         // Search filter
         if ($request->filled('search')) {
@@ -40,6 +40,15 @@ class AppointmentController extends Controller
         // Doctor filter
         if ($request->filled('doctor_id') && $request->doctor_id !== 'all') {
             $query->where('doctor_id', $request->doctor_id);
+        }
+
+        // Date Range filters
+        if ($request->filled('date_from')) {
+            $query->whereDate('date', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('date', '<=', $request->date_to);
         }
 
         $schedules = $query->paginate(15)->withQueryString();
@@ -73,7 +82,7 @@ class AppointmentController extends Controller
     }
 
     /**
-     * Store a newly created appointment / schedule.
+     * Store newly created appointment schedule(s) with single date or date interval support.
      */
     public function store(Request $request)
     {
@@ -82,14 +91,20 @@ class AppointmentController extends Controller
             'price'           => ['required', 'numeric', 'min:0'],
             'status'          => ['required', 'in:available,unavailable,booked,active,inactive'],
             'reason'          => ['nullable', 'string', 'max:255'],
+            'schedule_mode'   => ['nullable', 'in:single,range'],
+            'date'            => ['nullable', 'date'],
+            'start_date'      => ['nullable', 'date'],
+            'end_date'        => ['nullable', 'date', 'after_or_equal:start_date'],
+            'days_of_week'    => ['nullable', 'array'],
+            'days_of_week.*'  => ['string'],
             'available_hours' => ['required_without:start_time', 'array', 'min:1'],
             'available_hours.*' => ['string'],
-            'date'            => ['nullable', 'date'],
             'start_time'      => ['nullable'],
             'end_time'        => ['nullable'],
         ], [
             'available_hours.required_without' => 'Please select at least one available hour/slot for the doctor.',
             'available_hours.min' => 'Please select at least one available hour/slot for the doctor.',
+            'end_date.after_or_equal' => 'The end date must be on or after the start date.',
         ]);
 
         // Normalize status
@@ -99,16 +114,12 @@ class AppointmentController extends Controller
             $validated['status'] = 'unavailable';
         }
 
-        // Determine date
-        $date = !empty($validated['date']) ? $validated['date'] : date('Y-m-d');
-
         // Determine start and end time from available_hours if provided
         if (!empty($request->input('available_hours')) && is_array($request->input('available_hours'))) {
             $hours = $request->input('available_hours');
             sort($hours);
 
             $startTime = date('H:i', strtotime($hours[0]));
-            // End time is last slot + 30 mins
             $lastTime = strtotime(end($hours));
             $endTime = date('H:i', strtotime('+30 minutes', $lastTime));
         } else {
@@ -116,19 +127,92 @@ class AppointmentController extends Controller
             $endTime = date('H:i', strtotime($validated['end_time'] ?? '17:00'));
         }
 
-        doctor_schedule::create([
-            'doctor_id'  => $validated['doctor_id'],
-            'date'       => $date,
-            'start_time' => $startTime,
-            'end_time'   => $endTime,
-            'price'      => $validated['price'],
-            'status'     => $validated['status'],
-            'reason'     => $validated['reason'] ?? 'Doctor Consultation Schedule',
-        ]);
+        $doctor = Doctor::find($validated['doctor_id']);
+        $scheduleMode = $request->input('schedule_mode', 'range');
+
+        // Check if date range is selected
+        if ($scheduleMode === 'range' && !empty($validated['start_date']) && !empty($validated['end_date'])) {
+            $startDate = \Carbon\Carbon::parse($validated['start_date'])->startOfDay();
+            $endDate = \Carbon\Carbon::parse($validated['end_date'])->startOfDay();
+            $daysOfWeek = $request->input('days_of_week', []);
+
+            // Normalize day of week names if specified
+            $allowedDays = !empty($daysOfWeek) ? array_map('strtolower', $daysOfWeek) : [];
+
+            $createdCount = 0;
+            $current = $startDate->copy();
+
+            DB::beginTransaction();
+            try {
+                while ($current->lte($endDate)) {
+                    $dayName = strtolower($current->format('l')); // e.g. monday
+                    $shortDayName = strtolower($current->format('D')); // e.g. mon
+
+                    // Check if current day of week is allowed (or all days if none selected)
+                    $isAllowed = empty($allowedDays)
+                        || in_array($dayName, $allowedDays)
+                        || in_array($shortDayName, $allowedDays);
+
+                    if ($isAllowed) {
+                        doctor_schedule::updateOrCreate(
+                            [
+                                'doctor_id'  => $validated['doctor_id'],
+                                'date'       => $current->toDateString(),
+                                'start_time' => $startTime,
+                            ],
+                            [
+                                'end_time'   => $endTime,
+                                'price'      => $validated['price'],
+                                'status'     => $validated['status'],
+                                'reason'     => $validated['reason'] ?? 'Doctor Consultation Schedule',
+                            ]
+                        );
+                        $createdCount++;
+                    }
+
+                    $current->addDay();
+                }
+
+                DB::commit();
+
+                $doctorName = $doctor ? 'Dr. ' . $doctor->doctor_name : 'Doctor';
+                $startFormatted = $startDate->format('d M Y');
+                $endFormatted = $endDate->format('d M Y');
+
+                return redirect()
+                    ->route('admin.appointments.index')
+                    ->with('success', "{$createdCount} schedule(s) successfully generated for {$doctorName} across the date interval ({$startFormatted} to {$endFormatted}).");
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return back()->withInput()->with('error', 'Failed to generate schedules: ' . $e->getMessage());
+            }
+        }
+
+        // Single Date Mode
+        $singleDate = !empty($validated['date'])
+            ? $validated['date']
+            : (!empty($validated['start_date']) ? $validated['start_date'] : date('Y-m-d'));
+
+        doctor_schedule::updateOrCreate(
+            [
+                'doctor_id'  => $validated['doctor_id'],
+                'date'       => $singleDate,
+                'start_time' => $startTime,
+            ],
+            [
+                'end_time'   => $endTime,
+                'price'      => $validated['price'],
+                'status'     => $validated['status'],
+                'reason'     => $validated['reason'] ?? 'Doctor Consultation Schedule',
+            ]
+        );
+
+        $doctorName = $doctor ? 'Dr. ' . $doctor->doctor_name : 'Doctor';
+        $formattedDate = date('d M Y', strtotime($singleDate));
 
         return redirect()
             ->route('admin.appointments.index')
-            ->with('success', 'Doctor appointment schedule created successfully.');
+            ->with('success', "Doctor appointment schedule created successfully for {$doctorName} on {$formattedDate}.");
     }
 
     /**
@@ -239,7 +323,7 @@ class AppointmentController extends Controller
     {
         $validated = $request->validate([
             'doctor_id'   => ['required', 'integer', 'exists:doctors,id'],
-            'schedule_id' => ['required', 'integer', 'exists:doctors_schedule,id'],
+            'schedule_id' => ['required', 'integer', 'exists:doctor_schedule,id'],
             'reason'      => ['nullable', 'string', 'max:500'],
         ]);
 

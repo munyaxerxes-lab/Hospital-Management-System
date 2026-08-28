@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Delivery extends Model
 {
+    protected $table = 'delivery';
+
+    protected $fillable = [
+        'order_id',
+        'agent_id',
+    ];
+
     public function order()
     {
         return $this->belongsTo(Order::class);
@@ -13,6 +20,6 @@ class Delivery extends Model
 
     public function agent()
     {
-        return $this->belongsTo(Delivery_Agent::class);
+        return $this->belongsTo(DeliveryAgent::class, 'agent_id');
     }
 }

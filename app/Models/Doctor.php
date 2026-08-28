@@ -15,6 +15,7 @@ class Doctor extends Model
         'consultation_fee',
         'username',
         'status',
+        'avatar',
     ];
 
     protected $casts = [

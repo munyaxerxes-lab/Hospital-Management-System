@@ -22,21 +22,21 @@ class Patient extends Model
 
     public function appointments()
     {
-        return $this->hasMany(Appointments::class);
+        return $this->hasMany(appointments::class, 'patient_id');
     }
 
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'patient_id');
     }
 
     public function labRequests()
     {
-        return $this->hasMany(Lab_Request::class);
+        return $this->hasMany(LabRequest::class, 'patient_id');
     }
 
     public function payments()
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(payment::class, 'patient_id');
     }
 }

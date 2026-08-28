@@ -45,11 +45,39 @@
 
     <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.04);padding:32px;max-width:840px;margin:0 auto 40px auto;">
 
-        <form method="POST" action="{{ route('admin.doctors.update', $doctor->id) }}">
+        <form method="POST" action="{{ route('admin.doctors.update', $doctor->id) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px;">
+
+                <!-- Doctor Avatar / Photo -->
+                <div style="grid-column:1/-1;">
+                    <label for="avatar" style="display:block;font-weight:600;font-size:14px;color:#1e293b;margin-bottom:8px;">
+                        Doctor Profile Photo / Avatar
+                    </label>
+                    <div style="display:flex;align-items:center;gap:16px;background:#f8fafc;padding:16px;border-radius:10px;border:1.5px dashed #cbd5e1;">
+                        @php
+                            $currentAvatar = $doctor->avatar 
+                                ? (str_starts_with($doctor->avatar, 'http') || str_starts_with($doctor->avatar, 'image/') ? asset($doctor->avatar) : asset('storage/' . $doctor->avatar))
+                                : asset('image/doc.png');
+                        @endphp
+                        <img src="{{ $currentAvatar }}" alt="Current Avatar" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #095eff;flex-shrink:0;">
+                        <div style="flex:1;">
+                            <input
+                                type="file"
+                                id="avatar"
+                                name="avatar"
+                                accept="image/*"
+                                style="width:100%;padding:10px 14px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:14px;background:#fff;outline:none;"
+                            >
+                            <small style="color:#64748b;display:block;margin-top:4px;font-size:12px;">Upload a new image to replace the current photo (PNG, JPG, WEBP max 4MB).</small>
+                        </div>
+                    </div>
+                    @error('avatar')
+                        <small style="color:#ef4444;font-size:13px;display:block;margin-top:4px;">{{ $message }}</small>
+                    @enderror
+                </div>
 
                 <!-- Doctor Name -->
                 <div style="grid-column:1/-1;">
