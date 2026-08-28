@@ -780,9 +780,9 @@
             </div>
 
             <div>
-              <div class="hist-desc-main">Dr. {{ $doctor?->user?->name ?? 'Doctor' }}</div>
+              <div class="hist-desc-main">Dr. {{ $doctor?->doctor_name ?? 'Doctor' }}</div>
               <div class="hist-desc-sub">
-                {{ $doctor?->specialty?->name ?? ($doctor?->specialization ?? 'General Practice') }}
+                {{ $doctor?->specialty ?? 'General Practice' }}
               </div>
             </div>
 
@@ -804,10 +804,10 @@
 
                 <div class="hist-detail-box">
                   <div class="hist-detail-label">Doctor</div>
-                  <div class="hist-detail-value">{{ $doctor?->user?->name ?? '—' }}</div>
+                  <div class="hist-detail-value">Dr. {{ $doctor?->doctor_name ?? '—' }}</div>
                   <br>
                   <div class="hist-detail-label">Specialization</div>
-                  <div class="hist-detail-value">{{ $doctor?->specialty?->name ?? ($doctor?->specialization ?? 'General Practice') }}</div>
+                  <div class="hist-detail-value">{{ $doctor?->specialty ?? 'General Practice' }}</div>
                 </div>
 
                 <div class="hist-detail-box">

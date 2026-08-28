@@ -11,7 +11,7 @@
     <!-- Navigation -->
     <nav class="navigation">
 
-        <a href="/dashboard" class="nav-item active">
+        <a href="{{ route('user.dashboard') }}" class="nav-item active">
             <i class="ri-home-4-line"></i>
             <span>Dashboard</span>
         </a>

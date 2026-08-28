@@ -146,7 +146,7 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
 
         // Appointments for this patient (with doctor & schedule)
         $appointments = $patient
-            ? \App\Models\appointments::with(['doctor.user', 'doctor_schedule'])
+            ? \App\Models\appointments::with(['doctor', 'doctor_schedule'])
                 ->where('patient_id', $patient->id)
                 ->latest()
                 ->get()

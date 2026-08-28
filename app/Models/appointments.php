@@ -54,9 +54,9 @@ class appointments extends Model
             }
 
             if ($appointment->wasChanged('schedule_id')) {
-                $doctorName = $appointment->doctor?->user?->name ?? 'your doctor';
+                $doctorName = $appointment->doctor?->doctor_name ?? 'your doctor';
                 $title = 'Consultation schedule updated';
-                $message = "Your consultation with {$doctorName} was rescheduled.";
+                $message = "Your consultation with Dr. {$doctorName} was rescheduled.";
             }
 
             Notification::create([

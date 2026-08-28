@@ -1626,7 +1626,7 @@ textarea {
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     box-shadow: 0 3px 10px rgba(9, 94, 255, 0.28);
     transition: all 0.2s ease;
     font-family: inherit;
