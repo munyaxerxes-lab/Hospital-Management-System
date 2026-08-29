@@ -71,7 +71,13 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/breeze",
+                "laravel/pail",
+                "laravel/sail",
+                "pestphp/pest-plugin-laravel",
+                "nunomaduro/collision"
+            ]
         }
     },
     "config": {
