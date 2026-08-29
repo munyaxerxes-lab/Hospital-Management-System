@@ -1,5 +1,25 @@
 <?php
 
+putenv('VERCEL=1');
+$_ENV['VERCEL'] = '1';
+$_SERVER['VERCEL'] = '1';
+
+putenv('VIEW_COMPILED_PATH=/tmp/storage/framework/views');
+$_ENV['VIEW_COMPILED_PATH'] = '/tmp/storage/framework/views';
+$_SERVER['VIEW_COMPILED_PATH'] = '/tmp/storage/framework/views';
+
+putenv('APP_STORAGE=/tmp/storage');
+$_ENV['APP_STORAGE'] = '/tmp/storage';
+$_SERVER['APP_STORAGE'] = '/tmp/storage';
+
+putenv('CACHE_STORE=array');
+$_ENV['CACHE_STORE'] = 'array';
+$_SERVER['CACHE_STORE'] = 'array';
+
+putenv('SESSION_DRIVER=cookie');
+$_ENV['SESSION_DRIVER'] = 'cookie';
+$_SERVER['SESSION_DRIVER'] = 'cookie';
+
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
@@ -42,7 +62,6 @@ try {
     /** @var \Illuminate\Foundation\Application $app */
     $app = require_once __DIR__ . '/../bootstrap/app.php';
 
-    // Route storage and compiled views to writable /tmp
     $app->useStoragePath('/tmp/storage');
 
     $app->handleRequest(\Illuminate\Http\Request::capture());
