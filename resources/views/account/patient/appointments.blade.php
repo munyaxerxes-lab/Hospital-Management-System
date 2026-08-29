@@ -623,9 +623,17 @@
     <div class="sm-box">
         <div class="sm-icon">✓</div>
         <h3>Appointment Confirmed!</h3>
-        <p>Your booking has been successfully registered.</p>
+        <p>Your booking has been registered & receipt sent to your email.</p>
         <div class="sm-details" id="smDetails"></div>
-        <button class="sm-btn" onclick="closeSuccess()">Done</button>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:14px;">
+            <a id="smDownloadBtn" href="#" target="_blank" class="sm-btn" style="background:#16a34a; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Download Official Receipt</span>
+            </a>
+            <button class="sm-btn" onclick="closeSuccess()" style="background:#f1f5f9; color:#475569;">
+                Done
+            </button>
+        </div>
     </div>
 </div>
 
@@ -831,14 +839,19 @@ async function submitBooking() {
 ============================================================ */
 function showSuccess(data) {
     document.getElementById('smDetails').innerHTML = `
+        <div class="sm-row"><span>Ref Code</span><span style="font-family:monospace;font-weight:700;color:#2563eb;">APT-${String(data.appointment_id).padStart(6, '0')}</span></div>
         <div class="sm-row"><span>Doctor</span><span>Dr. ${data.doctor_name}</span></div>
         <div class="sm-row"><span>Date</span><span>${data.date}</span></div>
         <div class="sm-row"><span>Time</span><span>${data.time}</span></div>
         <div class="sm-row"><span>Fee</span><span>${data.fee}</span></div>
-        <div class="sm-row"><span>Status</span><span style="color:#16a34a;font-weight:700;">✓ Confirmed</span></div>`;
+        <div class="sm-row"><span>Status</span><span style="color:#16a34a;font-weight:700;">✓ Confirmed & Notified</span></div>`;
+
+    if (data.receipt_url) {
+        document.getElementById('smDownloadBtn').href = data.receipt_url;
+    }
+
     document.getElementById('smOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
-    setTimeout(() => location.reload(), 3000);
 }
 
 function closeSuccess() {

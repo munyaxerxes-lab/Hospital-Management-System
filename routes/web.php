@@ -129,6 +129,9 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::post('/patient/appointment/book', [AppointmentController::class, 'storePatientAppointment'])
         ->name('patient.appointment.book');
 
+    Route::get('/patient/appointment/{id}/receipt', [AppointmentController::class, 'downloadReceipt'])
+        ->name('patient.appointment.receipt');
+
     Route::get('/pharmacy', function () {
         $medicines = Medicine::where('status', true)->latest()->get();
         $categories = Medicine::where('status', true)->select('type')->distinct()->pluck('type')->filter()->values();
