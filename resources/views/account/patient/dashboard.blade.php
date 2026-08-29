@@ -52,13 +52,14 @@
 
      <div class="tab-content" id="recent-appointments">
          <table>
-                <thead>
+                 <thead>
                     <tr>
                         <th>Doctor</th>
                         <th>Specialty</th>
                         <th>Date & Time</th>
                         <th>Reason</th>
                         <th>Amount</th>
+                        <th style="text-align: right;">Receipt</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,10 +87,15 @@
                                 0 FCFA
                             @endif
                         </td>
+                        <td style="text-align: right;">
+                            <a href="{{ route('patient.appointment.receipt', $appointment->id) }}" target="_blank" style="display:inline-flex; align-items:center; gap:5px; padding:6px 12px; background:#eff6ff; color:#2563eb; font-size:12px; font-weight:700; border-radius:8px; text-decoration:none; border:1px solid #bfdbfe; transition:all 0.18s;">
+                                <i class="fa-solid fa-file-invoice"></i> Receipt
+                            </a>
+                        </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" style="text-align: center; color: #64748b; padding: 24px;">No appointments booked yet.</td>
+                        <td colspan="6" style="text-align: center; color: #64748b; padding: 24px;">No appointments booked yet.</td>
                     </tr>
                     @endforelse
                 </tbody>

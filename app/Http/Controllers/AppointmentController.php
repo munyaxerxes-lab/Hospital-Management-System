@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\appointments;
 use App\Models\Doctor;
 use App\Models\doctor_schedule;
+use App\Models\Notification;
 use App\Models\Patient;
+use App\Models\User;
+use App\Mail\AppointmentReceiptMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
 {
@@ -318,13 +323,16 @@ class AppointmentController extends Controller
 
     /**
      * Handle patient appointment booking from the Doctors List page.
+     * Includes concurrency locking to prevent duplicate slot bookings,
+     * dispatches receipt emails to patient & admins, and creates in-app notifications.
      */
     public function storePatientAppointment(Request $request)
     {
         $validated = $request->validate([
-            'doctor_id'   => ['required', 'integer', 'exists:doctors,id'],
-            'schedule_id' => ['required', 'integer', 'exists:doctor_schedule,id'],
-            'reason'      => ['nullable', 'string', 'max:500'],
+            'doctor_id'      => ['required', 'integer', 'exists:doctors,id'],
+            'schedule_id'    => ['required', 'integer', 'exists:doctor_schedule,id'],
+            'reason'         => ['nullable', 'string', 'max:500'],
+            'payment_method' => ['nullable', 'string', 'max:50'],
         ]);
 
         $user = Auth::user();
@@ -334,14 +342,40 @@ class AppointmentController extends Controller
 
         $patient = Patient::firstOrCreate(['user_id' => $user->id]);
 
-        $schedule = doctor_schedule::findOrFail($validated['schedule_id']);
-
-        if ($schedule->status !== 'available') {
-            return response()->json(['success' => false, 'message' => 'This slot is no longer available. Please choose another.'], 409);
-        }
-
         DB::beginTransaction();
         try {
+            // Concurrency Lock: Lock schedule row for update to prevent race conditions
+            $schedule = doctor_schedule::where('id', $validated['schedule_id'])
+                ->lockForUpdate()
+                ->first();
+
+            if (!$schedule || $schedule->status !== 'available') {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This appointment time slot is already booked or no longer available. Please select another slot.',
+                ], 409);
+            }
+
+            // Check if active appointment already exists on this schedule
+            $existingAppointment = appointments::where('schedule_id', $schedule->id)
+                ->where('status', '!=', 'cancelled')
+                ->lockForUpdate()
+                ->first();
+
+            if ($existingAppointment) {
+                // Update schedule to booked if not already set
+                $schedule->status = 'booked';
+                $schedule->save();
+                DB::rollBack();
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This appointment time slot has just been taken by another patient. Please choose another time.',
+                ], 409);
+            }
+
+            // Create the appointment
             $appointment = appointments::create([
                 'patient_id'  => $patient->id,
                 'doctor_id'   => $validated['doctor_id'],
@@ -350,26 +384,103 @@ class AppointmentController extends Controller
                 'status'      => 'confirmed',
             ]);
 
-            // Mark the slot as booked so others can't take it
+            // Mark schedule as booked so nobody else can select it
             $schedule->status = 'booked';
             $schedule->save();
 
+            $doctor = Doctor::find($validated['doctor_id']);
+            $doctorName = $doctor ? $doctor->doctor_name : 'Doctor';
+            $doctorDisplayName = str_starts_with(strtolower($doctorName), 'dr.') ? $doctorName : "Dr. {$doctorName}";
+            $formattedRef = 'APT-' . str_pad($appointment->id, 6, '0', STR_PAD_LEFT);
+            $formattedDate = $schedule->date instanceof \Carbon\Carbon
+                ? $schedule->date->format('d M Y')
+                : date('d M Y', strtotime($schedule->date));
+
+            // Create In-App Notification for Patient
+            Notification::create([
+                'patient_id'     => $patient->id,
+                'doctor_id'      => $doctor?->id,
+                'appointment_id' => $appointment->id,
+                'title'          => 'Appointment Confirmed & Receipt Ready',
+                'message'        => "Your consultation with {$doctorDisplayName} on {$formattedDate} at {$schedule->start_time} is confirmed. Ref: {$formattedRef}.",
+                'type'           => 'consultation',
+                'is_read'        => false,
+            ]);
+
+            // Create In-App Notification for Admins
+            Notification::create([
+                'patient_id'     => $patient->id,
+                'doctor_id'      => $doctor?->id,
+                'appointment_id' => $appointment->id,
+                'title'          => 'New Appointment Booked',
+                'message'        => "Patient {$user->name} booked {$doctorDisplayName} for {$formattedDate} at {$schedule->start_time}. Ref: {$formattedRef}.",
+                'type'           => 'consultation',
+                'is_read'        => false,
+            ]);
+
             DB::commit();
 
-            $doctor = Doctor::find($validated['doctor_id']);
+            // Load appointment relationships for email & receipt
+            $appointment->load(['doctor', 'patient.user', 'doctor_schedule']);
+
+            // Send receipt emails (asynchronous or fault-tolerant)
+            try {
+                // 1. Send Receipt to Patient
+                if (!empty($user->email)) {
+                    Mail::to($user->email)->send(new AppointmentReceiptMail($appointment, 'patient'));
+                }
+
+                // 2. Send Notification & Receipt to Admins
+                $adminEmails = User::whereHas('role', function ($q) {
+                    $q->where('name', 'admin')->orWhere('name', 'Admin');
+                })->pluck('email')->filter()->unique()->toArray();
+
+                if (!empty($adminEmails)) {
+                    Mail::to($adminEmails)->send(new AppointmentReceiptMail($appointment, 'admin'));
+                }
+            } catch (\Throwable $mailEx) {
+                Log::warning('Appointment receipt email could not be sent: ' . $mailEx->getMessage(), [
+                    'appointment_id' => $appointment->id,
+                ]);
+            }
 
             return response()->json([
                 'success'        => true,
-                'message'        => 'Appointment booked successfully!',
+                'message'        => 'Appointment booked successfully! Receipt has been sent to your email and the administration.',
                 'appointment_id' => $appointment->id,
-                'doctor_name'    => $doctor->doctor_name ?? 'Doctor',
-                'date'           => $schedule->date?->format('d M Y'),
-                'time'           => $schedule->start_time,
+                'receipt_url'    => route('patient.appointment.receipt', $appointment->id),
+                'doctor_name'    => $doctorName,
+                'date'           => $formattedDate,
+                'time'           => $schedule->start_time . ' – ' . $schedule->end_time,
                 'fee'            => number_format($schedule->price, 0, '.', ' ') . ' FCFA',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Appointment booking error: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'Booking failed: ' . $e->getMessage()], 500);
         }
+    }
+
+    /**
+     * Display / download appointment receipt.
+     */
+    public function downloadReceipt($id)
+    {
+        $appointment = appointments::with(['doctor', 'patient.user', 'doctor_schedule', 'payment'])->findOrFail($id);
+
+        $currentUser = Auth::user();
+        if (!$currentUser) {
+            abort(401, 'Please log in to view this receipt.');
+        }
+
+        // Authorize: Patient owner or Admin or Doctor
+        $isPatientOwner = ($appointment->patient && $appointment->patient->user_id === $currentUser->id);
+        $isAdmin = ($currentUser->role && in_array(strtolower($currentUser->role->name), ['admin', 'superadmin', 'administrator']));
+
+        if (!$isPatientOwner && !$isAdmin) {
+            abort(403, 'Unauthorized access to this receipt.');
+        }
+
+        return view('account.patient.appointment_receipt', compact('appointment'));
     }
 }

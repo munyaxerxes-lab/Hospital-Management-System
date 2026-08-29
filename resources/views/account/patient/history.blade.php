@@ -833,6 +833,11 @@
                   <div class="hist-detail-value">
                     <span class="hist-badge {{ $aStatusClass }}">{{ $aStatusLabel }}</span>
                   </div>
+                  <div style="margin-top:14px;">
+                    <a href="{{ route('patient.appointment.receipt', $appt->id) }}" target="_blank" class="hist-download-btn" style="padding:7px 14px; font-size:12px; display:inline-flex; align-items:center; gap:6px; background:#2563eb; color:#fff; text-decoration:none; border-radius:8px; font-weight:700;">
+                      <i class="ri-file-download-line"></i> Download Receipt
+                    </a>
+                  </div>
                 </div>
 
               </div>
