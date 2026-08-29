@@ -6,11 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class prescriptions extends Model
 {
-    //
+    protected $table = 'prescription';
+
+    protected $fillable = [
+        'pharmacist_id',
+    ];
+
     public function pharmacist()
     {
-        return $this->belongsTo(Pharmacist::class);
+        return $this->belongsTo(pharmacist::class, 'pharmacist_id');
     }
+
     public function medicines()
     {
         return $this->hasMany(Medicine::class);

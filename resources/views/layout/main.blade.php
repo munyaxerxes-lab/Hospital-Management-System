@@ -1,20 +1,11 @@
 <!-- Main Content -->
 <main class="main-content">
 
-  <!-- Top Header -->
-  <header class="topbar">
-    <div class="doctors-tools">
-        <input class="searchbar" placeholder="Search ...."
-        style="width: 20rem;
-        height: 2rem;
-        border-radius: 12px;
-        border: 1px solid blue;
-        padding-left: 1rem"
-        >
-    </div>
+  <!-- Top Header Navigation Dashboard Area -->
+  <header class="topbar" style="display: flex; justify-content: flex-end; align-items: center; padding: 15px 25px; background: #ffffff; border-bottom: 1px solid #eef0f6;">
    
     <!-- Top Header Nav Wrapper -->
-    <div class="header-nav" style="display: flex; justify-content: flex-end; align-items: center; padding: 15px; position: relative;">
+    <div class="header-nav" style="display: flex; justify-content: flex-end; align-items: center; position: relative;">
         
         <!-- User Profile Dropdown Container -->
         <div class="user-dropdown-container" style="position: relative; display: inline-block;">
@@ -60,30 +51,58 @@
                 <i class="fa-solid fa-chevron-down chev" style="font-size: 12px; color: #666; transition: transform 0.2s;"></i>
             </div>
 
-            <!-- 🌟 Floating Dropdown Menu Panel -->
+            <!-- Floating Dropdown Menu Panel -->
             <div id="userDropdownMenu" class="dropdown-menu">
-                <a href="{{ route('user.dashboard') }}">📊 Dashboard</a>
-                
-                <!-- Account Deletion Action Form Wrapper -->
-                <form action="{{ route('account.delete') }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete your account?');" style="margin: 0;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="dropdown-item delete-btn">⚠️ Delete Account</button>
-                </form>
+                <a href="{{ route('user.dashboard') }}">Dashboard</a>
+                <a href="{{ route('profile.settings') }}">Account Settings</a>
 
-                <hr style="margin: 4px 0; border: 0; border-top: 1px solid #eee;">
+                <div class="dropdown-divider"></div>
+                
+                <!-- Account Deletion Action Trigger -->
+                <button type="button" popovertarget="delete-patient-account-modal" class="dropdown-item delete-btn">
+                    Delete Account
+                </button>
+
+                <div class="dropdown-divider"></div>
 
                 <!-- Logout Form Wrapper -->
-                <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                <form action="{{ route('logout') }}" method="POST" style="margin: 0; width: 100%;">
                     @csrf
-                    <!-- 🌟 FIXED: Removed broken text '@button' syntax directive right here -->
-                    <button type="submit" class="dropdown-item logout-btn">🚪 Log Out</button>
+                    <button type="submit" class="dropdown-item logout-btn">Log Out</button>
                 </form>
             </div>
 
         </div>
     </div>
   </header>
+
+  <!-- Delete Patient Account Confirmation Modal -->
+  <div id="delete-patient-account-modal" popover class="alert-modal-box">
+    <div class="alert-modal-content">
+      <div class="alert-modal-icon">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 class="alert-modal-title">Delete Patient Account</h3>
+      <p class="alert-modal-desc">
+        Are you sure you want to permanently delete your account? This will remove all your patient appointments, prescriptions, and medical history.
+      </p>
+      <div class="alert-modal-box-warning">
+        <strong>Irreversible Action:</strong> You will not be able to log back into this account once deleted.
+      </div>
+      <div class="alert-modal-actions">
+        <button type="button" popovertarget="delete-patient-account-modal" popovertargetaction="hide" class="btn-modal-cancel">
+          Cancel
+        </button>
+        <form action="{{ route('account.delete') }}" method="POST" style="margin: 0;">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn-modal-danger">
+            <i class="fa-solid fa-trash"></i> Yes, Delete Account
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
     
   <!-- Page Content -->
   <section class="content">
@@ -93,7 +112,7 @@
 
 </main>
 
-<!-- 🌟 Essential Dropdown Presentation Styles -->
+<!--  Essential Dropdown Presentation Styles -->
 <style>
   .dropdown-menu {
       display: none;

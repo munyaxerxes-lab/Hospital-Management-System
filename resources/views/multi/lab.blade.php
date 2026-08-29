@@ -678,22 +678,45 @@
 
 
             if (payButton) {
-
                 payButton.addEventListener(
                     'click',
                     function () {
-
                         showStep(4);
 
-                        setTimeout(function () {
+                        const formData = new FormData();
+                        formData.append('_token', '{{ csrf_token() }}');
+                        formData.append('address', addressInput ? addressInput.value : 'Hospital Lab Department');
+                        formData.append('visit_date', dateInput ? dateInput.value : '');
+                        formData.append('visit_time', timeInput ? timeInput.value : '');
+                        formData.append('payment_method', 'momo');
 
-                            showStep(5);
-
-                        }, 1200);
-
+                        fetch('{{ route("patient.lab_request.store") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            setTimeout(function () {
+                                if (data && data.request_number) {
+                                    const orderIdEl = document.querySelector('.lab-confirmation-row strong');
+                                    if (orderIdEl) {
+                                        orderIdEl.textContent = data.request_number;
+                                    }
+                                }
+                                showStep(5);
+                            }, 1200);
+                        })
+                        .catch(err => {
+                            setTimeout(function () {
+                                showStep(5);
+                            }, 1200);
+                        });
                     }
                 );
-
             }
 
 

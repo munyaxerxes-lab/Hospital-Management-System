@@ -11,7 +11,7 @@
     <!-- Navigation -->
     <nav class="navigation">
 
-        <a href="/dashboard" class="nav-item active">
+        <a href="{{ route('user.dashboard') }}" class="nav-item active">
             <i class="ri-home-4-line"></i>
             <span>Dashboard</span>
         </a>
@@ -36,12 +36,15 @@
             <span>History</span>
         </a>
 
-        <a href="/cart" class="nav-item">
+        @php
+            $liveCartCount = isset($cartCount) ? $cartCount : (auth()->check() ? \App\Models\cart::where('user_id', auth()->id())->sum('quantity') : 0);
+        @endphp
+        <a href="/cart" class="nav-item" style="display:flex;align-items:center;position:relative;">
             <i class="ri-shopping-cart-line"></i>
             <span>Cart</span>
-            @if(isset($cartCount) && $cartCount > 0)
-                <span class="cart-badge"><p>{{ $cartCount }}</p></span>
-            @endif
+            <span class="cart-badge-pill" id="sidebarCartBadge" style="background:#ef4444;color:#ffffff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:99px;margin-left:auto;{{ $liveCartCount > 0 ? 'display:inline-block;' : 'display:none;' }}">
+                {{ $liveCartCount }}
+            </span>
         </a>
 
         <!-- Active Navigation -->

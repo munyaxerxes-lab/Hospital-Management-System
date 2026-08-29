@@ -7,6 +7,7 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -167,23 +168,40 @@ public function changePhone(Request $request)
     return back()->with('status', 'Phone number successfully updated.');
 }
 
-/**
- * 5. Update/Change Security Access Password
- */
-public function updatePassword(Request $request)
-{
-    $user = Auth::user();
+    /**
+     * 5. Update/Change Security Access Password
+     */
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
 
-    $validated = $request->validate([
-        'current_password' => ['required', 'current_password'], // Laravel built-in current validation rule verification
-        'password' => ['required', 'confirmed', Password::defaults()],
-    ]);
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password'], // Laravel built-in current validation rule verification
+            'password' => ['required', 'confirmed', Password::defaults()],
+        ]);
 
-    $user->update([
-        'password' => Hash::make($validated['password']),
-    ]);
+        $user->update([
+            'password' => Hash::make($validated['password']),
+        ]);
 
-    return back()->with('status', 'Password modified successfully.');
-}
+        return back()->with('status', 'Password modified successfully.');
+    }
 
+    /**
+     * 6. Permanently Delete Account
+     */
+    public function deleteAccount(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user) {
+            Auth::logout();
+            $user->delete();
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
+
+        return redirect()->route('show.login')->with('status', 'Your account has been permanently deleted.');
+    }
 }

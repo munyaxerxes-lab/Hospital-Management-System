@@ -2,32 +2,42 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
 use Illuminate\Support\Facades\DB;
 
 class HospitalSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('hospitals')->insert([
+        $hospitals = [
             [
-                'hospital_name' => 'ICLAN Hospital',
-                'address' => 'Douala, Cameroon',
-                'phone' => '+237 600000001',
-                'email' => 'info@iclan-hospital.cm',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'id' => 1,
+                'hospital_name' => 'ICLAN Central Hospital Douala',
+                'address' => 'Boulevard de la Liberté, Akwa, Douala',
+                'phone' => '+237 671 234 567',
+                'email' => 'douala@iclan-hospital.cm',
             ],
             [
-                'hospital_name' => 'ICLAN Medical Centre',
-                'address' => 'Yaoundé, Cameroon',
-                'phone' => '+237 600000002',
+                'id' => 2,
+                'hospital_name' => 'ICLAN Medical Center Yaoundé',
+                'address' => 'Quartier Bastos, Yaoundé',
+                'phone' => '+237 699 876 543',
                 'email' => 'yaounde@iclan-hospital.cm',
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
-        ]);
+            [
+                'id' => 3,
+                'hospital_name' => 'MediLink Regional Polyclinic Buea',
+                'address' => 'Molyko Commercial Avenue, Buea',
+                'phone' => '+237 675 112 233',
+                'email' => 'buea@medilink.cm',
+            ],
+        ];
+
+        foreach ($hospitals as $h) {
+            DB::table('hospitals')->updateOrInsert(
+                ['id' => $h['id']],
+                array_merge($h, ['created_at' => now(), 'updated_at' => now()])
+            );
+        }
     }
 }

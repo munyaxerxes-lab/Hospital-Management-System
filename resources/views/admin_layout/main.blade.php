@@ -3,40 +3,31 @@
 
   <!-- Top Header Navigation Dashboard Area -->
   <header class="topbar">
-    <div class="doctors-tools">
-        <input class="searchbar" placeholder="Search ...."
-        style="width: 20rem;
-        height: 2rem;
-        border-radius: 12px;
-        border: 1px solid blue;
-        padding-left: 1rem"
-        >
+    <div class="topbar-search-wrapper">
+        <!-- <div class="search-input-group">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" class="topbar-searchbar" placeholder="Search patients, doctors, tests..." id="globalAdminSearch">
+            <span class="search-shortcut-badge">⌘K</span>
+        </div> -->
     </div>
    
     <!-- Top Header Nav Inline Actions Context -->
-    <div class="header-nav" style="display: flex; justify-content: flex-end; align-items: center; padding: 15px; position: relative;">
+    <div class="header-nav">
         
+        <!-- Live System Status Badge -->
+        <!-- <div class="system-status-indicator" title="All hospital services operational">
+            <span class="status-pulse-dot"></span>
+            <span class="status-pulse-text">System Live</span>
+        </div> -->
+
         <!-- User Profile Dropdown Drop-panel Menu Anchor Frame -->
-        <div class="user-dropdown-container" style="position: relative; display: inline-block;">
+        <div class="user-dropdown-container">
             
             <!-- Clickable Interactive Target Trigger Wrap -->
-            <div class="profile-trigger" id="dropdownTrigger" tabindex="0"
-                 style="display: flex; gap: 0.5rem; align-items: center; cursor: pointer; user-select: none;">
+            <div class="profile-trigger" id="dropdownTrigger" tabindex="0">
                
                 <!-- Circular Avatar Initials Graphic Indicator -->
-                <div style="
-                    border: none;
-                    border-radius: 50%;
-                    width: 2.5rem;
-                    height: 2.5rem;
-                    align-items: center;
-                    background: #164dad;
-                    color: white;
-                    font-size: 14px;
-                    font-weight: bold;
-                    display: flex;
-                    justify-content: center;
-                    ">
+                <div class="user-avatar-badge">
                     <span class="user-initials">
                         @if(Auth::check())
                             @php
@@ -48,60 +39,109 @@
                                 echo strtoupper(mb_substr($extractedInitials, 0, 2));
                             @endphp
                         @else
-                            U
+                            AD
                         @endif
                     </span>
                 </div>
                 
-                
-                <span style="font-weight: 500; color: #333;">
-                    {{ Auth::check() ? Auth::user()->name : 'Guest' }}
-                </span>
-                <i class="fa-solid fa-chevron-down chev" style="font-size: 12px; color: #666; transition: transform 0.2s;"></i>
+                <div class="profile-text-wrap">
+                    <span class="profile-user-name">
+                        {{ Auth::check() ? Auth::user()->name : 'Administrator' }}
+                    </span>
+                    <span class="profile-user-role">Hospital Admin</span>
+                </div>
+                <i class="fa-solid fa-chevron-down chev"></i>
             </div>
 
             <!-- Floating Overlay Dropdown Nav Options Menu Element -->
             <div id="userDropdownMenu" class="dropdown-menu">
                 
-                <!-- Home Dashboard Dynamic Redirection Check link -->
-                @if(Auth::check() && Auth::user()->role && Auth::user()->role->name === 'admin')
-                    <a href="{{ route('admin.dashboard') }}">📊 Dashboard</a>
-                @else
-                    <a href="{{ route('patient.dashboard') }}">📊 Dashboard</a>
-                @endif
+                <!-- User Header Summary -->
+                <div class="dropdown-user-header">
+                    <span class="dropdown-user-name">{{ Auth::check() ? Auth::user()->name : 'Administrator' }}</span>
+                    <span class="dropdown-user-email">{{ Auth::check() ? Auth::user()->email : 'admin@medilink.com' }}</span>
+                </div>
+
+                <!-- Navigation Links -->
+                <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
                
-                <!-- Interactive Operational Settings Form Redirection Panel link -->
-                @if(Auth::check() && Auth::user()->role && Auth::user()->role->name === 'admin')
-                    <a href="{{ route('admin.profile.settings') }}">⚙️ Settings</a>
-                @else
-                    <a href="{{ route('profile.settings') }}">⚙️ Settings</a>
-                @endif
+                <a href="{{ route('admin.profile.settings') }}" class="dropdown-item">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Account Settings</span>
+                </a>
 
-                <!-- Account Deletion Action Execution Form Pipeline element -->
-                <form action="{{ route('account.delete') }}" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete your account?');" style="margin: 0;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="dropdown-item delete-btn">⚠️ Delete Account</button>
-                </form>
+                <!-- <div class="dropdown-divider"></div> -->
 
-                <hr style="margin: 4px 0; border: 0; border-top: 1px solid #eee;">
+                <!-- Account Deletion Modal Trigger
+                <button type="button" popovertarget="delete-account-modal" class="dropdown-item delete-btn">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <span>Delete Account</span>
+                </button> -->
+
+                <div class="dropdown-divider"></div>
 
                 <!-- Session Termination Invalidation Form Pipeline element -->
-                <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                <form action="{{ route('logout') }}" method="POST" style="margin: 0; width: 100%;">
                     @csrf
-                    <button type="submit" class="dropdown-item logout-btn">🚪 Log Out</button>
+                    <button type="submit" class="dropdown-item logout-btn">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span>Log Out</span>
+                    </button>
                 </form>
             </div>
 
         </div>
     </div>
   </header>
+
+  <!-- Delete Account Confirmation Modal -->
+  <div id="delete-account-modal" popover class="alert-modal-box">
+    <div class="alert-modal-content">
+      <div class="alert-modal-icon">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 class="alert-modal-title">Delete Administrator Account</h3>
+      <p class="alert-modal-desc">
+        Are you sure you want to permanently delete your account? This will remove all your administrator privileges and erase your profile data from the system.
+      </p>
+      <div class="alert-modal-box-warning">
+        <strong>Irreversible Action:</strong> Once confirmed, this account cannot be recovered.
+      </div>
+      <div class="alert-modal-actions">
+        <button type="button" popovertarget="delete-account-modal" popovertargetaction="hide" class="btn-modal-cancel">
+          Cancel
+        </button>
+        <form action="{{ route('account.delete') }}" method="POST" style="margin: 0;">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn-modal-danger">
+            <i class="fa-solid fa-trash"></i> Yes, Delete Account
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
     
   <!-- Core Layout Content View Yield Nodes -->
   <section class="content">
       @yield('content')
       @yield('scripts')
   </section>
+
+  <!-- Clean Admin Minimal Footer -->
+  <footer class="admin-footer">
+    <div class="admin-footer-content">
+      <div class="admin-footer-left">
+        <span>&copy; {{ date('Y') }} <strong>MediLink Hospital Management System</strong>. All rights reserved.</span>
+      </div>
+      <!-- <div class="admin-footer-right">
+        <span class="version-tag"><i class="fa-solid fa-shield-halved"></i> Enterprise Edition v2.4</span>
+      </div> -->
+    </div>
+  </footer>
 
 </main>
 

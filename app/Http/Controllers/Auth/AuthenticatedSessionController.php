@@ -32,6 +32,13 @@ class AuthenticatedSessionController extends Controller
         // Find the user
         $user = User::where('email', $request->email)->first();
 
+        // Admin users bypass OTP and log in directly to admin dashboard
+        if ($user && $user->role && $user->role->name === 'admin') {
+            Auth::login($user, $request->boolean('remember'));
+            $request->session()->regenerate();
+            return redirect()->route('admin.dashboard');
+        }
+
         // Generate a 6-digit OTP
         $otp = (string) random_int(100000, 999999);
 
@@ -129,8 +136,20 @@ class AuthenticatedSessionController extends Controller
             'otp_expires_at' => null,
         ])->save();
 
-        // Redirect normal user to patient dashboard
-        return redirect()->route('user.dashboard');
+        // Redirect according to user role
+        if ($user->role && $user->role->name === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->role && $user->role->name === 'doctor') {
+            return redirect()->route('doctor.dashboard');
+        } elseif ($user->role && $user->role->name === 'pharmacist') {
+            return redirect()->route('pharmacist.dashboard');
+        } elseif ($user->role && $user->role->name === 'lab_technician') {
+            return redirect()->route('account.lab.dashboard');
+        } elseif ($user->role && $user->role->name === 'delivery_agent') {
+            return redirect()->route('delivery.dashboard');
+        }
+
+        return redirect()->route('patient.dashboard');
     }
 
     /**

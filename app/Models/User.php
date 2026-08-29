@@ -29,17 +29,17 @@ class User extends Authenticatable
 
     public function pharmacist()
     {
-        return $this->hasOne(Pharmacist::class);
+        return $this->hasOne(pharmacist::class);
     }
 
     public function lab_technician()
     {
-        return $this->hasMany(LabTechnician::class);
+        return $this->hasOne(lab_technician::class);
     }
 
     public function delivery_agent()
     {
-        return $this->hasMany(DeliveryAgent::class);
+        return $this->hasOne(DeliveryAgent::class);
     }
 
     /**
@@ -53,7 +53,7 @@ class User extends Authenticatable
         'phone',
         'password',
         'role_id',
-        'otp_code', // 🌟 Kept matched with your controller ('otp_code')
+        'otp_code',
         'otp_expires_at',
     ];
 
@@ -77,7 +77,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'otp_expires_at' => 'datetime', // 🌟 Safely unified inside the modern casts function
+            'otp_expires_at' => 'datetime',
         ];
     }
 }

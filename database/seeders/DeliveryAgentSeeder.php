@@ -2,26 +2,41 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class DeliveryAgentSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
-        DB::table('delivery_agents')->insert([
-    [
-        'user_id' => 6,
-        'vehicle_type' => 'Motorbike',
-        'status' => 'available',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ],
-]);
+        $agents = [
+            [
+                'email' => 'delivery@medilink.com',
+                'vehicle_type' => 'Yamaha Express Motorbike (LT-892-AA)',
+                'status' => 'available',
+            ],
+            [
+                'email' => 'samuel@iclan.cm',
+                'vehicle_type' => 'Toyota Hiace Temperature-Controlled Van (CE-455-BB)',
+                'status' => 'available',
+            ],
+        ];
+
+        foreach ($agents as $agent) {
+            $user = User::where('email', $agent['email'])->first();
+            if ($user) {
+                DB::table('delivery_agents')->updateOrInsert(
+                    ['user_id' => $user->id],
+                    [
+                        'vehicle_type' => $agent['vehicle_type'],
+                        'status' => $agent['status'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]
+                );
+            }
+        }
     }
 }
+

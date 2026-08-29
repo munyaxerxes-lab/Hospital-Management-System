@@ -2,45 +2,84 @@
 
 @section('content')
 
- <div class="app">
+<section class="page" style="padding-bottom: 40px;">
 
-    <main class="main">
+    <h1 class="page-title">Manage Medical Specialists</h1>
+    <p class="page-subtitle">
+        Register medical staff, update qualifications, set consultation fees, and control duty status.
+    </p>
 
-        <section class="page">
+    {{-- SUCCESS MESSAGE --}}
+    @if (session('success'))
+        <div class="alert alert-success" id="success-message">
+            <i class="fa-solid fa-circle-check" style="font-size: 18px;"></i>
+            <span>{{ session('success') }}</span>
+        </div>
 
-            <h1 class="page-title">Manage Doctor Accounts</h1>
-
-            <p class="page-subtitle">
-                Create, update, activate, deactivate or delete doctor accounts.
-            </p>
-
-            {{-- SUCCESS MESSAGE --}}
-           
-            @if (session('success'))
-                <div class="alert alert-success" id="success-message">
-                    <i class="fa-solid fa-circle-check"></i>
-                    {{ session('success') }}
-                </div>
-
-                <script>
+        <script>
+            setTimeout(function () {
+                const message = document.getElementById('success-message');
+                if (message) {
+                    message.style.transition = 'opacity 0.5s ease';
+                    message.style.opacity = '0';
                     setTimeout(function () {
-                        const message = document.getElementById('success-message');
+                        message.remove();
+                    }, 500);
+                }
+            }, 3000);
+        </script>
+    @endif
 
-                        if (message) {
-                            message.style.opacity = '0';
+    {{-- STATS CARDS --}}
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 26px;">
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); display: flex; align-items: center; gap: 16px;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                <i class="fa-solid fa-user-doctor"></i>
+            </div>
+            <div>
+                <span style="font-size: 13px; color: #64748b; font-weight: 600; display: block;">Total Specialists</span>
+                <strong style="font-size: 24px; color: #0f172a; font-weight: 800;">{{ $doctors->count() }}</strong>
+            </div>
+        </div>
 
-                            setTimeout(function () {
-                                message.remove();
-                            }, 500);
-                        }
-                    }, 3000);
-                </script>
-            @endif
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); display: flex; align-items: center; gap: 16px;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+                <span style="font-size: 13px; color: #64748b; font-weight: 600; display: block;">Active On Duty</span>
+                <strong style="font-size: 24px; color: #059669; font-weight: 800;">{{ $doctors->where('status', 'active')->count() }}</strong>
+            </div>
+        </div>
 
-            <!-- Create Doctor Button -->
-            <button popovertarget="my-modal" class="open-btn">
-                Create Doctors
-            </button>
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); display: flex; align-items: center; gap: 16px;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #fef2f2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-size: 22px;">
+                <i class="fa-solid fa-user-slash"></i>
+            </div>
+            <div>
+                <span style="font-size: 13px; color: #64748b; font-weight: 600; display: block;">Inactive / Off Duty</span>
+                <strong style="font-size: 24px; color: #dc2626; font-weight: 800;">{{ $doctors->where('status', 'inactive')->count() }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 22px;">
+        <button popovertarget="my-modal" class="open-btn" style="margin-bottom: 0;">
+            <i class="fa-solid fa-user-plus"></i> Add New Doctor
+        </button>
+
+        <div style="position: relative;">
+            <input
+                type="text"
+                id="doctorSearchInput"
+                placeholder="Filter specialists..."
+                onkeyup="filterDoctorsTable()"
+                style="padding: 10px 14px 10px 36px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 13.5px; outline: none; width: 240px; background: #ffffff;"
+            >
+            <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 13px;"></i>
+        </div>
+    </div>
 
 
             <!-- =========================
@@ -51,17 +90,27 @@
 
                 <div class="modal-content">
 
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h3 class="modal-title">
+                            <i class="fa-solid fa-user-doctor"></i>
+                            Create New Doctor Account
+                        </h3>
+                        <button type="button" popovertarget="my-modal" popovertargetaction="hide" class="modal-close-x" title="Close">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
                     <form
                         method="POST"
                         action="{{ route('admin.doctors.store') }}"
                         class="doctor-form"
+                        enctype="multipart/form-data"
                     >
 
                         @csrf
 
-                        <div class="form-title">
-                            Create New Doctor Account
-                        </div>
+                        <div class="modal-body">
 
 
                         <!-- Validation Summary -->
@@ -350,47 +399,54 @@
 
                             </div>
 
+                            <!-- Avatar / Photo -->
+                            <div class="field full">
+                                <label for="avatar">
+                                    Doctor Avatar / Profile Photo
+                                </label>
+                                <input
+                                    type="file"
+                                    id="avatar"
+                                    name="avatar"
+                                    accept="image/*"
+                                >
+                                @error('avatar')
+                                    <small class="error-message">
+                                        {{ $message }}
+                                    </small>
+                                @enderror
+                            </div>
+
                         </div>
 
 
-                        <!-- Save -->
+                            <div class="required-note">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>All fields marked with * are required.</span>
+                            </div>
 
-                        <div class="save-row">
+                        </div>
 
+                        <!-- Modal Footer Actions -->
+                        <div class="modal-footer">
+                            <button
+                                type="button"
+                                popovertarget="my-modal"
+                                popovertargetaction="hide"
+                                class="close-btn"
+                            >
+                                Cancel
+                            </button>
                             <button
                                 type="submit"
-                                class="btn btn-primary save-btn"
+                                class="save-btn"
                             >
-
                                 <i class="fa-regular fa-floppy-disk"></i>
-
-                                Save Doctor
-
+                                <span>Save Doctor</span>
                             </button>
-
-                        </div>
-
-
-                        <div class="required-note">
-
-                            <i class="fa-solid fa-circle-info"></i>
-
-                            All fields marked with * are required.
-
                         </div>
 
                     </form>
-
-
-                    <!-- Close Button -->
-
-                    <button
-                        popovertarget="my-modal"
-                        popovertargetaction="hide"
-                        class="close-btn"
-                    >
-                        Close
-                    </button>
 
                 </div>
 
@@ -439,7 +495,15 @@
                                     </td>
 
                                     <td>
-                                        {{ $doctor->doctor_name }}
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            @php
+                                                $docAvatar = $doctor->avatar
+                                                    ? (str_starts_with($doctor->avatar, 'http') || str_starts_with($doctor->avatar, 'image/') ? asset($doctor->avatar) : asset('storage/' . $doctor->avatar))
+                                                    : asset('image/doc.png');
+                                            @endphp
+                                            <img src="{{ $docAvatar }}" alt="{{ $doctor->doctor_name }}" style="width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid #e2e8f0; flex-shrink: 0;">
+                                            <span>{{ $doctor->doctor_name }}</span>
+                                        </div>
                                     </td>
 
                                     <td>
@@ -505,29 +569,16 @@
 
 
                                         {{-- =================================================
-                                             DELETE DOCTOR ACCOUNT
+                                             DELETE DOCTOR ACCOUNT TRIGGER
                                              ================================================= --}}
-
-                                        <form
-                                            method="POST"
-                                            action="{{ route('admin.doctors.delete', $doctor->id) }}"
-                                            style="display:inline;"
-                                            onsubmit="return confirm('Are you sure you want to delete this doctor account?');"
+                                        <button
+                                            type="button"
+                                            class="icon-btn red"
+                                            popovertarget="delete-doctor-{{ $doctor->id }}"
+                                            title="Delete doctor account"
                                         >
-
-                                            @csrf
-
-                                            @method('DELETE')
-
-                                            <button
-                                                type="submit"
-                                                class="icon-btn red"
-                                                title="Delete doctor"
-                                            >
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-
-                                        </form>
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
 
 
                                         {{-- =================================================
@@ -547,6 +598,35 @@
 
                                 </tr>
 
+                                <!-- =====================================================
+                                     DELETE DOCTOR ACCOUNT CONFIRMATION MODAL
+                                ====================================================== -->
+                                <div id="delete-doctor-{{ $doctor->id }}" popover class="alert-modal-box">
+                                    <div class="alert-modal-content">
+                                        <div class="alert-modal-icon">
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+                                        </div>
+                                        <h3 class="alert-modal-title">Delete Doctor Account</h3>
+                                        <p class="alert-modal-desc">
+                                            Are you sure you want to permanently delete <strong>Dr. {{ $doctor->doctor_name }}</strong> ({{ $doctor->specialty }})?
+                                        </p>
+                                        <div class="alert-modal-box-warning">
+                                            <strong>Warning:</strong> This will erase their profile and remove all associated appointment schedules from the database.
+                                        </div>
+                                        <div class="alert-modal-actions">
+                                            <button type="button" popovertarget="delete-doctor-{{ $doctor->id }}" popovertargetaction="hide" class="btn-modal-cancel">
+                                                Cancel
+                                            </button>
+                                            <form method="POST" action="{{ route('admin.doctors.delete', $doctor->id) }}" style="margin: 0;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn-modal-danger">
+                                                    <i class="fa-solid fa-trash"></i> Yes, Delete Doctor
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <!-- =====================================================
                                      EDIT / UPDATE DOCTOR PROFILE MODAL
@@ -560,24 +640,63 @@
 
                                     <div class="modal-content">
 
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h3 class="modal-title">
+                                                <i class="fa-solid fa-user-pen"></i>
+                                                Update Doctor Profile
+                                            </h3>
+                                            <button type="button" popovertarget="edit-doctor-{{ $doctor->id }}" popovertargetaction="hide" class="modal-close-x" title="Close">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+
                                         <form
                                             method="POST"
                                             action="{{ route('admin.doctors.update', $doctor->id) }}"
                                             class="doctor-form"
+                                            enctype="multipart/form-data"
                                         >
 
                                             @csrf
 
                                             @method('PUT')
 
-
-                                            <div class="form-title">
-                                                Update Doctor Profile
-                                            </div>
+                                            <div class="modal-body">
 
 
                                             <div class="form-grid">
 
+                                                <!-- Avatar Upload -->
+                                                <div class="field full">
+                                                    <label style="display:block;font-weight:600;font-size:13px;color:#1e293b;margin-bottom:8px;">
+                                                        Doctor Profile Photo / Avatar
+                                                    </label>
+                                                    <div style="display:flex;align-items:center;gap:14px;background:#f8fafc;padding:14px;border-radius:10px;border:1.5px dashed #cbd5e1;">
+                                                        @php
+                                                            $avatarSrc = $doctor->avatar
+                                                                ? (str_starts_with($doctor->avatar, 'http') || str_starts_with($doctor->avatar, 'image/') ? asset($doctor->avatar) : asset('storage/' . $doctor->avatar))
+                                                                : asset('image/doc.png');
+                                                        @endphp
+                                                        <img
+                                                            id="avatar-preview-{{ $doctor->id }}"
+                                                            src="{{ $avatarSrc }}"
+                                                            alt="Current Avatar"
+                                                            style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #095eff;flex-shrink:0;"
+                                                        >
+                                                        <div style="flex:1;">
+                                                            <input
+                                                                type="file"
+                                                                name="avatar"
+                                                                id="avatar-input-{{ $doctor->id }}"
+                                                                accept="image/*"
+                                                                style="width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:13px;background:#fff;"
+                                                                onchange="document.getElementById('avatar-preview-{{ $doctor->id }}').src = URL.createObjectURL(this.files[0])"
+                                                            >
+                                                            <small style="color:#64748b;display:block;margin-top:4px;font-size:12px;">Leave empty to keep the current photo. (PNG, JPG, WEBP max 4MB)</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                                 <!-- Doctor Name -->
 
@@ -780,44 +899,33 @@
                                             </div>
 
 
-                                            <!-- Update -->
-
-                                            <div class="save-row">
-
-                                                <button
-                                                    type="submit"
-                                                    class="btn btn-primary save-btn"
-                                                >
-
-                                                    <i class="fa-solid fa-pen"></i>
-
-                                                    Update Doctor
-
-                                                </button>
+                                                <div class="required-note">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                    <span>Update the doctor's details and save your changes.</span>
+                                                </div>
 
                                             </div>
 
-
-                                            <div class="required-note">
-
-                                                <i class="fa-solid fa-circle-info"></i>
-
-                                                Update the doctor's information and save your changes.
-
+                                            <!-- Modal Footer Actions -->
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    popovertarget="edit-doctor-{{ $doctor->id }}"
+                                                    popovertargetaction="hide"
+                                                    class="close-btn"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    type="submit"
+                                                    class="save-btn"
+                                                >
+                                                    <i class="fa-solid fa-pen"></i>
+                                                    <span>Update Doctor</span>
+                                                </button>
                                             </div>
 
                                         </form>
-
-
-                                        <!-- Close -->
-
-                                        <button
-                                            popovertarget="edit-doctor-{{ $doctor->id }}"
-                                            popovertargetaction="hide"
-                                            class="close-btn"
-                                        >
-                                            Cancel
-                                        </button>
 
                                     </div>
 
@@ -934,10 +1042,6 @@
 
             </div>
 
-        </section>
-
-    </main>
-
-</div>
+</section>
 
 @endsection

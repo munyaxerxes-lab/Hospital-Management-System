@@ -28,7 +28,12 @@ class appointments extends Model
 
     public function doctor_schedule()
     {
-        return $this->belongsTo(Doctor_schedule::class);
+        return $this->belongsTo(doctor_schedule::class, 'schedule_id');
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(payment::class, 'payment_id');
     }
 
     protected static function booted()
@@ -54,9 +59,9 @@ class appointments extends Model
             }
 
             if ($appointment->wasChanged('schedule_id')) {
-                $doctorName = $appointment->doctor?->user?->name ?? 'your doctor';
+                $doctorName = $appointment->doctor?->doctor_name ?? 'your doctor';
                 $title = 'Consultation schedule updated';
-                $message = "Your consultation with {$doctorName} was rescheduled.";
+                $message = "Your consultation with Dr. {$doctorName} was rescheduled.";
             }
 
             Notification::create([

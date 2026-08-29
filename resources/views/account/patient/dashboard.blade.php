@@ -11,7 +11,7 @@
                     Here's what's happening with your health today.
                 </p>
             </div>
-            <img src="image/doc.png">
+            <img src="{{ asset('image/doc.png') }}">
 
         </section>
          <section class="cards">
@@ -21,7 +21,7 @@
                 </div>
                 <div>
                     <small>Total Appointment booked</small>
-                    <h2>12</h2>
+                    <h2>{{ $stats['appointments'] ?? $appointments->count() }}</h2>
                 </div>
             </div>
             <div class="card">
@@ -30,7 +30,7 @@
                 </div>
                 <div>
                     <small>Total Medicines Ordered</small>
-                    <h2>8</h2>
+                    <h2>{{ $stats['medicines'] ?? $orders->count() }}</h2>
                 </div>
             </div>
             <div class="card">
@@ -39,7 +39,7 @@
                 </div>
                 <div>
                     <small>Total Lab Tests</small>
-                    <h2>5</h2>
+                    <h2>{{ $stats['lab_tests'] ?? $labRequests->count() }}</h2>
                 </div>
             </div>
        </header>
@@ -49,8 +49,6 @@
           <button onclick="showTab('lab-records', this)" class="tab-btn">Lab Results</button>
         </section>
 
-
-       
 
      <div class="tab-content" id="recent-appointments">
          <table>
@@ -64,49 +62,36 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @forelse($appointments as $appointment)
                     <tr>
-                        <td class="order-id">Dr Jason Jones<br><span class="green1">ID#APTI2349</span></td>
-                        <td>Cardiologist</td>
-                        <td>05 May 2026</td>
-                        <td>Heart-check</td>
-                        <td>5000 FCFA</td>
+                        <td class="order-id">Dr {{ $appointment->doctor?->doctor_name ?? 'Doctor' }}<br><span class="green1">ID#APT{{ str_pad($appointment->id, 4, '0', STR_PAD_LEFT) }}</span></td>
+                        <td>{{ $appointment->doctor?->specialty ?? 'General' }}</td>
+                        <td>
+                            @if($appointment->doctor_schedule)
+                                {{ \Carbon\Carbon::parse($appointment->doctor_schedule->date)->format('d M Y') }}
+                                @if($appointment->doctor_schedule->start_time)
+                                    <br><small style="color:#64748b;">{{ \Carbon\Carbon::parse($appointment->doctor_schedule->start_time)->format('H:i') }}</small>
+                                @endif
+                            @else
+                                {{ $appointment->created_at?->format('d M Y') ?? 'N/A' }}
+                            @endif
+                        </td>
+                        <td>{{ $appointment->reason ?? 'Consultation' }}</td>
+                        <td>
+                            @if($appointment->doctor_schedule?->price)
+                                {{ number_format($appointment->doctor_schedule->price, 0, '.', ' ') }} FCFA
+                            @elseif($appointment->doctor?->consultation_fee)
+                                {{ number_format($appointment->doctor->consultation_fee, 0, '.', ' ') }} FCFA
+                            @else
+                                0 FCFA
+                            @endif
+                        </td>
                     </tr>
-                   <tr>
-                        <td class="order-id">Dr Jason Jones<br><span class="green1">ID#APTI2349</span></td>
-                        <td>Cardiologist</td>
-                        <td>05 May 2026</td>
-                        <td>Heart-check</td>
-                        <td>5000 FCFA</td>
-                    </tr>
+                    @empty
                     <tr>
-                        <td class="order-id">Dr Jason Jones<br><span class="green1">ID#APTI2349</span></td>
-                        <td>Cardiologist</td>
-                        <td>05 May 2026</td>
-                        <td>Heart-check</td>
-                        <td>5000 FCFA</td>
+                        <td colspan="5" style="text-align: center; color: #64748b; padding: 24px;">No appointments booked yet.</td>
                     </tr>
-                   <tr>
-                        <td class="order-id">Dr Jason Jones<br><span class="green1">ID#APTI2349</span></td>
-                        <td>Cardiologist</td>
-                        <td>05 May 2026</td>
-                        <td>Heart-check</td>
-                        <td>5000 FCFA</td>
-                    </tr>
-                    <tr>
-                        <td class="order-id">Dr Jason Jones<br><span class="green1">ID#APTI2349</span></td>
-                        <td>Cardiologist</td>
-                        <td>05 May 2026</td>
-                        <td>Heart-check</td>
-                        <td>5000 FCFA</td>
-                    </tr>
-                    <tr>
-                        <td class="order-id">Dr Jason Jones<br><span class="green1">ID#APTI2349</span></td>
-                        <td>Cardiologist</td>
-                        <td>05 May 2026</td>
-                        <td>Heart-check</td>
-                        <td>5000 FCFA</td>
-                    </tr>
-                   
+                    @endforelse
                 </tbody>
             </table>
     </div>
@@ -122,60 +107,28 @@
             </tr>
           </thead>
                 <tbody>
+                    @forelse($orders as $order)
                     <tr>
-                        <td class="order-id"><span>MED120</span></td>
-                        <td>Amoxicillin</td>
-                        <td>05 May 2026</td>
-                        <td>5000 FCFA</td>
+                        <td class="order-id"><span class="green1">{{ $order->order_number ?? ('MED' . str_pad($order->id, 3, '0', STR_PAD_LEFT)) }}</span></td>
+                        <td>
+                            @php
+                                $medNames = $order->items->map(fn($item) => $item->medicine?->name ?? 'Medicine')->filter()->join(', ');
+                            @endphp
+                            {{ $medNames ?: 'Medicine Order' }}
+                        </td>
+                        <td>{{ $order->created_at ? $order->created_at->format('d M Y') : 'N/A' }}</td>
+                        <td>{{ number_format((float)$order->total_amount, 0, '.', ' ') }} FCFA</td>
                     </tr>
+                    @empty
                     <tr>
-                        <td class="order-id"><span class="green1">MED120</span></td>
-                        <td>Paracetamol</td>
-                        <td>05 May 2026</td>
-                        <td>5500 FCFA</td>
+                        <td colspan="4" style="text-align: center; color: #64748b; padding: 24px;">No medicines ordered yet.</td>
                     </tr>
-                    <tr>
-                        <td class="order-id"><span class="green1">MED120</span></td>
-                        <td>Vitamin C</td>
-                        <td>05 May 2026</td>
-                        <td>5500 FCFA</td>
-                    </tr>
-                    <tr>
-                        <td class="order-id"><span class="green1">MED120</span></td>
-                        <td>Ibuprofen</td>
-                        <td>06 May 2026</td>
-                        <td>6500 FCFA</td>
-                    </tr>
-                        <tr>
-                        <td class="order-id"><span class="green1">MED120</span></td>
-                        <td>Ibuprofen</td>
-                        <td>06 May 2026</td>
-                        <td>6500 FCFA</td>
-                    </tr>
-                        <tr>
-                        <td class="order-id"><span class="green1">MED120</span></td>
-                        <td>Ibuprofen</td>
-                        <td>06 May 2026</td>
-                        <td>6500 FCFA</td>
-                    </tr>
-                        <tr>
-                        <td class="order-id"><span class="green1">MED120</span></td>
-                        <td>Ibuprofen</td>
-                        <td>06 May 2026</td>
-                        <td>6500 FCFA</td>
-                    </tr>
-                        <tr>
-                        <td class="order-id"><span class="green1">MED120</span></td>
-                        <td>Ibuprofen</td>
-                        <td>06 May 2026</td>
-                        <td>6500 FCFA</td>
-                    </tr>
-                        
+                    @endforelse
             </tbody>
         </table>
     </div>
 
-     <div class="tab-content"  id="lab-records" style="display: none">
+     <div class="tab-content" id="lab-records" style="display: none">
             <table>
                 <thead>
                     <tr>
@@ -186,36 +139,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                     <tr>
-                        <td class="order-id"><span class="green1">LT0120</span></td>
-                        <td>Malaria</td>
-                        <td>05 May 2026</td>
-                        <td>20 May 2027</td>
-                    </tr>
-                     <tr>
-                         <td class="order-id"><span class="green1">LT0120</span></td>
-                        <td>Malaria</td>
-                        <td>05 May 2026</td>
-                        <td>20 May 2027</td>
-                    </tr>
+                    @forelse($labRequests as $request)
                     <tr>
-                         <td class="order-id"><span class="green1">LT0120</span></td>
-                        <td>Malaria</td>
-                        <td>05 May 2026</td>
-                        <td>20 May 2027</td>
+                        <td class="order-id"><span class="green1">{{ $request->request_number ?? ('LT' . str_pad($request->id, 4, '0', STR_PAD_LEFT)) }}</span></td>
+                        <td>
+                            @php
+                                $testNames = $request->items->map(fn($item) => $item->test_name ?? $item->test?->name ?? 'Lab Test')->filter()->join(', ');
+                            @endphp
+                            {{ $testNames ?: 'Lab Test' }}
+                        </td>
+                        <td>{{ $request->created_at ? $request->created_at->format('d M Y') : 'N/A' }}</td>
+                        <td>
+                            @if($request->scheduled_date)
+                                {{ \Carbon\Carbon::parse($request->scheduled_date)->format('d M Y') }}
+                                @if($request->scheduled_time)
+                                    <br><small style="color:#64748b;">{{ $request->scheduled_time }}</small>
+                                @endif
+                            @else
+                                {{ $request->created_at ? $request->created_at->format('d M Y') : 'N/A' }}
+                            @endif
+                        </td>
                     </tr>
-                     <tr>
-                         <td class="order-id"><span class="green1">LT0120</span></td>
-                        <td>Malaria</td>
-                        <td>05 May 2026</td>
-                        <td>20 May 2027</td>
+                    @empty
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: #64748b; padding: 24px;">No lab results yet.</td>
                     </tr>
-                     <tr>
-                         <td class="order-id"><span class="green1">LT0120</span></td>
-                        <td>Malaria</td>
-                        <td>05 May 2026</td>
-                        <td>20 May 2027</td>
-                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -226,28 +175,26 @@
 @section('scripts')
 <script>
      function showTab(tabId, button){
-        // hide al tan contents
-                let tabs = 
-                document.querySelectorAll('.tab-content');
-                tabs.forEach(tab => {
-                    tab.style.display = 'none';
-                });
-        //remove highlight form all buttons
+        // hide all tab contents
+        let tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => {
+            tab.style.display = 'none';
+        });
+        //remove highlight from all buttons
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.classList.remove('active');
         });
         // show selected content
-                document.getElementById(tabId).style.display = 'block';
+        document.getElementById(tabId).style.display = 'block';
         //highlight clicked button
         if (button){
             button.classList.add("active");
         }
-            }
-        //show first tab by default
-            window.onload = function () {
-                const firstButton = 
-                document.querySelector(".tab-btn");
-                showTab("recent-appointments", firstButton);
-            };
+    }
+    //show first tab by default
+    window.onload = function () {
+        const firstButton = document.querySelector(".tab-btn");
+        showTab("recent-appointments", firstButton);
+    };
 </script>
 @endsection

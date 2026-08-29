@@ -1,58 +1,62 @@
 <!-- Sidebar -->
 <aside class="sidebar">
 
-    <!-- Logo -->
+    <!-- Logo & Brand Header -->
     <div class="logo">
-       <div class="brand">
-            <img class="brand-logo" src="{{ asset('image/logo1.png') }}" alt="Admin System Logo">
-            <div class="brand-name">Admin<span>SYSTEM</span></div>
-        </div>
+        <a href="{{ route('admin.dashboard') }}" class="brand">
+            <img class="brand-logo" src="{{ asset('image/logo1.png') }}" alt="MediLink Logo">
+            <div class="brand-info">
+                <div class="brand-name">Medi<span>Link</span></div>
+                <span class="brand-badge">ADMIN PORTAL</span>
+            </div>
+        </a>
     </div>
 
-    <!-- Navigation -->
+    <!-- Navigation Menu -->
     <nav class="navigation">
+        <div class="nav-section-label">MAIN NAVIGATION</div>
 
-        <a href="/admin_dashboard" class="nav-item active">
-            <i class="fa-solid fa-house"></i>
+        <a href="{{ route('admin.dashboard') }}" class="nav-item {{ (request()->is('admin_dashboard*') || request()->is('admin/dashboard*') || request()->is('admin')) ? 'active' : '' }}">
+            <div class="nav-icon-box"><i class="fa-solid fa-chart-pie"></i></div>
             <span>Dashboard</span>
         </a>
 
-        <a href="/appointment_request" class="nav-item">
-            <i class="fa-regular fa-calendar"></i>
-            <span>Appointments Request</span>
+        <a href="{{ route('admin.appointments.index') }}" class="nav-item {{ (request()->is('appointment_request*') || request()->is('admin/appointments*') || request()->is('admin/appointment*')) ? 'active' : '' }}">
+            <div class="nav-icon-box"><i class="fa-regular fa-calendar-check"></i></div>
+            <span>Appointments</span>
         </a>
 
-        <a href="/lab_request" class="nav-item">
-            <i class="fa-solid fa-flask"></i>
-            <span>Lab Requests</span>
+        <a href="{{ route('admin.lab_tests.index') }}" class="nav-item {{ (request()->is('lab_request*') || request()->is('admin/lab*')) ? 'active' : '' }}">
+            <div class="nav-icon-box"><i class="fa-solid fa-flask-vial"></i></div>
+            <span>Laboratory</span>
         </a>
 
-         <a href="/medicine_orders" class="nav-item">
-             <i class="fa-solid fa-capsules"></i>
-           <span>Medicine Orders</span>
-
-        <a href="/manage_doctors" class="nav-item">
-             <i class="fa-regular fa-user"></i>
-           <span> Manage Doctors</span>
+        <a href="{{ route('admin.medicines.index') }}" class="nav-item {{ (request()->is('medicine_orders*') || request()->is('admin/medicines*') || request()->is('admin/medicine*')) ? 'active' : '' }}">
+            <div class="nav-icon-box"><i class="fa-solid fa-prescription-bottle-medical"></i></div>
+            <span>Pharmacy</span>
         </a>
 
-       
-       
+        <a href="{{ route('admin.doctors.index') }}" class="nav-item {{ (request()->is('manage_doctors*') || request()->is('admin/doctors*') || request()->is('admin/doctor*')) ? 'active' : '' }}">
+            <div class="nav-icon-box"><i class="fa-solid fa-user-doctor"></i></div>
+            <span>Doctors</span>
+        </a>
 
+        <div class="nav-section-label" style="margin-top: 18px;">SETTINGS & SECURITY</div>
+
+        <a href="{{ route('admin.profile.settings') }}" class="nav-item {{ request()->is('admin/profile*') ? 'active' : '' }}">
+            <div class="nav-icon-box"><i class="fa-solid fa-sliders"></i></div>
+            <span>Account Settings</span>
+        </a>
     </nav>
 
-    <!-- Logout -->
- 
-
+    <!-- Logout Button Container -->
     <div class="logout-container">
-        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-        @csrf
-        <a href="/Logout" class="logout">
-            <button type="submit" class="btn-logout">
-            <i class="ri-logout-box-r-line"></i>
-            <span>Logout</span>
+        <form action="{{ route('logout') }}" method="POST" style="margin: 0; width: 100%;">
+            @csrf
+            <button type="submit" class="btn-sidebar-logout" title="Sign out of your administrator account">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>Sign Out</span>
             </button>
-        </a>
         </form>
     </div>
   
@@ -80,6 +84,7 @@
     const currentPath = window.location.pathname.toLowerCase();
     let matchedItem = null;
 
+    // Check exact or prefix match
     navItems.forEach(function (item) {
         const href = item.getAttribute('href');
 
@@ -91,17 +96,18 @@
 
         if (currentPath === hrefPath) {
             matchedItem = item;
+        } else if (
+            (hrefPath.includes('appointment') && (currentPath.includes('appointment'))) ||
+            (hrefPath.includes('doctor') && (currentPath.includes('doctor'))) ||
+            (hrefPath.includes('lab') && (currentPath.includes('lab'))) ||
+            (hrefPath.includes('medicine') && (currentPath.includes('medicine')))
+        ) {
+            matchedItem = item;
         }
     });
 
     if (matchedItem) {
         setActiveItem(matchedItem);
-    } else {
-        const existingActive = document.querySelector('.nav-item.active');
-        if (existingActive) {
-            setActiveItem(existingActive);
-        }
     }
 });
-
 </script>
