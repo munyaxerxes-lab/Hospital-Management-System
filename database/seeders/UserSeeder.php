@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@medilink.com',
                 'phone' => '+237 670 000 000',
                 'role_id' => 3,
-                'password' => $password,
+                'password' => Hash::make('admin123'),
                 'email_verified_at' => now(),
             ],
             [
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@iclan.cm',
                 'phone' => '+237 670 000 001',
                 'role_id' => 3,
-                'password' => $password,
+                'password' => Hash::make('admin123'),
                 'email_verified_at' => now(),
             ],
 
