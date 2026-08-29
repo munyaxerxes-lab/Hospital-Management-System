@@ -40,8 +40,9 @@ Route::get("/", function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
-    Route::get('/register', [RegisteredUserController::class, 'create'])->name('show.register');
-    Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::get('/register-page', [RegisteredUserController::class, 'create'])->name('show.register');
+    Route::post('/register', [RegisteredUserController::class, 'store'])->name('register.submit');
 
     // Naming references for login forms
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
