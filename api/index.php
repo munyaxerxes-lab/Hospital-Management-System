@@ -72,8 +72,19 @@ foreach ($storageDirs as $dir) {
     }
 }
 
-// Directories are ready for dynamic package discovery and storage
+// Database configuration for serverless runtime
+$dbConn = getenv('DB_CONNECTION') ?: ($_ENV['DB_CONNECTION'] ?? null);
+$dbHost = getenv('DB_HOST') ?: ($_ENV['DB_HOST'] ?? null);
 
+if (!$dbConn || $dbConn === 'sqlite' || ($dbConn === 'mysql' && ($dbHost === '127.0.0.1' || empty($dbHost)))) {
+    putenv('DB_CONNECTION=sqlite');
+    $_ENV['DB_CONNECTION'] = 'sqlite';
+    $_SERVER['DB_CONNECTION'] = 'sqlite';
+
+    putenv('DB_DATABASE=/tmp/database.sqlite');
+    $_ENV['DB_DATABASE'] = '/tmp/database.sqlite';
+    $_SERVER['DB_DATABASE'] = '/tmp/database.sqlite';
+}
 
 try {
     if (!defined('LARAVEL_START')) {
@@ -86,6 +97,15 @@ try {
     $app = require_once __DIR__ . '/../bootstrap/app.php';
 
     $app->useStoragePath('/tmp/storage');
+
+    // Auto-initialize SQLite database on first lambda boot if using /tmp/database.sqlite
+    if (config('database.default') === 'sqlite' && config('database.connections.sqlite.database') === '/tmp/database.sqlite') {
+        if (!file_exists('/tmp/database.sqlite') || filesize('/tmp/database.sqlite') === 0) {
+            @touch('/tmp/database.sqlite');
+            \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+            \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        }
+    }
 
     $app->handleRequest(\Illuminate\Http\Request::capture());
 } catch (\Throwable $e) {
