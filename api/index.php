@@ -60,17 +60,8 @@ foreach ($storageDirs as $dir) {
     }
 }
 
-// Copy pre-compiled bootstrap package cache if available
-$bootstrapSrc = __DIR__ . '/../bootstrap/cache';
-if (is_dir($bootstrapSrc)) {
-    foreach (['packages.php', 'services.php'] as $file) {
-        $src = $bootstrapSrc . '/' . $file;
-        $dst = '/tmp/bootstrap/cache/' . $file;
-        if (file_exists($src) && !file_exists($dst)) {
-            @copy($src, $dst);
-        }
-    }
-}
+// Directories are ready for dynamic package discovery and storage
+
 
 try {
     if (!defined('LARAVEL_START')) {
