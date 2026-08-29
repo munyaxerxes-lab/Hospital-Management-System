@@ -4,6 +4,18 @@ putenv('VERCEL=1');
 $_ENV['VERCEL'] = '1';
 $_SERVER['VERCEL'] = '1';
 
+if (!getenv('APP_NAME') && empty($_ENV['APP_NAME'])) {
+    putenv('APP_NAME=MediLink');
+    $_ENV['APP_NAME'] = 'MediLink';
+    $_SERVER['APP_NAME'] = 'MediLink';
+}
+
+if (!getenv('APP_KEY') && empty($_ENV['APP_KEY'])) {
+    putenv('APP_KEY=base64:aGlr9JhiyA6ii/iDdKOeuTQtG6h8eGQG503q4gTBA0U=');
+    $_ENV['APP_KEY'] = 'base64:aGlr9JhiyA6ii/iDdKOeuTQtG6h8eGQG503q4gTBA0U=';
+    $_SERVER['APP_KEY'] = 'base64:aGlr9JhiyA6ii/iDdKOeuTQtG6h8eGQG503q4gTBA0U=';
+}
+
 putenv('VIEW_COMPILED_PATH=/tmp/storage/framework/views');
 $_ENV['VIEW_COMPILED_PATH'] = '/tmp/storage/framework/views';
 $_SERVER['VIEW_COMPILED_PATH'] = '/tmp/storage/framework/views';

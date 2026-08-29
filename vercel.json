@@ -40,6 +40,8 @@
   ],
   "env": {
     "VERCEL": "1",
+    "APP_NAME": "MediLink",
+    "APP_KEY": "base64:aGlr9JhiyA6ii/iDdKOeuTQtG6h8eGQG503q4gTBA0U=",
     "APP_ENV": "production",
     "APP_DEBUG": "true",
     "APP_STORAGE": "/tmp/storage",
