@@ -89,7 +89,7 @@
 
         <p style="text-align:center; font-size:13.5px; color:#6B7280; margin-top:20px;">
           Dont have an account?
-          <a href="register" style="color:#1554B3; font-weight:700; text-decoration:none;">SignUp</a>
+          <a href="{{ route('show.register') }}" style="color:#1554B3; font-weight:700; text-decoration:none;">SignUp</a>
         </p>
       </form>
     </div>

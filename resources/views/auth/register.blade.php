@@ -47,7 +47,7 @@
       <div style="width:64px; height:3px; background:#1554B3; border-radius:2px; margin:0 auto;"></div>
     </div>
 
-    <form method="POST" action="/register">
+    <form method="POST" action="{{ route('register') }}">
       <?php echo csrf_field(); ?>
 
       <?php if(session('status')): ?>
@@ -91,7 +91,7 @@
 
       <p style="text-align:center; font-size:13.5px; color:#6B7280; margin-top:22px;">
         Already have an account?
-        <a href="login" style="color:#1554B3; font-weight:700; text-decoration:none;">Login</a>
+        <a href="{{ route('login') }}" style="color:#1554B3; font-weight:700; text-decoration:none;">Login</a>
       </p>
     </form>
   </div>
