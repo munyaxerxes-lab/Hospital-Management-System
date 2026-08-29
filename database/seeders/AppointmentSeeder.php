@@ -27,9 +27,9 @@ class AppointmentSeeder extends Seeder
         $sched3 = DB::table('doctor_schedule')->where('doctor_id', $doc3?->id)->first();
         $sched4 = DB::table('doctor_schedule')->where('doctor_id', $doc4?->id)->first();
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
         DB::table('appointments')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
         $appointments = [
             [

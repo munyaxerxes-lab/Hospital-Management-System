@@ -22,9 +22,9 @@ class DoctorScheduleSeeder extends Seeder
         ];
 
         // Clear existing schedules for clean demo state safely
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
         DB::table('doctor_schedule')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
         $scheduleId = 1;
         // Generate for today (day 0) and next 6 days

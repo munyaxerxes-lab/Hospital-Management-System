@@ -98,15 +98,6 @@ try {
 
     $app->useStoragePath('/tmp/storage');
 
-    // Auto-initialize SQLite database on first lambda boot if using /tmp/database.sqlite
-    if (config('database.default') === 'sqlite' && config('database.connections.sqlite.database') === '/tmp/database.sqlite') {
-        if (!file_exists('/tmp/database.sqlite') || filesize('/tmp/database.sqlite') === 0) {
-            @touch('/tmp/database.sqlite');
-            \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-            \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
-        }
-    }
-
     $app->handleRequest(\Illuminate\Http\Request::capture());
 } catch (\Throwable $e) {
     http_response_code(500);
