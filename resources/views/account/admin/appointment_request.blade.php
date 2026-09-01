@@ -489,17 +489,418 @@
 
                     </table>
 
-                    <!-- Pagination -->
-                    @if ($schedules->hasPages())
-                        <div style="margin-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-                            <span style="color:#64748b;font-size:14px;">
-                                Showing {{ $schedules->firstItem() ?? 0 }} to {{ $schedules->lastItem() ?? 0 }} of {{ $schedules->total() }} appointments
-                            </span>
-                            <div>
-                                {{ $schedules->links() }}
-                            </div>
-                        </div>
-                    @endif
+                            <!---------- Pagination --------->
+
+@if ($schedules->hasPages())
+
+    <div class="pagination-container">
+
+        <!-- Showing appointments -->
+        <span class="pagination-info">
+            Showing {{ $schedules->firstItem() ?? 0 }}
+            to {{ $schedules->lastItem() ?? 0 }}
+            of {{ $schedules->total() }} appointments
+        </span>
+
+
+        <!-- Pagination -->
+        <nav aria-label="Appointments pagination">
+
+            <ul class="pagination">
+
+                <!-- Previous -->
+                @if ($schedules->onFirstPage())
+
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">
+                            Previous
+                        </a>
+                    </li>
+
+                @else
+
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="{{ $schedules->previousPageUrl() }}">
+                            Previous
+                        </a>
+                    </li>
+
+                @endif
+
+
+                <!-- Page Numbers -->
+
+                @php
+                    $current = $schedules->currentPage();
+                    $last = $schedules->lastPage();
+                @endphp
+
+
+                <!-- If 6 pages or less, show all pages -->
+                @if ($last <= 6)
+
+                    @for ($page = 1; $page <= $last; $page++)
+
+                        <li class="page-item {{ $page == $current ? 'active' : '' }}">
+
+                            <a class="page-link"
+                               href="{{ $schedules->url($page) }}">
+
+                                {{ $page }}
+
+                                @if ($page == $current)
+                                    <span class="sr-only">(current)</span>
+                                @endif
+
+                            </a>
+
+                        </li>
+
+                    @endfor
+
+
+                <!-- More than 6 pages -->
+                @else
+
+                    <!-- Page 1 -->
+                    <li class="page-item {{ $current == 1 ? 'active' : '' }}">
+
+                        <a class="page-link"
+                           href="{{ $schedules->url(1) }}">
+
+                            1
+
+                            @if ($current == 1)
+                                <span class="sr-only">(current)</span>
+                            @endif
+
+                        </a>
+
+                    </li>
+
+
+                    <!-- Page 2 -->
+                    <li class="page-item {{ $current == 2 ? 'active' : '' }}">
+
+                        <a class="page-link"
+                           href="{{ $schedules->url(2) }}">
+
+                            2
+
+                            @if ($current == 2)
+                                <span class="sr-only">(current)</span>
+                            @endif
+
+                        </a>
+
+                    </li>
+
+
+                    <!-- Page 3 -->
+                    <li class="page-item {{ $current == 3 ? 'active' : '' }}">
+
+                        <a class="page-link"
+                           href="{{ $schedules->url(3) }}">
+
+                            3
+
+                            @if ($current == 3)
+                                <span class="sr-only">(current)</span>
+                            @endif
+
+                        </a>
+
+                    </li>
+
+
+                    <!-- Dots -->
+                    <li class="page-item disabled">
+
+                        <span class="page-link">
+                            ...
+                        </span>
+
+                    </li>
+
+
+                    <!-- Second Last Page -->
+                    <li class="page-item {{ $current == ($last - 1) ? 'active' : '' }}">
+
+                        <a class="page-link"
+                           href="{{ $schedules->url($last - 1) }}">
+
+                            {{ $last - 1 }}
+
+                            @if ($current == ($last - 1))
+                                <span class="sr-only">(current)</span>
+                            @endif
+
+                        </a>
+
+                    </li>
+
+
+                    <!-- Last Page -->
+                    <li class="page-item {{ $current == $last ? 'active' : '' }}">
+
+                        <a class="page-link"
+                           href="{{ $schedules->url($last) }}">
+
+                            {{ $last }}
+
+                            @if ($current == $last)
+                                <span class="sr-only">(current)</span>
+                            @endif
+
+                        </a>
+
+                    </li>
+
+                @endif
+
+
+                <!-- Next -->
+                @if ($schedules->hasMorePages())
+
+                    <li class="page-item">
+
+                        <a class="page-link"
+                           href="{{ $schedules->nextPageUrl() }}">
+
+                            Next
+
+                        </a>
+
+                    </li>
+
+                @else
+
+                    <li class="page-item disabled">
+
+                        <a class="page-link"
+                           href="#"
+                           tabindex="-1">
+
+                            Next
+
+                        </a>
+
+                    </li>
+
+                @endif
+
+            </ul>
+
+        </nav>
+
+    </div>
+
+@endif
+
+
+<style>
+
+/* ================================
+   PAGINATION CONTAINER
+================================ */
+
+.pagination-container {
+    margin-top: 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    flex-wrap: wrap;
+    gap: 10px;
+
+    padding: 15px 20px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+
+/* ================================
+   APPOINTMENT INFORMATION
+================================ */
+
+.pagination-info {
+    color: #64748b;
+    font-size: 14px;
+}
+
+
+/* ================================
+   PAGINATION NAVIGATION
+================================ */
+
+.pagination-container nav {
+    display: flex;
+    align-items: center;
+}
+
+
+/* ================================
+   PAGINATION LIST
+================================ */
+
+.pagination {
+    display: flex;
+
+    padding-left: 0;
+    margin: 0;
+
+    list-style: none;
+
+    border: 1px solid #dbe1e8;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    background: #ffffff;
+}
+
+
+/* ================================
+   PAGE ITEM
+================================ */
+
+.page-item {
+    margin: 0;
+}
+
+
+/* ================================
+   PAGE LINK
+================================ */
+
+.page-link {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 36px;
+    height: 36px;
+
+    padding: 0 12px;
+
+    color: #475569;
+
+    background: #ffffff;
+
+    border-right: 1px solid #dbe1e8;
+
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: 500;
+
+    transition: all 0.2s ease;
+}
+
+
+/* Remove border from last button */
+
+.page-item:last-child .page-link {
+    border-right: none;
+}
+
+
+/* ================================
+   HOVER
+================================ */
+
+.page-link:hover {
+    background: #f1f5f9;
+
+    color: #1e293b;
+}
+
+
+/* ================================
+   ACTIVE PAGE
+================================ */
+
+.page-item.active .page-link {
+
+    background-color: #0066E6;
+
+    color: #ffffff;
+
+    font-weight: 600;
+
+    border: none;
+
+    border-radius: 5px;
+
+    margin: -1px 0 -1px -1px;
+}
+
+
+/* ================================
+   DISABLED
+================================ */
+
+.page-item.disabled .page-link {
+
+    color: #94a3b8;
+
+    background: #ffffff;
+
+    cursor: not-allowed;
+}
+
+
+/* ================================
+   SCREEN READER TEXT
+================================ */
+
+.sr-only {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+
+    clip: rect(0, 0, 0, 0);
+
+    white-space: nowrap;
+
+    border: 0;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 600px) {
+
+    .pagination-container {
+        justify-content: center;
+    }
+
+    .pagination-info {
+        width: 100%;
+        text-align: center;
+    }
+
+    .page-link {
+        min-width: 32px;
+        padding: 0 8px;
+        font-size: 12px;
+    }
+
+}
+
+</style>
 
                     <!-- Action Guide -->
                     <div class="action-guide" style="margin-top:32px;">

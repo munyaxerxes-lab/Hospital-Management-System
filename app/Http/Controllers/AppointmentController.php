@@ -51,7 +51,7 @@ class AppointmentController extends Controller
             $query->whereDate('date', '<=', $request->date_to);
         }
 
-        $schedules = $query->paginate(15)->withQueryString();
+        $schedules = $query->paginate(5)->withQueryString();
 
         $doctors = Doctor::orderBy('doctor_name')->get();
         $activeDoctors = Doctor::where('status', 'active')->orderBy('doctor_name')->get();

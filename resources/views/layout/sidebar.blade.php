@@ -53,12 +53,12 @@
     </nav>
 
     <!-- Logout -->
-    <div class="logout-container">
+    <!--<div class="logout-container">
         <a href="/Logout" class="logout">
             <i class="ri-logout-box-r-line"></i>
             <span>Logout</span>
         </a>
-    </div>
+    </div>-->
   
 </aside>
 <script>
