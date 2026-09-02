@@ -3,6 +3,14 @@
 
   <!-- Top Header Navigation Dashboard Area -->
   <header class="topbar">
+
+    <!-- Hamburger Menu Button (mobile only) -->
+    <button class="hamburger-btn" id="sidebarToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+    </button>
+
     <div class="topbar-search-wrapper">
         <!-- <div class="search-input-group">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -73,14 +81,6 @@
                     <span>Account Settings</span>
                 </a>
 
-                <!-- <div class="dropdown-divider"></div> -->
-
-                <!-- Account Deletion Modal Trigger
-                <button type="button" popovertarget="delete-account-modal" class="dropdown-item delete-btn">
-                    <i class="fa-solid fa-trash-can"></i>
-                    <span>Delete Account</span>
-                </button> -->
-
                 <div class="dropdown-divider"></div>
 
                 <!-- Session Termination Invalidation Form Pipeline element -->
@@ -137,16 +137,17 @@
       <div class="admin-footer-left">
         <span>&copy; {{ date('Y') }} <strong>MediLink Hospital Management System</strong>. All rights reserved.</span>
       </div>
-      <!-- <div class="admin-footer-right">
-        <span class="version-tag"><i class="fa-solid fa-shield-halved"></i> Enterprise Edition v2.4</span>
-      </div> -->
     </div>
   </footer>
 
 </main>
 
+<!-- Sidebar Overlay Backdrop (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <!-- Vanilla JS Event Interface Logic Bindings -->
 <script>
+  // Profile dropdown
   document.getElementById('dropdownTrigger').addEventListener('click', function(event) {
       event.stopPropagation();
       const menu = document.getElementById('userDropdownMenu');
@@ -158,5 +159,48 @@
       if (menu && menu.classList.contains('show')) {
           menu.classList.remove('show');
       }
+  });
+
+  // Hamburger / Sidebar drawer toggle
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const sidebarOverlay = document.getElementById('sidebarOverlay');
+  const asideEl = document.querySelector('.aside');
+
+  function openSidebar() {
+      asideEl && asideEl.classList.add('drawer-open');
+      sidebarOverlay && sidebarOverlay.classList.add('active');
+      sidebarToggle && sidebarToggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+      asideEl && asideEl.classList.remove('drawer-open');
+      sidebarOverlay && sidebarOverlay.classList.remove('active');
+      sidebarToggle && sidebarToggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+  }
+
+  if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const isOpen = asideEl && asideEl.classList.contains('drawer-open');
+          isOpen ? closeSidebar() : openSidebar();
+      });
+  }
+
+  if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', closeSidebar);
+  }
+
+  // Close sidebar on nav item click (mobile)
+  document.querySelectorAll('.sidebar .nav-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+          if (window.innerWidth <= 768) closeSidebar();
+      });
+  });
+
+  // Close sidebar on ESC key
+  document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeSidebar();
   });
 </script>

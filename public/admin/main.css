@@ -1810,14 +1810,8 @@ textarea {
 }
 
 @media (max-width:700px) {
-    :root {
-        --sidebar-width: 0px
-    }
-
-    .sidebar {
-        display: none
-    }
-
+    /* Sidebar is now a drawer (handled by .aside transform in 768px block)
+       Do NOT display:none the sidebar — it needs to slide in */
     .main {
         margin-left: 0;
         width: 100%
@@ -3419,4 +3413,395 @@ textarea {
     font-size: 13.5px;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+}
+
+
+/* =====================================================
+   RESPONSIVE SYSTEM — FULL BREAKPOINTS
+   Mobile-first approach for the Admin Panel
+===================================================== */
+
+/* ---- Hamburger Button ---- */
+.hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #ffffff;
+    cursor: pointer;
+    padding: 8px;
+    flex-shrink: 0;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    z-index: 101;
+}
+
+.hamburger-btn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.hamburger-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: #334155;
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+/* Hamburger → X animation when open */
+.sidebar-open ~ * .hamburger-btn .hamburger-bar:nth-child(1),
+.hamburger-btn[aria-expanded="true"] .hamburger-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-btn[aria-expanded="true"] .hamburger-bar:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.hamburger-btn[aria-expanded="true"] .hamburger-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ---- Sidebar Overlay (mobile drawer backdrop) ---- */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* =====================================================
+   BREAKPOINT: ≤ 1024px — Tablet / Small Desktop
+===================================================== */
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 240px;
+    }
+
+    .topbar {
+        padding: 0 20px;
+    }
+
+    .page {
+        padding: 20px 18px;
+    }
+
+    /* Stats grids */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Dashboard layout */
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .content-with-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .side-panel {
+        display: none;
+    }
+
+    .doctors-layout {
+        grid-template-columns: 1fr;
+    }
+
+    /* Lab request layout */
+    .lab-layout {
+        grid-template-columns: 1fr;
+    }
+
+    /* Appointment grid */
+    .appt-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Form grids */
+    .form-row,
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =====================================================
+   BREAKPOINT: ≤ 768px — Mobile / Small Tablet
+===================================================== */
+@media (max-width: 768px) {
+    :root {
+        --sidebar-width: 270px;
+        --topbar-height: 60px;
+    }
+
+    /* Show hamburger */
+    .hamburger-btn {
+        display: flex;
+    }
+
+    /* Hide profile text on small screens */
+    .profile-text-wrap {
+        display: none;
+    }
+
+    .profile-trigger .chev {
+        display: none;
+    }
+
+    /* Topbar adjustments */
+    .topbar {
+        padding: 0 16px;
+        gap: 10px;
+    }
+
+    /* Sidebar becomes a fixed drawer */
+    .aside {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: var(--sidebar-width);
+        z-index: 999;
+        transform: translateX(-100%);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform;
+    }
+
+    .aside .sidebar {
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    /* When sidebar is open */
+    .aside .sidebar.sidebar-open {
+        transform: none !important;
+    }
+
+    /* The aside wrapper needs to respond too */
+    .aside:has(.sidebar-open) {
+        transform: translateX(0);
+    }
+
+    /* Simpler approach — toggle on the aside itself */
+    .aside.drawer-open {
+        transform: translateX(0);
+    }
+
+    /* Main takes full width */
+    .main {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    /* Page content padding */
+    .page {
+        padding: 14px 12px;
+    }
+
+    /* Stats — single column on mobile */
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    /* Summary / doctor tools */
+    .summary-row {
+        padding: 0;
+        grid-template-columns: 1fr;
+    }
+
+    .doctors-tools,
+    .lab-tools,
+    .filter-toolbar,
+    .page-tools {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .search,
+    .search-bar,
+    .topbar-searchbar {
+        width: 100% !important;
+    }
+
+    /* Tables — horizontal scroll */
+    .table-wrapper,
+    .table-container,
+    .data-table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 12px;
+    }
+
+    table {
+        min-width: 600px;
+    }
+
+    /* Cards stacked */
+    .appt-grid,
+    .doctors-grid,
+    .medicine-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Modals full-width */
+    .modal-box {
+        width: 96%;
+        max-height: 90vh;
+        overflow-y: auto;
+        bottom: auto;
+        transform: translate(-50%, -50%);
+    }
+
+    .modal-content {
+        padding: 20px 16px;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    /* Forms */
+    .form-row,
+    .form-grid,
+    .form-cols,
+    .two-col-form {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Buttons */
+    .btn-group,
+    .action-bar,
+    .filter-actions {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    /* Page header */
+    .page-header,
+    .appointment-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .page-header h1,
+    .appointment-header h1 {
+        font-size: 20px;
+    }
+
+    /* Tab bar */
+    .tab-bar,
+    .tabs-row {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+    }
+
+    /* Stat cards compact */
+    .stat-card {
+        padding: 14px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+    }
+
+    /* Lab request cards */
+    .request-card,
+    .order-card,
+    .appt-card {
+        padding: 14px;
+    }
+
+    /* Admin footer */
+    .admin-footer-content {
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+        font-size: 12px;
+    }
+
+    /* Profile settings */
+    .settings-layout,
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =====================================================
+   BREAKPOINT: ≤ 480px — Small Phones
+===================================================== */
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page {
+        padding: 10px 10px;
+    }
+
+    .topbar {
+        padding: 0 12px;
+    }
+
+    .page-header h1,
+    .appointment-header h1 {
+        font-size: 17px;
+    }
+
+    table {
+        font-size: 12.5px;
+    }
+
+    .modal-box {
+        width: 100%;
+        border-radius: 16px 16px 0 0;
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        left: 0;
+        transform: none;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .stat-card {
+        padding: 12px;
+    }
+
+    .stat-value {
+        font-size: 20px;
+    }
+
+    .btn-sm,
+    .btn-xs {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+/* =====================================================
+   SIDEBAR DRAWER — JS-toggled class on .aside
+===================================================== */
+@media (max-width: 768px) {
+    /* JS adds .drawer-open to .aside */
+    .aside.drawer-open {
+        transform: translateX(0) !important;
+    }
 }
