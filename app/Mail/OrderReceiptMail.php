@@ -2,26 +2,26 @@
 
 namespace App\Mail;
 
-use App\Models\appointments;
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AppointmentReceiptMail extends Mailable
+class OrderReceiptMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public appointments $appointment;
+    public Order $order;
     public string $recipientType; // 'patient' or 'admin'
 
     /**
      * Create a new message instance.
      */
-    public function __construct(appointments $appointment, string $recipientType = 'patient')
+    public function __construct(Order $order, string $recipientType = 'patient')
     {
-        $this->appointment = $appointment;
+        $this->order = $order;
         $this->recipientType = $recipientType;
     }
 
@@ -30,12 +30,10 @@ class AppointmentReceiptMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        $ref = 'APT-' . str_pad($this->appointment->id, 6, '0', STR_PAD_LEFT);
-        $subject = match ($this->recipientType) {
-            'admin'  => "🔔 New Appointment Booking Receipt [{$ref}]",
-            'doctor' => "🩺 New Patient Appointment — Your Schedule [{$ref}]",
-            default  => "✅ Your MediLink Appointment Confirmation & Receipt [{$ref}]",
-        };
+        $ref = $this->order->order_number;
+        $subject = $this->recipientType === 'admin'
+            ? "🛒 New Medicine Order Placed [{$ref}]"
+            : "✅ Your MediLink Order Confirmation & Receipt [{$ref}]";
 
         return new Envelope(
             subject: $subject,
@@ -48,7 +46,7 @@ class AppointmentReceiptMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.appointment-receipt',
+            view: 'emails.order-receipt',
         );
     }
 

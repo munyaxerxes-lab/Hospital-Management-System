@@ -10,8 +10,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Mail\LabRequestConfirmationMail;
 
 class LabTestController extends Controller
 {
@@ -400,6 +403,30 @@ class LabTestController extends Controller
             }
 
             DB::commit();
+
+            // Load relationships for email
+            $labRequest->load(['user', 'patient.user', 'items.test']);
+
+            // Send confirmation emails (fault-tolerant)
+            try {
+                // 1. Send confirmation to patient
+                if (!empty($user->email)) {
+                    Mail::to($user->email)->send(new LabRequestConfirmationMail($labRequest, 'patient'));
+                }
+
+                // 2. Send notification to admins
+                $adminEmails = User::whereHas('role', function ($q) {
+                    $q->where('name', 'admin')->orWhere('name', 'Admin');
+                })->pluck('email')->filter()->unique()->toArray();
+
+                if (!empty($adminEmails)) {
+                    Mail::to($adminEmails)->send(new LabRequestConfirmationMail($labRequest, 'admin'));
+                }
+            } catch (\Throwable $mailEx) {
+                Log::warning('Lab request confirmation email could not be sent: ' . $mailEx->getMessage(), [
+                    'lab_request_id' => $labRequest->id,
+                ]);
+            }
 
             $msg = "Lab test request #{$requestNumber} submitted successfully! Total: " . number_format($totalAmount, 0, '.', ' ') . " FCFA. Our lab technicians will attend to your request.";
 

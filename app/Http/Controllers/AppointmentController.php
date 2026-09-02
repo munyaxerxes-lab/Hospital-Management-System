@@ -438,6 +438,14 @@ class AppointmentController extends Controller
                 if (!empty($adminEmails)) {
                     Mail::to($adminEmails)->send(new AppointmentReceiptMail($appointment, 'admin'));
                 }
+
+                // 3. Send Notification to Doctor (look up via username match on users table)
+                if ($doctor && !empty($doctor->username)) {
+                    $doctorUser = User::where('username', $doctor->username)->first();
+                    if ($doctorUser && !empty($doctorUser->email)) {
+                        Mail::to($doctorUser->email)->send(new AppointmentReceiptMail($appointment, 'doctor'));
+                    }
+                }
             } catch (\Throwable $mailEx) {
                 Log::warning('Appointment receipt email could not be sent: ' . $mailEx->getMessage(), [
                     'appointment_id' => $appointment->id,
@@ -470,7 +478,7 @@ class AppointmentController extends Controller
 
         $currentUser = Auth::user();
         if (!$currentUser) {
-            abort(401, 'Please log in to view this receipt.');
+            abort(401, 'Please log in to view this receipt.😎');
         }
 
         // Authorize: Patient owner or Admin or Doctor
@@ -478,7 +486,7 @@ class AppointmentController extends Controller
         $isAdmin = ($currentUser->role && in_array(strtolower($currentUser->role->name), ['admin', 'superadmin', 'administrator']));
 
         if (!$isPatientOwner && !$isAdmin) {
-            abort(403, 'Unauthorized access to this receipt.');
+            abort(403, '😒😂 Unauthorized access to this receipt.');
         }
 
         return view('account.patient.appointment_receipt', compact('appointment'));

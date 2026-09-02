@@ -9,8 +9,11 @@ use App\Models\User;
 use App\Models\Patient;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Mail\OrderReceiptMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -267,6 +270,33 @@ class CartController extends Controller
 
 			return $order;
 		});
+
+		// Load relationships for email
+		$order->load(['user', 'patient.user', 'items.medicine']);
+
+		// Send order receipt emails (fault-tolerant)
+		try {
+			$authUser = auth()->user();
+
+			// 1. Send receipt to patient
+			$patientEmail = $authUser?->email ?? $order->user?->email;
+			if (!empty($patientEmail)) {
+				Mail::to($patientEmail)->send(new OrderReceiptMail($order, 'patient'));
+			}
+
+			// 2. Send notification to admins
+			$adminEmails = User::whereHas('role', function ($q) {
+				$q->where('name', 'admin')->orWhere('name', 'Admin');
+			})->pluck('email')->filter()->unique()->toArray();
+
+			if (!empty($adminEmails)) {
+				Mail::to($adminEmails)->send(new OrderReceiptMail($order, 'admin'));
+			}
+		} catch (\Throwable $mailEx) {
+			Log::warning('Order receipt email could not be sent: ' . $mailEx->getMessage(), [
+				'order_id' => $order->id,
+			]);
+		}
 
 		return redirect()->route('cart.index')->with('success', "Order #{$order->order_number} placed successfully! Status: Pending dispatch.");
 	}

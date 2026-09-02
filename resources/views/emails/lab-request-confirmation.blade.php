@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointment Receipt</title>
+    <title>Lab Request Confirmation</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -23,7 +23,7 @@
             border: 1px solid #e2e8f0;
         }
         .header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
             padding: 30px 24px;
             text-align: center;
             color: #ffffff;
@@ -37,7 +37,7 @@
         .header p {
             margin: 6px 0 0;
             font-size: 13px;
-            color: #bfdbfe;
+            color: #99f6e4;
         }
         .body {
             padding: 28px 24px;
@@ -56,8 +56,8 @@
             color: #15803d;
         }
         .badge-admin {
-            background-color: #eff6ff;
-            color: #1d4ed8;
+            background-color: #f0fdfa;
+            color: #0f766e;
         }
         .receipt-box {
             background-color: #f8fafc;
@@ -84,8 +84,34 @@
             color: #0f172a;
             text-align: right;
         }
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin: 20px 0 8px;
+        }
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background-color: #f0fdfa;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .test-name {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .test-price {
+            font-weight: 700;
+            color: #0d9488;
+        }
         .total-row {
-            background-color: #eff6ff;
+            background-color: #f0fdfa;
             border-radius: 8px;
             padding: 12px 14px;
             margin-top: 10px;
@@ -95,12 +121,12 @@
         }
         .total-row .total-label {
             font-weight: 700;
-            color: #1e3a8a;
+            color: #0f766e;
             font-size: 15px;
         }
         .total-row .total-value {
             font-weight: 800;
-            color: #2563eb;
+            color: #0d9488;
             font-size: 18px;
         }
         .info-card {
@@ -111,18 +137,6 @@
             font-size: 13px;
             color: #166534;
             margin: 18px 0;
-        }
-        .btn {
-            display: inline-block;
-            background-color: #2563eb;
-            color: #ffffff !important;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 14px;
-            text-align: center;
-            margin: 10px 0;
         }
         .footer {
             background-color: #f1f5f9;
@@ -138,109 +152,100 @@
     <div class="container">
         <div class="header">
             <h1>MediLink Hospital</h1>
-            <p>Official Appointment Booking Confirmation & Receipt</p>
+            <p>Laboratory Test Request — Official Confirmation</p>
         </div>
 
         <div class="body">
             @if($recipientType === 'admin')
                 <div style="margin-bottom: 16px;">
-                    <span class="badge badge-admin">Admin Alert</span>
+                    <span class="badge badge-admin">🔬 Lab Alert</span>
                 </div>
-                <h2 style="font-size: 18px; color: #0f172a; margin: 0 0 10px;">New Appointment Booked</h2>
+                <h2 style="font-size: 18px; color: #0f172a; margin: 0 0 10px;">New Lab Request Submitted</h2>
                 <p style="font-size: 14px; color: #475569; margin: 0 0 18px;">
-                    A patient has booked a new doctor consultation slot. Here are the booking details:
-                </p>
-            @elseif($recipientType === 'doctor')
-                <div style="margin-bottom: 16px;">
-                    <span class="badge" style="background-color: #eff6ff; color: #1d4ed8;">🩺 New Patient</span>
-                </div>
-                <h2 style="font-size: 18px; color: #0f172a; margin: 0 0 10px;">
-                    Dr. {{ $appointment->doctor?->doctor_name ?? 'Doctor' }}, you have a new appointment.
-                </h2>
-                <p style="font-size: 14px; color: #475569; margin: 0 0 18px;">
-                    A patient has booked a consultation slot on your schedule. Please review the details below and ensure you are available.
+                    A patient has submitted a new laboratory test request. Please review and process the request below.
                 </p>
             @else
                 <div style="margin-bottom: 16px;">
-                    <span class="badge badge-success">✓ Confirmed</span>
+                    <span class="badge badge-success">✓ Request Received</span>
                 </div>
                 <h2 style="font-size: 18px; color: #0f172a; margin: 0 0 10px;">
-                    Hello {{ $appointment->patient?->user?->name ?? 'Patient' }},
+                    Hello {{ $labRequest->user?->name ?? $labRequest->patient?->user?->name ?? 'Patient' }},
                 </h2>
                 <p style="font-size: 14px; color: #475569; margin: 0 0 18px;">
-                    Thank you for booking with MediLink. Your medical appointment has been registered successfully.
+                    Your laboratory test request has been received and is now being processed. Our lab technicians will attend to it promptly.
                 </p>
             @endif
 
+            {{-- Booking Details --}}
             <div class="receipt-box">
                 <div class="row">
-                    <span class="row-label">Receipt / Reference</span>
-                    <span class="row-value">APT-{{ str_pad($appointment->id, 6, '0', STR_PAD_LEFT) }}</span>
+                    <span class="row-label">Request Number</span>
+                    <span class="row-value">{{ $labRequest->request_number }}</span>
                 </div>
                 <div class="row">
                     <span class="row-label">Patient Name</span>
-                    <span class="row-value">{{ $appointment->patient?->user?->name ?? 'N/A' }}</span>
+                    <span class="row-value">{{ $labRequest->user?->name ?? $labRequest->patient?->user?->name ?? 'N/A' }}</span>
                 </div>
                 <div class="row">
                     <span class="row-label">Patient Email</span>
-                    <span class="row-value">{{ $appointment->patient?->user?->email ?? 'N/A' }}</span>
-                </div>
-                <div class="row">
-                    <span class="row-label">Doctor</span>
-                    <span class="row-value">Dr. {{ $appointment->doctor?->doctor_name ?? 'Doctor' }}</span>
-                </div>
-                <div class="row">
-                    <span class="row-label">Specialty</span>
-                    <span class="row-value">{{ $appointment->doctor?->specialty ?? 'General Medicine' }}</span>
+                    <span class="row-value">{{ $labRequest->user?->email ?? $labRequest->patient?->user?->email ?? 'N/A' }}</span>
                 </div>
                 <div class="row">
                     <span class="row-label">Scheduled Date</span>
                     <span class="row-value">
-                        @if($appointment->doctor_schedule?->date)
-                            {{ \Carbon\Carbon::parse($appointment->doctor_schedule->date)->format('l, d F Y') }}
+                        @if($labRequest->scheduled_date)
+                            {{ \Carbon\Carbon::parse($labRequest->scheduled_date)->format('l, d F Y') }}
                         @else
-                            {{ $appointment->created_at->format('l, d F Y') }}
+                            To be confirmed
                         @endif
                     </span>
                 </div>
                 <div class="row">
-                    <span class="row-label">Consultation Time</span>
-                    <span class="row-value">
-                        @if($appointment->doctor_schedule)
-                            {{ $appointment->doctor_schedule->start_time }} – {{ $appointment->doctor_schedule->end_time }}
-                        @else
-                            Scheduled
-                        @endif
-                    </span>
+                    <span class="row-label">Scheduled Time</span>
+                    <span class="row-value">{{ $labRequest->scheduled_time ?? 'To be confirmed' }}</span>
                 </div>
                 <div class="row">
-                    <span class="row-label">Reason / Notes</span>
-                    <span class="row-value">{{ $appointment->reason ?? 'General Consultation' }}</span>
+                    <span class="row-label">Sample Location</span>
+                    <span class="row-value">{{ $labRequest->address ?? 'Hospital Laboratory Department' }}</span>
+                </div>
+                <div class="row">
+                    <span class="row-label">Payment Method</span>
+                    <span class="row-value">{{ ucwords(str_replace('_', ' ', $labRequest->payment_method ?? 'Cash on Delivery')) }}</span>
                 </div>
                 <div class="row">
                     <span class="row-label">Status</span>
-                    <span class="row-value" style="color: #16a34a;">{{ ucfirst($appointment->status ?? 'Confirmed') }}</span>
+                    <span class="row-value" style="color: #d97706;">{{ ucfirst($labRequest->status ?? 'Pending') }}</span>
                 </div>
-
-                @php
-                    $fee = $appointment->doctor_schedule?->price ?? $appointment->doctor?->consultation_fee ?? 0;
-                @endphp
-                <div class="total-row">
-                    <span class="total-label">Consultation Fee</span>
-                    <span class="total-value">{{ number_format($fee, 0, '.', ' ') }} FCFA</span>
+                @if($labRequest->notes)
+                <div class="row">
+                    <span class="row-label">Notes</span>
+                    <span class="row-value">{{ $labRequest->notes }}</span>
                 </div>
+                @endif
             </div>
 
-            <div class="info-card">
-                <strong>📍 Clinic Instructions:</strong><br>
-                Please arrive at least 15 minutes prior to your scheduled consultation time. Present this receipt at the front desk upon arrival.
+            {{-- Tests Ordered --}}
+            @if($labRequest->items && $labRequest->items->count() > 0)
+                <div class="section-title">🧪 Tests Ordered</div>
+                @foreach($labRequest->items as $item)
+                    <div class="test-item">
+                        <span class="test-name">{{ $item->test_name ?? $item->test?->name ?? 'Lab Test' }}</span>
+                        <span class="test-price">{{ number_format($item->price ?? 0, 0, '.', ' ') }} FCFA</span>
+                    </div>
+                @endforeach
+            @endif
+
+            <div class="total-row">
+                <span class="total-label">Total Amount</span>
+                <span class="total-value">{{ number_format($labRequest->total_amount ?? 0, 0, '.', ' ') }} FCFA</span>
             </div>
 
-            <div style="text-align: center; margin: 24px 0;">
-                <a href="{{ route('patient.appointment.receipt', $appointment->id) }}" class="btn">
-                    📄 View & Download Full Receipt
-                </a>
-            </div>
+            @if($recipientType !== 'admin')
+                <div class="info-card">
+                    <strong>📋 What happens next?</strong><br>
+                    Our lab team will review your request and prepare for sample collection. Please be available at the indicated address/time. You will be notified once results are ready.
+                </div>
+            @endif
         </div>
 
         <div class="footer">
