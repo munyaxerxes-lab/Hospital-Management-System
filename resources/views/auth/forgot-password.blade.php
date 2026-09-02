@@ -98,6 +98,7 @@ border: 1px solid none;
                         required
                         autofocus
                         style="
+                        lenth:80px;
                         width:80%">
 
                 </div>
@@ -105,6 +106,7 @@ border: 1px solid none;
                 <button
                     type="submit"
                     class="auth-buttoncont"
+                    
                     >
 
                     Continue
