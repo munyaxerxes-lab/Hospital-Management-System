@@ -496,12 +496,7 @@
 
                                     <td>
                                         <div style="display: flex; align-items: center; gap: 10px;">
-                                            @php
-                                                $docAvatar = $doctor->avatar
-                                                    ? (str_starts_with($doctor->avatar, 'http') || str_starts_with($doctor->avatar, 'image/') ? asset($doctor->avatar) : asset('storage/' . $doctor->avatar))
-                                                    : asset('image/doc.png');
-                                            @endphp
-                                            <img src="{{ $docAvatar }}" alt="{{ $doctor->doctor_name }}" style="width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid #e2e8f0; flex-shrink: 0;">
+                                            <img src="{{ $doctor->avatar_url }}" alt="{{ $doctor->doctor_name }}" style="width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid #e2e8f0; flex-shrink: 0;" onerror="this.src='{{ asset('image/doc.png') }}';">
                                             <span>{{ $doctor->doctor_name }}</span>
                                         </div>
                                     </td>
@@ -673,16 +668,12 @@
                                                         Doctor Profile Photo / Avatar
                                                     </label>
                                                     <div style="display:flex;align-items:center;gap:14px;background:#f8fafc;padding:14px;border-radius:10px;border:1.5px dashed #cbd5e1;">
-                                                        @php
-                                                            $avatarSrc = $doctor->avatar
-                                                                ? (str_starts_with($doctor->avatar, 'http') || str_starts_with($doctor->avatar, 'image/') ? asset($doctor->avatar) : asset('storage/' . $doctor->avatar))
-                                                                : asset('image/doc.png');
-                                                        @endphp
-                                                        <img
+                                                         <img
                                                             id="avatar-preview-{{ $doctor->id }}"
-                                                            src="{{ $avatarSrc }}"
+                                                            src="{{ $doctor->avatar_url }}"
                                                             alt="Current Avatar"
                                                             style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #095eff;flex-shrink:0;"
+                                                            onerror="this.src='{{ asset('image/doc.png') }}';"
                                                         >
                                                         <div style="flex:1;">
                                                             <input

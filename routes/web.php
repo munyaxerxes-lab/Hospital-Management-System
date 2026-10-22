@@ -47,18 +47,6 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::get('/login-page', [AuthController::class, 'showLogin'])->name('show.login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
-    
-    // Naming references for forgot/reset flows
-    Route::get('/reset-password', function () { return view('auth.reset-password'); })->name('password.request');
-    Route::get('/forgot-password', function () { return view('auth.reset-password'); })->name('reset.password');
-
-    Route::post('/reset-password', function (Request $request) {
-        return back()->with('status', 'If your email is registered, we have sent a reset link.');
-    })->name('password.update');
-
-    Route::get('/verify-otp', [RegisteredUserController::class, 'showVerifyOtp'])->name('register.verify-otp');
-    Route::post('/verify-otp', [RegisteredUserController::class, 'verifyOtp'])->name('register.verify-otp.submit');
-    Route::post('/resend-otp', [RegisteredUserController::class, 'resendOtp'])->name('register.resend-otp');
 });
 
 /*
@@ -129,14 +117,7 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::post('/patient/appointment/book', [AppointmentController::class, 'storePatientAppointment'])
         ->name('patient.appointment.book');
 
-    Route::get('/pharmacy', function () {
-        $medicines = Medicine::where('status', true)->latest()->get();
-        $categories = Medicine::where('status', true)->select('type')->distinct()->pluck('type')->filter()->values();
-        $userId = auth()->id();
-        $cartCount = $userId ? \App\Models\cart::where('user_id', $userId)->sum('quantity') : 0;
-        return view('account.patient.pharmacy', compact('medicines', 'categories', 'cartCount'));
-    })->name('patient.pharmacy');
-    
+
     Route::get('/notifications', function () {
         return view('account.patient.notifications');
     });
@@ -401,6 +382,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/Dr sarah', function () { return view('account.viewprofile.sarah-jen'); });
     Route::get('/Dr michael', function () { return view('account.viewprofile.michael'); });
 });
+
+/*
+|--------------------------------------------------------------------------
+| Storage Asset Fallback Handler
+|--------------------------------------------------------------------------
+| Serves files from storage/app/public if web server symlink is bypassed or missing.
+*/
+Route::get('/storage/{path}', function ($path) {
+    $filePath = storage_path('app/public/' . $path);
+    if (!file_exists($filePath)) {
+        abort(404);
+    }
+    return response()->file($filePath);
+})->where('path', '.*');
 
 /*
 |--------------------------------------------------------------------------

@@ -1,5 +1,11 @@
+<!-- Sidebar Backdrop for Mobile -->
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
 <!-- Sidebar -->
 <aside class="sidebar">
+    <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close sidebar">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
 
     <!-- Logo & Brand Header -->
     <div class="logo">

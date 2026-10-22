@@ -57,12 +57,7 @@
                         Doctor Profile Photo / Avatar
                     </label>
                     <div style="display:flex;align-items:center;gap:16px;background:#f8fafc;padding:16px;border-radius:10px;border:1.5px dashed #cbd5e1;">
-                        @php
-                            $currentAvatar = $doctor->avatar 
-                                ? (str_starts_with($doctor->avatar, 'http') || str_starts_with($doctor->avatar, 'image/') ? asset($doctor->avatar) : asset('storage/' . $doctor->avatar))
-                                : asset('image/doc.png');
-                        @endphp
-                        <img src="{{ $currentAvatar }}" alt="Current Avatar" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #095eff;flex-shrink:0;">
+                        <img src="{{ $doctor->avatar_url }}" alt="Current Avatar" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #095eff;flex-shrink:0;" onerror="this.src='{{ asset('image/doc.png') }}';">
                         <div style="flex:1;">
                             <input
                                 type="file"

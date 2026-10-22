@@ -75,6 +75,9 @@ Route::post('/login/resend-otp', [AuthenticatedSessionController::class, 'resend
      Route::get('reset-password', [ForgotPasswordController::class, 'showResetPassword'])
     ->name('password.reset');
 
+     Route::get('password/reset', [ForgotPasswordController::class, 'showResetPassword'])
+    ->name('reset.password');
+
      Route::post('reset-password', [ForgotPasswordController::class, 'resetPassword'])
     ->name('password.update');
 

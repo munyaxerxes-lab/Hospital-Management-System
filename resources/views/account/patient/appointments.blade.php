@@ -424,9 +424,8 @@
         @php
             $cnt    = $doctor->schedules->count();
             $has    = $cnt > 0;
-            $imgSrc = $doctor->avatar
-                ? (str_starts_with($doctor->avatar, 'http') || str_starts_with($doctor->avatar, 'image/') ? asset($doctor->avatar) : asset('storage/' . $doctor->avatar))
-                : asset($docImages[($doctor->id - 1) % count($docImages)]);
+            $fallbackImg = asset($docImages[($doctor->id - 1) % count($docImages)]);
+            $imgSrc = $doctor->avatar ? $doctor->avatar_url : $fallbackImg;
         @endphp
         <div class="dl-card"
              data-name="{{ strtolower($doctor->doctor_name) }}"
@@ -435,8 +434,7 @@
 
             <img src="{{ $imgSrc }}" alt="Dr. {{ $doctor->doctor_name }}"
                  class="dl-card-img"
-                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-            <div class="dl-card-img-placeholder" style="display:none;">👨‍⚕️</div>
+                 onerror="this.src='{{ $fallbackImg }}';">
 
             <div class="dl-card-body">
                 <p class="dl-card-name">Dr. {{ $doctor->doctor_name }}</p>

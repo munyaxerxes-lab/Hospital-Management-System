@@ -177,7 +177,7 @@ class ForgotPasswordController extends Controller
 
         // 10. Redirect to the reset password page with a confirmation message.
         return redirect()
-            ->route('reset.password')
+            ->route('password.reset')
             ->with('status', 'OTP verified successfully. You can now reset your password.');
     }
 

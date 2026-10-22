@@ -3,12 +3,17 @@
 
   <!-- Top Header Navigation Dashboard Area -->
   <header class="topbar">
-    <div class="topbar-search-wrapper">
-        <!-- <div class="search-input-group">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" class="topbar-searchbar" placeholder="Search patients, doctors, tests..." id="globalAdminSearch">
-            <span class="search-shortcut-badge">⌘K</span>
-        </div> -->
+    <div style="display: flex; align-items: center;">
+        <button type="button" class="mobile-toggle-btn" id="adminMobileMenuBtn" aria-label="Open sidebar menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="topbar-search-wrapper">
+            <!-- <div class="search-input-group">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" class="topbar-searchbar" placeholder="Search patients, doctors, tests..." id="globalAdminSearch">
+                <span class="search-shortcut-badge">⌘K</span>
+            </div> -->
+        </div>
     </div>
    
     <!-- Top Header Nav Inline Actions Context -->
@@ -158,5 +163,30 @@
       if (menu && menu.classList.contains('show')) {
           menu.classList.remove('show');
       }
+  });
+
+  // Mobile Sidebar Drawer Toggle Logic
+  const adminToggleBtn = document.getElementById('adminMobileMenuBtn');
+  const adminSidebar = document.querySelector('.sidebar');
+  const adminBackdrop = document.getElementById('sidebarBackdrop');
+  const adminCloseBtn = document.getElementById('sidebarCloseBtn');
+
+  function openAdminSidebar() {
+      if (adminSidebar) adminSidebar.classList.add('open');
+      if (adminBackdrop) adminBackdrop.classList.add('active');
+      document.body.style.overflow = 'hidden';
+  }
+
+  function closeAdminSidebar() {
+      if (adminSidebar) adminSidebar.classList.remove('open');
+      if (adminBackdrop) adminBackdrop.classList.remove('active');
+      document.body.style.overflow = '';
+  }
+
+  if (adminToggleBtn) adminToggleBtn.addEventListener('click', openAdminSidebar);
+  if (adminCloseBtn) adminCloseBtn.addEventListener('click', closeAdminSidebar);
+  if (adminBackdrop) adminBackdrop.addEventListener('click', closeAdminSidebar);
+  document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeAdminSidebar();
   });
 </script>

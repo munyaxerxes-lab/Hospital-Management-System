@@ -26,11 +26,6 @@
             <span>Lab Tests</span>
         </a>
 
-        <a href="/pharmacy" class="nav-item">
-            <i class="ri-calendar-2-line"></i>
-            <span>Pharmacy</span>
-        </a>
-
         <a href="/history" class="nav-item">
             <i class="ri-time-line"></i>
             <span>History</span>
